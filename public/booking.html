@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="预约活动 - 填写预约信息">
+  <title>活动预约 | 音乐活动预约</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="header" role="banner">
+    <nav class="header__nav" role="navigation" aria-label="主导航">
+      <div class="header__logo">
+        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+      </div>
+      <ul class="header__menu">
+        <li class="header__menu-item"><a href="index.html">首页</a></li>
+        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="about.html">关于我们</a></li>
+        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
+      </ul>
+      <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
+        <span class="header__menu-icon"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" role="main">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="面包屑导航">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="index.html">首页</a></li>
+          <li class="breadcrumb__item"><a href="activities.html">活动列表</a></li>
+          <li class="breadcrumb__item" aria-current="page">预约活动</li>
+        </ol>
+      </nav>
+
+      <!-- Booking Form -->
+      <section class="booking" aria-labelledby="booking-title">
+        <h1 id="booking-title" class="booking__title">预约活动</h1>
+
+        <!-- Activity Summary -->
+        <div class="booking__summary" id="activity-summary">
+          <h2 class="booking__summary-title">活动信息</h2>
+          <div class="booking__summary-content" id="summary-content">
+            <!-- Will be populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Booking Form -->
+        <form class="booking__form" id="booking-form" novalidate>
+          <div class="form-group">
+            <label for="user-name" class="form-group__label">
+              姓名 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <input
+              type="text"
+              id="user-name"
+              name="userName"
+              class="form-group__input"
+              required
+              aria-required="true"
+              aria-describedby="user-name-error"
+            >
+            <span id="user-name-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="user-email" class="form-group__label">
+              邮箱 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <input
+              type="email"
+              id="user-email"
+              name="userEmail"
+              class="form-group__input"
+              required
+              aria-required="true"
+              aria-describedby="user-email-error"
+            >
+            <span id="user-email-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="user-phone" class="form-group__label">
+              电话 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <input
+              type="tel"
+              id="user-phone"
+              name="userPhone"
+              class="form-group__input"
+              required
+              aria-required="true"
+              aria-describedby="user-phone-error"
+            >
+            <span id="user-phone-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="booking-date" class="form-group__label">
+              选择日期 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <input
+              type="date"
+              id="booking-date"
+              name="bookingDate"
+              class="form-group__input"
+              required
+              aria-required="true"
+              aria-describedby="booking-date-error"
+            >
+            <span id="booking-date-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="participant-count" class="form-group__label">
+              参与人数 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <input
+              type="number"
+              id="participant-count"
+              name="participantCount"
+              class="form-group__input"
+              min="1"
+              max="10"
+              value="1"
+              required
+              aria-required="true"
+              aria-describedby="participant-count-error"
+            >
+            <span id="participant-count-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="user-notes" class="form-group__label">
+              备注（可选）
+            </label>
+            <textarea
+              id="user-notes"
+              name="userNotes"
+              class="form-group__textarea"
+              rows="4"
+              aria-describedby="user-notes-hint"
+            ></textarea>
+            <span id="user-notes-hint" class="form-group__hint">
+              如有特殊需求，请在此说明
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__checkbox">
+              <input
+                type="checkbox"
+                id="terms-agreement"
+                name="termsAgreement"
+                required
+                aria-required="true"
+                aria-describedby="terms-error"
+              >
+              <span>我已阅读并同意<a href="#" class="form-group__link">服务条款</a></span>
+            </label>
+            <span id="terms-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="booking__actions">
+            <button type="submit" class="button button--primary button--large">
+              确认预约
+            </button>
+            <a href="activities.html" class="button button--secondary button--large">
+              取消
+            </a>
+          </div>
+
+          <!-- Form Status Messages -->
+          <div class="booking__status" id="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">电话: 123-456-7890</p>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">快速链接</h3>
+          <ul class="footer__links">
+            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="user-profile.html">个人中心</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/supabase-client.js"></script>
+  <script type="module" src="js/form-handler.js"></script>
+  <script type="module" src="js/calendar.js"></script>
+</body>
+</html>

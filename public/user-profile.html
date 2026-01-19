@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="个人中心 - 管理您的预约和个人信息">
+  <title>个人中心 | 音乐活动预约</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="header" role="banner">
+    <nav class="header__nav" role="navigation" aria-label="主导航">
+      <div class="header__logo">
+        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+      </div>
+      <ul class="header__menu">
+        <li class="header__menu-item"><a href="index.html">首页</a></li>
+        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="about.html">关于我们</a></li>
+        <li class="header__menu-item"><a href="user-profile.html" aria-current="page">个人中心</a></li>
+      </ul>
+      <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
+        <span class="header__menu-icon"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" role="main">
+    <div class="container">
+      <!-- Page Header -->
+      <header class="page-header">
+        <h1 class="page-header__title">个人中心</h1>
+      </header>
+
+      <!-- Auth Section (Login/Register) -->
+      <section class="auth" id="auth-section">
+        <div class="auth__tabs">
+          <button
+            class="auth__tab auth__tab--active"
+            id="login-tab"
+            aria-selected="true"
+            aria-controls="login-panel"
+          >
+            登录
+          </button>
+          <button
+            class="auth__tab"
+            id="register-tab"
+            aria-selected="false"
+            aria-controls="register-panel"
+          >
+            注册
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="auth__panel" id="login-panel" role="tabpanel">
+          <form class="auth__form" id="login-form" novalidate>
+            <div class="form-group">
+              <label for="login-email" class="form-group__label">邮箱</label>
+              <input
+                type="email"
+                id="login-email"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="form-group">
+              <label for="login-password" class="form-group__label">密码</label>
+              <input
+                type="password"
+                id="login-password"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <button type="submit" class="button button--primary button--full">登录</button>
+            <div class="auth__status" id="login-status" role="alert"></div>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth__panel" id="register-panel" role="tabpanel" hidden>
+          <form class="auth__form" id="register-form" novalidate>
+            <div class="form-group">
+              <label for="register-name" class="form-group__label">姓名</label>
+              <input
+                type="text"
+                id="register-name"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="form-group">
+              <label for="register-email" class="form-group__label">邮箱</label>
+              <input
+                type="email"
+                id="register-email"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="form-group">
+              <label for="register-password" class="form-group__label">密码</label>
+              <input
+                type="password"
+                id="register-password"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <div class="form-group">
+              <label for="register-phone" class="form-group__label">电话</label>
+              <input
+                type="tel"
+                id="register-phone"
+                class="form-group__input"
+                required
+                aria-required="true"
+              >
+            </div>
+            <button type="submit" class="button button--primary button--full">注册</button>
+            <div class="auth__status" id="register-status" role="alert"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Profile Section (Hidden until logged in) -->
+      <section class="profile" id="profile-section" hidden>
+        <!-- User Info -->
+        <div class="profile__info">
+          <h2 class="profile__title">个人信息</h2>
+          <div class="profile__details" id="user-details">
+            <!-- Will be populated dynamically -->
+          </div>
+          <button class="button button--secondary" id="logout-button">退出登录</button>
+        </div>
+
+        <!-- Bookings List -->
+        <div class="profile__bookings">
+          <h2 class="profile__title">我的预约</h2>
+          <div class="bookings-list" id="bookings-list">
+            <!-- Will be populated dynamically -->
+          </div>
+          <div class="bookings-list__empty" id="bookings-empty" hidden>
+            <p>您还没有任何预约</p>
+            <a href="activities.html" class="button button--primary">浏览活动</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">电话: 123-456-7890</p>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">快速链接</h3>
+          <ul class="footer__links">
+            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="user-profile.html">个人中心</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/supabase-client.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

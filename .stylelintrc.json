@@ -1,0 +1,13 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "indentation": 2,
+    "string-quotes": "single",
+    "color-hex-case": "lower",
+    "color-hex-length": "short",
+    "selector-class-pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$",
+    "comment-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "no-descending-specificity": null
+  }
+}

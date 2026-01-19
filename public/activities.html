@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="浏览所有音乐活动 - 吉他课程、音乐会、工作坊">
+  <title>活动列表 | 音乐活动预约</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="header" role="banner">
+    <nav class="header__nav" role="navigation" aria-label="主导航">
+      <div class="header__logo">
+        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+      </div>
+      <ul class="header__menu">
+        <li class="header__menu-item"><a href="index.html">首页</a></li>
+        <li class="header__menu-item"><a href="activities.html" aria-current="page">活动列表</a></li>
+        <li class="header__menu-item"><a href="about.html">关于我们</a></li>
+        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
+      </ul>
+      <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
+        <span class="header__menu-icon"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" role="main">
+    <div class="container">
+      <!-- Page Header -->
+      <header class="page-header">
+        <h1 class="page-header__title">活动列表</h1>
+        <p class="page-header__subtitle">探索我们提供的各类音乐活动</p>
+      </header>
+
+      <!-- Filters Section -->
+      <section class="filters" aria-label="活动筛选">
+        <div class="filters__group">
+          <label for="filter-category" class="filters__label">活动类型</label>
+          <select id="filter-category" class="filters__select">
+            <option value="">全部</option>
+            <option value="course">课程</option>
+            <option value="concert">音乐会</option>
+            <option value="workshop">工作坊</option>
+          </select>
+        </div>
+        <div class="filters__group">
+          <label for="filter-search" class="filters__label">搜索</label>
+          <input
+            type="search"
+            id="filter-search"
+            class="filters__input"
+            placeholder="搜索活动名称..."
+            aria-label="搜索活动"
+          >
+        </div>
+        <button class="filters__button button button--primary" id="apply-filters">
+          应用筛选
+        </button>
+      </section>
+
+      <!-- Activities Grid -->
+      <section class="activities" aria-labelledby="activities-title">
+        <h2 id="activities-title" class="visually-hidden">活动列表</h2>
+        <div class="activities__grid" id="activities-list">
+          <!-- Activities will be loaded dynamically via JavaScript -->
+        </div>
+        <div class="activities__loading" id="loading-indicator" aria-live="polite" aria-busy="true">
+          <p>加载中...</p>
+        </div>
+        <div class="activities__empty" id="empty-state" hidden>
+          <p>暂无活动</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">电话: 123-456-7890</p>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">快速链接</h3>
+          <ul class="footer__links">
+            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="user-profile.html">个人中心</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/supabase-client.js"></script>
+  <script type="module" src="js/gallery.js"></script>
+</body>
+</html>

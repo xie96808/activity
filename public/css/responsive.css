@@ -1,0 +1,381 @@
+/**
+ * Responsive Styles - Media queries for different screen sizes
+ * Mobile-first approach
+ */
+
+/* ========================================
+   Tablet (768px and up)
+   ======================================== */
+@media (max-width: 768px) {
+  /* Typography adjustments */
+  :root {
+    --font-size-4xl: 1.875rem;
+    --font-size-3xl: 1.5rem;
+    --font-size-2xl: 1.25rem;
+  }
+
+  /* Header - Mobile menu */
+  .header__menu {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background-color: var(--color-white);
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+    z-index: 99;
+  }
+
+  .header__menu--open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__menu-toggle {
+    display: block;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon {
+    background-color: transparent;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon::after {
+    transform: rotate(-45deg);
+    bottom: 0;
+  }
+
+  /* Hero section */
+  .hero {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+
+  .hero__title {
+    font-size: var(--font-size-3xl);
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Grid layouts */
+  .featured__grid,
+  .activities__grid,
+  .team__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Activity detail */
+  .activity-detail__content {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-detail__actions {
+    flex-direction: column;
+  }
+
+  .activity-detail__actions .button {
+    width: 100%;
+  }
+
+  /* Booking */
+  .booking__actions {
+    flex-direction: column;
+  }
+
+  .booking__actions .button {
+    width: 100%;
+  }
+
+  /* Filters */
+  .filters {
+    flex-direction: column;
+  }
+
+  .filters__group {
+    width: 100%;
+  }
+
+  .filters__button {
+    width: 100%;
+  }
+
+  /* Footer */
+  .footer__content {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contact */
+  .contact__info {
+    grid-template-columns: 1fr;
+  }
+
+  /* Spacing adjustments */
+  .main {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* ========================================
+   Mobile (480px and up)
+   ======================================== */
+@media (max-width: 480px) {
+  /* Typography */
+  :root {
+    --font-size-4xl: 1.5rem;
+    --font-size-3xl: 1.25rem;
+    --font-size-2xl: 1.125rem;
+    --font-size-xl: 1rem;
+  }
+
+  /* Header */
+  .header__logo a {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Hero */
+  .hero__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  /* Buttons */
+  .button--large {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-base);
+  }
+
+  /* Cards */
+  .activity-card__image {
+    height: 180px;
+  }
+
+  /* Forms */
+  .form-group__input,
+  .form-group__textarea {
+    font-size: var(--font-size-base);
+  }
+
+  /* Breadcrumb */
+  .breadcrumb__list {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Activity detail meta */
+  .activity-detail__meta-label {
+    min-width: 60px;
+    font-size: var(--font-size-sm);
+  }
+
+  /* Team member */
+  .team-member__image {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* Spacing */
+  .hero {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .page-header {
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+/* ========================================
+   Large screens (1200px and up)
+   ======================================== */
+@media (min-width: 1200px) {
+  /* Grid layouts - more columns on large screens */
+  .featured__grid,
+  .activities__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .team__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Activity detail - better spacing */
+  .activity-detail__content {
+    gap: var(--spacing-3xl);
+  }
+}
+
+/* ========================================
+   Print styles
+   ======================================== */
+@media print {
+  /* Hide non-essential elements */
+  .header,
+  .footer,
+  .button,
+  .filters,
+  .breadcrumb {
+    display: none;
+  }
+
+  /* Adjust colors for print */
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  /* Ensure content fits on page */
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* Page breaks */
+  .activity-card,
+  .team-member,
+  .booking__summary {
+    page-break-inside: avoid;
+  }
+}
+
+/* ========================================
+   Accessibility - Reduced motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   Accessibility - High contrast mode
+   ======================================== */
+@media (prefers-contrast: high) {
+  :root {
+    --color-primary: #0000ff;
+    --color-primary-dark: #000080;
+    --color-gray-700: #000000;
+    --color-gray-900: #000000;
+  }
+
+  .button {
+    border: 2px solid currentColor;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+/* ========================================
+   Dark mode support (optional)
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-white: #1a1a1a;
+    --color-gray-50: #2a2a2a;
+    --color-gray-100: #3a3a3a;
+    --color-gray-200: #4a4a4a;
+    --color-gray-300: #5a5a5a;
+    --color-gray-700: #d1d5db;
+    --color-gray-900: #f9fafb;
+    --color-black: #ffffff;
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-gray-900);
+  }
+
+  .header {
+    background-color: var(--color-gray-50);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .activity-card,
+  .team-member,
+  .booking__summary {
+    background-color: var(--color-gray-50);
+  }
+
+  .form-group__input,
+  .form-group__textarea,
+  .filters__select,
+  .filters__input {
+    background-color: var(--color-gray-100);
+    border-color: var(--color-gray-300);
+    color: var(--color-gray-900);
+  }
+
+  .footer {
+    background-color: #0a0a0a;
+  }
+}
+
+/* ========================================
+   Landscape orientation adjustments
+   ======================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .hero__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .activity-card__image {
+    height: 150px;
+  }
+}
+
+/* ========================================
+   Touch device optimizations
+   ======================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .button,
+  .header__menu-item a,
+  .form-group__checkbox {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .activity-card:hover {
+    transform: none;
+  }
+
+  .button--primary:hover {
+    transform: none;
+  }
+
+  /* Larger form inputs */
+  .form-group__input,
+  .form-group__textarea,
+  .filters__select,
+  .filters__input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+}

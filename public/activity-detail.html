@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="活动详情 - 查看活动信息并预约">
+  <title>活动详情 | 音乐活动预约</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="header" role="banner">
+    <nav class="header__nav" role="navigation" aria-label="主导航">
+      <div class="header__logo">
+        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+      </div>
+      <ul class="header__menu">
+        <li class="header__menu-item"><a href="index.html">首页</a></li>
+        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="about.html">关于我们</a></li>
+        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
+      </ul>
+      <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
+        <span class="header__menu-icon"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" role="main">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="面包屑导航">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="index.html">首页</a></li>
+          <li class="breadcrumb__item"><a href="activities.html">活动列表</a></li>
+          <li class="breadcrumb__item" aria-current="page">活动详情</li>
+        </ol>
+      </nav>
+
+      <!-- Activity Detail -->
+      <article class="activity-detail" id="activity-detail">
+        <!-- Loading State -->
+        <div class="activity-detail__loading" id="loading-indicator" aria-live="polite">
+          <p>加载中...</p>
+        </div>
+
+        <!-- Content will be loaded dynamically -->
+        <div class="activity-detail__content" id="activity-content" hidden>
+          <div class="activity-detail__image-wrapper">
+            <img
+              id="activity-image"
+              class="activity-detail__image"
+              src=""
+              alt=""
+            >
+          </div>
+
+          <div class="activity-detail__info">
+            <header class="activity-detail__header">
+              <h1 id="activity-title" class="activity-detail__title"></h1>
+              <span id="activity-category" class="activity-detail__category"></span>
+            </header>
+
+            <div class="activity-detail__meta">
+              <div class="activity-detail__meta-item">
+                <span class="activity-detail__meta-label">日期:</span>
+                <time id="activity-date" class="activity-detail__meta-value"></time>
+              </div>
+              <div class="activity-detail__meta-item">
+                <span class="activity-detail__meta-label">时间:</span>
+                <span id="activity-time" class="activity-detail__meta-value"></span>
+              </div>
+              <div class="activity-detail__meta-item">
+                <span class="activity-detail__meta-label">地点:</span>
+                <span id="activity-location" class="activity-detail__meta-value"></span>
+              </div>
+              <div class="activity-detail__meta-item">
+                <span class="activity-detail__meta-label">剩余名额:</span>
+                <span id="activity-capacity" class="activity-detail__meta-value"></span>
+              </div>
+            </div>
+
+            <div class="activity-detail__description">
+              <h2 class="activity-detail__section-title">活动介绍</h2>
+              <p id="activity-description"></p>
+            </div>
+
+            <div class="activity-detail__actions">
+              <a href="booking.html" id="booking-link" class="button button--primary button--large">
+                立即预约
+              </a>
+              <button class="button button--secondary button--large" id="share-button">
+                分享活动
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="activity-detail__error" id="error-state" hidden>
+          <p>加载失败，请稍后重试</p>
+          <a href="activities.html" class="button button--secondary">返回活动列表</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">电话: 123-456-7890</p>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">快速链接</h3>
+          <ul class="footer__links">
+            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="user-profile.html">个人中心</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js/supabase-client.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
