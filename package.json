@@ -4,13 +4,13 @@
   "description": "An easy, convenient music activity reservation website",
   "main": "index.js",
   "scripts": {
-    "dev": "npx live-server public",
+    "dev": "npx live-server .",
     "build": "npm run minify:css && npm run minify:js",
-    "minify:css": "npx clean-css-cli -o public/css/styles.min.css public/css/layout.css public/css/responsive.css public/css/animations.css",
-    "minify:js": "npx terser public/js/main.js public/js/form-handler.js public/js/gallery.js public/js/calendar.js public/js/supabase-client.js -o public/js/bundle.min.js",
-    "lint:js": "npx eslint public/js/**/*.js",
-    "lint:css": "npx stylelint public/css/**/*.css",
-    "format": "npx prettier --write \"public/**/*.{html,css,js}\""
+    "minify:css": "npx clean-css-cli -o css/styles.min.css css/layout.css css/responsive.css css/animations.css",
+    "minify:js": "npx terser js/main.js js/form-handler.js js/gallery.js js/calendar.js js/supabase-client.js -o js/bundle.min.js",
+    "lint:js": "npx eslint js/**/*.js",
+    "lint:css": "npx stylelint css/**/*.css",
+    "format": "npx prettier --write \"**/*.{html,css,js}\""
   },
   "keywords": [
     "music",
