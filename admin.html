@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="吉他维修预约系统 - 管理员登录">
+  <title>管理员登录 - 吉他维修预约系统</title>
+  <link rel="stylesheet" href="css\layout.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: var(--spacing-lg);
+    }
+
+    .login-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: var(--spacing-2xl);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-card__title {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--color-gray-900);
+      margin-bottom: var(--spacing-sm);
+      text-align: center;
+    }
+
+    .login-card__subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-gray-600);
+      margin-bottom: var(--spacing-2xl);
+      text-align: center;
+    }
+
+    .login-form__group {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .login-form__label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--color-gray-700);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .login-form__input {
+      width: 100%;
+      padding: var(--spacing-md);
+      border: 2px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      transition: all var(--transition-base);
+    }
+
+    .login-form__input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .login-form__button {
+      width: 100%;
+      padding: var(--spacing-md);
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .login-form__button:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-form__button:disabled {
+      background: var(--color-gray-400);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-form__error {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      display: none;
+    }
+
+    .login-form__error--visible {
+      display: block;
+    }
+
+    .login-form__back {
+      margin-top: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .login-form__back a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      transition: color var(--transition-base);
+    }
+
+    .login-form__back a:hover {
+      color: var(--color-primary-dark);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h1 class="login-card__title">管理员登录</h1>
+      <p class="login-card__subtitle">吉他维修预约系统</p>
+
+      <form id="login-form" class="login-form">
+        <div class="login-form__group">
+          <label for="username" class="login-form__label">用户名</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="login-form__input"
+            required
+            autocomplete="username"
+            placeholder="admin"
+          >
+        </div>
+
+        <div class="login-form__group">
+          <label for="password" class="login-form__label">密码</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="login-form__input"
+            required
+            autocomplete="current-password"
+            placeholder="请输入密码"
+          >
+        </div>
+
+        <button type="submit" class="login-form__button" id="login-button">
+          登录
+        </button>
+
+        <div id="login-error" class="login-form__error"></div>
+
+        <div class="login-form__back">
+          <a href="index.html">← 返回首页</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { signIn, checkAuth } from './js/supabase-client.js';
+
+    // Check if already logged in
+    async function checkExistingAuth() {
+      const result = await checkAuth();
+      if (result.authenticated) {
+        window.location.href = 'admin-dashboard.html';
+      }
+    }
+
+    checkExistingAuth();
+
+    // Handle login form submission
+    const loginForm = document.getElementById('login-form');
+    const loginButton = document.getElementById('login-button');
+    const loginError = document.getElementById('login-error');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Get form data
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Convert username to email format
+      const email = username + '@localhost.com';
+
+      // Clear previous error
+      loginError.textContent = '';
+      loginError.classList.remove('login-form__error--visible');
+
+      // Disable button
+      loginButton.disabled = true;
+      loginButton.textContent = '登录中...';
+
+      try {
+        // Sign in
+        const result = await signIn(email, password);
+
+        if (result.success) {
+          // Redirect to dashboard
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          // Show error
+          loginError.textContent = result.error || '登录失败，请检查用户名和密码';
+          loginError.classList.add('login-form__error--visible');
+          loginButton.disabled = false;
+          loginButton.textContent = '登录';
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        loginError.textContent = '登录失败，请重试';
+        loginError.classList.add('login-form__error--visible');
+        loginButton.disabled = false;
+        loginButton.textContent = '登录';
+      }
+    });
+  </script>
+</body>
+</html>

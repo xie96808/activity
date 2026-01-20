@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="管理后台 - 吉他维修订单管理">
+  <title>管理后台 | 吉他维修服务</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css\layout.css">
+  <link rel="stylesheet" href="css\responsive.css">
+  <link rel="stylesheet" href="css\animations.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header class="header" role="banner">
+    <nav class="header__nav" role="navigation" aria-label="主导航">
+      <div class="header__logo">
+        <a href="admin-dashboard.html" aria-label="管理后台首页">吉他维修服务 - 管理后台</a>
+      </div>
+      <div class="header__actions">
+        <span id="admin-email" class="header__user"></span>
+        <button id="logout-btn" class="button button--small button--secondary">退出登录</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" role="main">
+    <div class="container">
+      <h1 class="page-title">管理后台</h1>
+
+      <!-- Tab Navigation -->
+      <div class="tabs" role="tablist">
+        <button class="tabs__tab tabs__tab--active" role="tab" aria-selected="true" data-tab="orders">
+          维修单管理
+        </button>
+        <button class="tabs__tab" role="tab" aria-selected="false" data-tab="calendar">
+          日历视图
+        </button>
+        <button class="tabs__tab" role="tab" aria-selected="false" data-tab="actions">
+          快捷操作
+        </button>
+      </div>
+
+      <!-- Tab Content: Orders Management -->
+      <div id="tab-orders" class="tab-content tab-content--active" role="tabpanel">
+        <!-- Filters -->
+        <section class="filters" aria-label="订单筛选">
+          <div class="filters__group">
+            <label for="status-filter" class="filters__label">状态筛选：</label>
+            <select id="status-filter" class="filters__select">
+              <option value="">全部状态</option>
+              <option value="pending">待确认</option>
+              <option value="confirmed">已确认</option>
+              <option value="in_progress">维修中</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+
+          <div class="filters__group">
+            <label for="date-filter" class="filters__label">日期筛选：</label>
+            <input type="date" id="date-filter" class="filters__input">
+          </div>
+
+          <div class="filters__group">
+            <label for="phone-search" class="filters__label">电话搜索：</label>
+            <input type="text" id="phone-search" class="filters__input" placeholder="输入电话号码">
+          </div>
+
+          <button id="refresh-btn" class="button button--secondary">刷新列表</button>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats" aria-label="统计信息">
+          <div class="stats__card">
+            <h3 class="stats__title">待确认</h3>
+            <p class="stats__value" id="stat-pending">0</p>
+          </div>
+          <div class="stats__card">
+            <h3 class="stats__title">进行中</h3>
+            <p class="stats__value" id="stat-active">0</p>
+          </div>
+          <div class="stats__card">
+            <h3 class="stats__title">已完成</h3>
+            <p class="stats__value" id="stat-completed">0</p>
+          </div>
+          <div class="stats__card">
+            <h3 class="stats__title">总订单</h3>
+            <p class="stats__value" id="stat-total">0</p>
+          </div>
+        </section>
+
+        <!-- Orders List -->
+        <section class="orders" aria-label="订单列表">
+          <div id="orders-container" class="orders__container">
+            <!-- Orders will be loaded here -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Tab Content: Calendar View -->
+      <div id="tab-calendar" class="tab-content" role="tabpanel" style="display: none;">
+        <section class="calendar-view">
+          <div class="calendar-view__header">
+            <button id="prev-month-btn" class="button button--small button--secondary">← 上月</button>
+            <h2 id="calendar-month-title" class="calendar-view__title">2026年1月</h2>
+            <button id="next-month-btn" class="button button--small button--secondary">下月 →</button>
+          </div>
+
+          <div class="calendar-view__legend">
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--idle"></span>
+              空闲 (≤3单/天)
+            </span>
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--normal"></span>
+              一般 (4-6单/天)
+            </span>
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--busy"></span>
+              繁忙 (>6单/天)
+            </span>
+          </div>
+
+          <div id="calendar-grid" class="calendar-grid">
+            <!-- Calendar will be rendered here -->
+          </div>
+
+          <div id="time-slots-detail" class="time-slots-detail" style="display: none;">
+            <h3 class="time-slots-detail__title">时间段详情</h3>
+            <div id="time-slots-detail-content" class="time-slots-detail__content">
+              <!-- Time slot details will be shown here -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Tab Content: Quick Actions -->
+      <div id="tab-actions" class="tab-content" role="tabpanel" style="display: none;">
+        <section class="quick-actions">
+          <h2 class="quick-actions__title">快捷操作</h2>
+
+          <div class="quick-actions__grid">
+            <div class="quick-actions__card">
+              <h3 class="quick-actions__card-title">导出订单数据</h3>
+              <p class="quick-actions__card-desc">将订单数据导出为 CSV 文件</p>
+              <div class="quick-actions__card-controls">
+                <label for="export-status" class="quick-actions__label">状态筛选：</label>
+                <select id="export-status" class="quick-actions__select">
+                  <option value="">全部状态</option>
+                  <option value="pending">待确认</option>
+                  <option value="confirmed">已确认</option>
+                  <option value="in_progress">维修中</option>
+                  <option value="completed">已完成</option>
+                  <option value="cancelled">已取消</option>
+                </select>
+              </div>
+              <div class="quick-actions__card-controls">
+                <label for="export-date-from" class="quick-actions__label">开始日期：</label>
+                <input type="date" id="export-date-from" class="quick-actions__input">
+              </div>
+              <div class="quick-actions__card-controls">
+                <label for="export-date-to" class="quick-actions__label">结束日期：</label>
+                <input type="date" id="export-date-to" class="quick-actions__input">
+              </div>
+              <button id="export-csv-btn" class="button button--primary">导出 CSV</button>
+            </div>
+
+            <div class="quick-actions__card">
+              <h3 class="quick-actions__card-title">批量更改状态</h3>
+              <p class="quick-actions__card-desc">批量更改选定订单的状态</p>
+              <div class="quick-actions__card-controls">
+                <label for="batch-status-from" class="quick-actions__label">当前状态：</label>
+                <select id="batch-status-from" class="quick-actions__select">
+                  <option value="pending">待确认</option>
+                  <option value="confirmed">已确认</option>
+                  <option value="in_progress">维修中</option>
+                  <option value="completed">已完成</option>
+                  <option value="cancelled">已取消</option>
+                </select>
+              </div>
+              <div class="quick-actions__card-controls">
+                <label for="batch-status-to" class="quick-actions__label">更改为：</label>
+                <select id="batch-status-to" class="quick-actions__select">
+                  <option value="pending">待确认</option>
+                  <option value="confirmed">已确认</option>
+                  <option value="in_progress">维修中</option>
+                  <option value="completed">已完成</option>
+                  <option value="cancelled">已取消</option>
+                </select>
+              </div>
+              <div class="quick-actions__card-controls">
+                <label for="batch-date" class="quick-actions__label">预约日期：</label>
+                <input type="date" id="batch-date" class="quick-actions__input">
+              </div>
+              <button id="batch-update-btn" class="button button--primary">批量更新</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Order Detail Modal -->
+  <div id="order-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title">订单详情</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body" id="order-detail">
+        <!-- Order details will be loaded here -->
+      </div>
+      <div class="modal__footer">
+        <button id="close-modal-btn" class="button button--secondary">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">邮箱: repair@guitarservice.com</p>
+          <p class="footer__text">电话: 123-456-7890</p>
+          <p class="footer__text">营业时间: 周一至周五 9:00-18:00</p>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">快速链接</h3>
+          <ul class="footer__links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="booking.html">维修预约</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__copyright">
+        <p>&copy; 2026 吉他维修服务平台. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="module" src="js\supabase-client.js"></script>
+  <script type="module" src="js\admin-dashboard.js"></script>
+</body>
+</html>

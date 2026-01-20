@@ -1,28 +1,24 @@
 /**
- * Form Handler - Handles form validation and submission
+ * Form Handler - Handles guitar repair form validation and submission
  */
 
-import { createBooking, getCurrentUser } from './supabase-client.js';
-import { showError, showSuccess, showLoading, hideLoading } from './main.js';
+import { createRepairOrder } from './supabase-client.js';
+import { uploadImage } from './image-upload.js';
+import { initImageUpload } from './image-upload.js';
+import { initRepairCalendar } from './repair-calendar.js';
 
 /**
- * Initialize booking form
+ * Initialize repair form
  */
-async function initBookingForm() {
-  const form = document.getElementById('booking-form');
+async function initRepairForm() {
+  const form = document.getElementById('repair-form');
   if (!form) return;
 
-  // Get activity ID from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const activityId = urlParams.get('activity_id');
+  // Initialize image upload
+  initImageUpload('guitar-image', 'preview-img', 'image-preview');
 
-  if (!activityId) {
-    showError('未找到活动信息', document.getElementById('form-status'));
-    return;
-  }
-
-  // Load activity summary
-  await loadActivitySummary(activityId);
+  // Initialize repair calendar
+  initRepairCalendar('appointment-date', 'time-slots-container', 'appointment-time');
 
   // Add form submit handler
   form.addEventListener('submit', async (e) => {
@@ -33,87 +29,88 @@ async function initBookingForm() {
       return;
     }
 
-    // Get form data
-    const formData = new FormData(form);
-    const bookingData = {
-      activity_id: activityId,
-      user_name: formData.get('userName'),
-      user_email: formData.get('userEmail'),
-      user_phone: formData.get('userPhone'),
-      booking_date: formData.get('bookingDate'),
-      participant_count: parseInt(formData.get('participantCount')),
-      notes: formData.get('userNotes'),
-      status: 'pending',
-    };
-
-    // Get current user if authenticated
-    const user = await getCurrentUser();
-    if (user) {
-      bookingData.user_id = user.id;
-    }
-
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
     submitButton.disabled = true;
     submitButton.textContent = '提交中...';
 
-    // Submit booking
-    const result = await createBooking(bookingData);
+    try {
+      // Get form data
+      const formData = new FormData(form);
 
-    // Hide loading state
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
+      // Upload image if provided
+      let imageUrl = null;
+      const imageFile = formData.get('guitarImage');
+      if (imageFile && imageFile.size > 0) {
+        const uploadResult = await uploadImage(imageFile);
+        if (uploadResult.success) {
+          imageUrl = uploadResult.url;
+        } else {
+          showError(`图片上传失败：${uploadResult.error}`);
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+          return;
+        }
+      }
 
-    // Show result
-    const statusContainer = document.getElementById('form-status');
-    if (result.success) {
-      showSuccess('预约成功！我们会尽快与您联系。', statusContainer);
-      form.reset();
+      // Prepare repair order data
+      const repairData = {
+        customer_name: formData.get('userPhone'), // 使用电话号码作为客户标识
+        customer_email: formData.get('userPhone') + '@phone.local', // 生成虚拟邮箱
+        customer_phone: formData.get('userPhone'),
+        guitar_type: formData.get('guitarType'),
+        guitar_brand: formData.get('guitarBrand') || null,
+        guitar_model: formData.get('guitarModel') || null,
+        problem_description: formData.get('problemDescription'),
+        image_url: imageUrl,
+        appointment_date: formData.get('appointmentDate'),
+        appointment_time: formData.get('appointmentTime'),
+        expected_completion_date: formData.get('expectedCompletionDate'),
+        status: 'pending',
+      };
 
-      // Redirect to profile page after 2 seconds
-      setTimeout(() => {
-        window.location.href = 'user-profile.html';
-      }, 2000);
-    } else {
-      showError(`预约失败：${result.error}`, statusContainer);
+      // Submit repair order
+      const result = await createRepairOrder(repairData);
+
+      // Hide loading state
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+
+      // Show result
+      if (result.success) {
+        showSuccess('维修单提交成功！我们会尽快与您联系确认。');
+        form.reset();
+
+        // Clear image preview
+        const previewContainer = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+        if (previewContainer) previewContainer.style.display = 'none';
+        if (previewImg) previewImg.src = '';
+
+        // Clear time slots
+        const timeSlotsContainer = document.getElementById('time-slots-container');
+        if (timeSlotsContainer) {
+          timeSlotsContainer.innerHTML = '<p class="time-slots__hint">请先选择日期</p>';
+        }
+
+        // Redirect to home page after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      } else {
+        showError(`提交失败：${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error submitting repair order:', error);
+      showError('提交失败，请重试');
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
     }
   });
 
   // Add real-time validation
   addRealTimeValidation(form);
-}
-
-/**
- * Load activity summary
- * @param {string} activityId - Activity ID
- */
-async function loadActivitySummary(activityId) {
-  const summaryContent = document.getElementById('summary-content');
-  if (!summaryContent) return;
-
-  showLoading(summaryContent);
-
-  try {
-    const { fetchActivityById } = await import('./supabase-client.js');
-    const result = await fetchActivityById(activityId);
-
-    if (result.success && result.data) {
-      const activity = result.data;
-      summaryContent.innerHTML = `
-        <h3>${activity.title}</h3>
-        <p><strong>日期:</strong> ${activity.date}</p>
-        <p><strong>时间:</strong> ${activity.time}</p>
-        <p><strong>地点:</strong> ${activity.location}</p>
-        <p><strong>类型:</strong> ${activity.category}</p>
-      `;
-    } else {
-      summaryContent.innerHTML = '<p>无法加载活动信息</p>';
-    }
-  } catch (error) {
-    console.error('Error loading activity summary:', error);
-    summaryContent.innerHTML = '<p>加载失败</p>';
-  }
 }
 
 /**
@@ -128,23 +125,6 @@ function validateForm(form) {
   const errorElements = form.querySelectorAll('.form-group__error');
   errorElements.forEach((el) => (el.textContent = ''));
 
-  // Validate name
-  const nameInput = form.querySelector('#user-name');
-  if (!nameInput.value.trim()) {
-    showFieldError(nameInput, '请输入姓名');
-    isValid = false;
-  }
-
-  // Validate email
-  const emailInput = form.querySelector('#user-email');
-  if (!emailInput.value.trim()) {
-    showFieldError(emailInput, '请输入邮箱');
-    isValid = false;
-  } else if (!isValidEmail(emailInput.value)) {
-    showFieldError(emailInput, '请输入有效的邮箱地址');
-    isValid = false;
-  }
-
   // Validate phone
   const phoneInput = form.querySelector('#user-phone');
   if (!phoneInput.value.trim()) {
@@ -155,25 +135,59 @@ function validateForm(form) {
     isValid = false;
   }
 
-  // Validate date
-  const dateInput = form.querySelector('#booking-date');
-  if (!dateInput.value) {
-    showFieldError(dateInput, '请选择日期');
-    isValid = false;
-  } else if (new Date(dateInput.value) < new Date()) {
-    showFieldError(dateInput, '日期不能早于今天');
+  // Validate guitar type
+  const guitarTypeInput = form.querySelector('#guitar-type');
+  if (!guitarTypeInput.value) {
+    showFieldError(guitarTypeInput, '请选择吉他类型');
     isValid = false;
   }
 
-  // Validate participant count
-  const countInput = form.querySelector('#participant-count');
-  const count = parseInt(countInput.value);
-  if (!count || count < 1) {
-    showFieldError(countInput, '参与人数至少为1');
+  // Validate problem description
+  const problemInput = form.querySelector('#problem-description');
+  if (!problemInput.value.trim()) {
+    showFieldError(problemInput, '请描述吉他的问题');
     isValid = false;
-  } else if (count > 10) {
-    showFieldError(countInput, '参与人数不能超过10');
+  } else if (problemInput.value.trim().length < 10) {
+    showFieldError(problemInput, '问题描述至少需要10个字符');
     isValid = false;
+  }
+
+  // Validate appointment date
+  const dateInput = form.querySelector('#appointment-date');
+  if (!dateInput.value) {
+    showFieldError(dateInput, '请选择预约日期');
+    isValid = false;
+  } else {
+    const selectedDate = new Date(dateInput.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      showFieldError(dateInput, '日期不能早于今天');
+      isValid = false;
+    }
+  }
+
+  // Validate appointment time
+  const timeInput = form.querySelector('#appointment-time');
+  if (!timeInput.value) {
+    showFieldError(timeInput, '请选择预约时间段');
+    isValid = false;
+  }
+
+  // Validate expected completion date
+  const completionDateInput = form.querySelector('#expected-completion-date');
+  if (!completionDateInput.value) {
+    showFieldError(completionDateInput, '请选择期望完成日期');
+    isValid = false;
+  } else {
+    const appointmentDate = new Date(dateInput.value);
+    const completionDate = new Date(completionDateInput.value);
+
+    if (completionDate < appointmentDate) {
+      showFieldError(completionDateInput, '完成日期不能早于预约日期');
+      isValid = false;
+    }
   }
 
   // Validate terms agreement
@@ -224,7 +238,7 @@ function clearFieldError(input) {
  * @param {HTMLFormElement} form - Form element
  */
 function addRealTimeValidation(form) {
-  const inputs = form.querySelectorAll('input, textarea');
+  const inputs = form.querySelectorAll('input, textarea, select');
 
   inputs.forEach((input) => {
     input.addEventListener('blur', () => {
@@ -248,7 +262,7 @@ function validateField(input) {
 
   const value = input.value.trim();
   const type = input.type;
-  const name = input.name;
+  const id = input.id;
 
   if (input.required && !value) {
     showFieldError(input, '此字段为必填项');
@@ -265,25 +279,20 @@ function validateField(input) {
     return;
   }
 
-  if (type === 'date' && value && new Date(value) < new Date()) {
-    showFieldError(input, '日期不能早于今天');
-    return;
+  if (type === 'date' && value) {
+    const selectedDate = new Date(value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      showFieldError(input, '日期不能早于今天');
+      return;
+    }
   }
 
-  if (type === 'number') {
-    const num = parseInt(value);
-    const min = parseInt(input.min);
-    const max = parseInt(input.max);
-
-    if (num < min) {
-      showFieldError(input, `最小值为 ${min}`);
-      return;
-    }
-
-    if (num > max) {
-      showFieldError(input, `最大值为 ${max}`);
-      return;
-    }
+  if (id === 'problem-description' && value && value.length < 10) {
+    showFieldError(input, '问题描述至少需要10个字符');
+    return;
   }
 
   if (type === 'checkbox' && input.required && !input.checked) {
@@ -313,9 +322,39 @@ function isValidPhone(phone) {
   return phoneRegex.test(phone.replace(/[\s-]/g, ''));
 }
 
+/**
+ * Show success message
+ * @param {string} message - Success message
+ */
+function showSuccess(message) {
+  const statusContainer = document.getElementById('form-status');
+  if (statusContainer) {
+    statusContainer.innerHTML = `
+      <div style="padding: 1rem; background-color: #d1fae5; color: #065f46; border-radius: 0.5rem; margin-top: 1rem;">
+        ${message}
+      </div>
+    `;
+  }
+}
+
+/**
+ * Show error message
+ * @param {string} message - Error message
+ */
+function showError(message) {
+  const statusContainer = document.getElementById('form-status');
+  if (statusContainer) {
+    statusContainer.innerHTML = `
+      <div style="padding: 1rem; background-color: #fee2e2; color: #991b1b; border-radius: 0.5rem; margin-top: 1rem;">
+        ${message}
+      </div>
+    `;
+  }
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initBookingForm);
+  document.addEventListener('DOMContentLoaded', initRepairForm);
 } else {
-  initBookingForm();
+  initRepairForm();
 }

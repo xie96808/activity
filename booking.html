@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="预约活动 - 填写预约信息">
-  <title>活动预约 | 音乐活动预约</title>
+  <meta name="description" content="吉他维修预约 - 填写维修信息">
+  <title>吉他维修预约 | 吉他维修服务</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/layout.css">
@@ -16,13 +16,12 @@
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
-        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+        <a href="index.html" aria-label="返回首页">吉他维修服务</a>
       </div>
       <ul class="header__menu">
         <li class="header__menu-item"><a href="index.html">首页</a></li>
-        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="booking.html">维修预约</a></li>
         <li class="header__menu-item"><a href="about.html">关于我们</a></li>
-        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
       </ul>
       <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
         <span class="header__menu-icon"></span>
@@ -37,57 +36,17 @@
       <nav class="breadcrumb" aria-label="面包屑导航">
         <ol class="breadcrumb__list">
           <li class="breadcrumb__item"><a href="index.html">首页</a></li>
-          <li class="breadcrumb__item"><a href="activities.html">活动列表</a></li>
-          <li class="breadcrumb__item" aria-current="page">预约活动</li>
+          <li class="breadcrumb__item" aria-current="page">吉他维修预约</li>
         </ol>
       </nav>
 
       <!-- Booking Form -->
       <section class="booking" aria-labelledby="booking-title">
-        <h1 id="booking-title" class="booking__title">预约活动</h1>
+        <h1 id="booking-title" class="booking__title">吉他维修预约</h1>
+        <p class="booking__description">请填写以下信息，我们将尽快为您安排维修服务</p>
 
-        <!-- Activity Summary -->
-        <div class="booking__summary" id="activity-summary">
-          <h2 class="booking__summary-title">活动信息</h2>
-          <div class="booking__summary-content" id="summary-content">
-            <!-- Will be populated dynamically -->
-          </div>
-        </div>
-
-        <!-- Booking Form -->
-        <form class="booking__form" id="booking-form" novalidate>
-          <div class="form-group">
-            <label for="user-name" class="form-group__label">
-              姓名 <span class="form-group__required" aria-label="必填">*</span>
-            </label>
-            <input
-              type="text"
-              id="user-name"
-              name="userName"
-              class="form-group__input"
-              required
-              aria-required="true"
-              aria-describedby="user-name-error"
-            >
-            <span id="user-name-error" class="form-group__error" role="alert"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="user-email" class="form-group__label">
-              邮箱 <span class="form-group__required" aria-label="必填">*</span>
-            </label>
-            <input
-              type="email"
-              id="user-email"
-              name="userEmail"
-              class="form-group__input"
-              required
-              aria-required="true"
-              aria-describedby="user-email-error"
-            >
-            <span id="user-email-error" class="form-group__error" role="alert"></span>
-          </div>
-
+        <!-- Repair Form -->
+        <form class="booking__form" id="repair-form" novalidate>
           <div class="form-group">
             <label for="user-phone" class="form-group__label">
               电话 <span class="form-group__required" aria-label="必填">*</span>
@@ -105,54 +64,136 @@
           </div>
 
           <div class="form-group">
-            <label for="booking-date" class="form-group__label">
-              选择日期 <span class="form-group__required" aria-label="必填">*</span>
+            <label for="guitar-type" class="form-group__label">
+              吉他类型 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <select
+              id="guitar-type"
+              name="guitarType"
+              class="form-group__input"
+              required
+              aria-required="true"
+              aria-describedby="guitar-type-error"
+            >
+              <option value="">请选择吉他类型</option>
+              <option value="acoustic">木吉他</option>
+              <option value="classical">古典吉他</option>
+              <option value="electric">电吉他</option>
+              <option value="bass">贝斯</option>
+              <option value="other">其他</option>
+            </select>
+            <span id="guitar-type-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="guitar-brand" class="form-group__label">
+              吉他品牌
+            </label>
+            <input
+              type="text"
+              id="guitar-brand"
+              name="guitarBrand"
+              class="form-group__input"
+              placeholder="例如：Martin, Fender, Gibson"
+              aria-describedby="guitar-brand-hint"
+            >
+            <span id="guitar-brand-hint" class="form-group__hint">选填</span>
+          </div>
+
+          <div class="form-group">
+            <label for="guitar-model" class="form-group__label">
+              吉他型号
+            </label>
+            <input
+              type="text"
+              id="guitar-model"
+              name="guitarModel"
+              class="form-group__input"
+              placeholder="例如：D-28, Stratocaster"
+              aria-describedby="guitar-model-hint"
+            >
+            <span id="guitar-model-hint" class="form-group__hint">选填</span>
+          </div>
+
+          <div class="form-group">
+            <label for="problem-description" class="form-group__label">
+              问题描述 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <textarea
+              id="problem-description"
+              name="problemDescription"
+              class="form-group__textarea"
+              rows="4"
+              required
+              aria-required="true"
+              aria-describedby="problem-description-error"
+              placeholder="请详细描述吉他的问题，例如：琴颈弯曲、弦距过高、拾音器杂音等"
+            ></textarea>
+            <span id="problem-description-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="guitar-image" class="form-group__label">
+              吉他图片/视频
+            </label>
+            <input
+              type="file"
+              id="guitar-image"
+              name="guitarImage"
+              class="form-group__input"
+              accept="image/jpeg,image/png,image/webp,image/jpg,video/mp4"
+              aria-describedby="guitar-image-hint"
+            >
+            <span id="guitar-image-hint" class="form-group__hint">
+              支持 JPG、PNG、WEBP、MP4 格式，最大 10MB（选填）
+            </span>
+            <div id="image-preview" class="form-group__preview" style="display: none;">
+              <img id="preview-img" src="" alt="图片预览" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
+              <video id="preview-video" controls style="max-width: 300px; max-height: 300px; margin-top: 10px; display: none;"></video>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="appointment-date" class="form-group__label">
+              预约日期 <span class="form-group__required" aria-label="必填">*</span>
             </label>
             <input
               type="date"
-              id="booking-date"
-              name="bookingDate"
+              id="appointment-date"
+              name="appointmentDate"
               class="form-group__input"
               required
               aria-required="true"
-              aria-describedby="booking-date-error"
+              aria-describedby="appointment-date-error"
             >
-            <span id="booking-date-error" class="form-group__error" role="alert"></span>
+            <span id="appointment-date-error" class="form-group__error" role="alert"></span>
           </div>
 
           <div class="form-group">
-            <label for="participant-count" class="form-group__label">
-              参与人数 <span class="form-group__required" aria-label="必填">*</span>
+            <label for="appointment-time" class="form-group__label">
+              预约时间段 <span class="form-group__required" aria-label="必填">*</span>
+            </label>
+            <div id="time-slots-container" class="time-slots">
+              <p class="time-slots__hint">请先选择日期</p>
+            </div>
+            <input type="hidden" id="appointment-time" name="appointmentTime" required>
+            <span id="appointment-time-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="expected-completion-date" class="form-group__label">
+              期望完成日期 <span class="form-group__required" aria-label="必填">*</span>
             </label>
             <input
-              type="number"
-              id="participant-count"
-              name="participantCount"
+              type="date"
+              id="expected-completion-date"
+              name="expectedCompletionDate"
               class="form-group__input"
-              min="1"
-              max="10"
-              value="1"
               required
               aria-required="true"
-              aria-describedby="participant-count-error"
+              aria-describedby="expected-completion-date-error"
             >
-            <span id="participant-count-error" class="form-group__error" role="alert"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="user-notes" class="form-group__label">
-              备注（可选）
-            </label>
-            <textarea
-              id="user-notes"
-              name="userNotes"
-              class="form-group__textarea"
-              rows="4"
-              aria-describedby="user-notes-hint"
-            ></textarea>
-            <span id="user-notes-hint" class="form-group__hint">
-              如有特殊需求，请在此说明
-            </span>
+            <span id="expected-completion-date-error" class="form-group__error" role="alert"></span>
           </div>
 
           <div class="form-group">
@@ -172,9 +213,9 @@
 
           <div class="booking__actions">
             <button type="submit" class="button button--primary button--large">
-              确认预约
+              提交维修单
             </button>
-            <a href="activities.html" class="button button--secondary button--large">
+            <a href="index.html" class="button button--secondary button--large">
               取消
             </a>
           </div>
@@ -192,20 +233,21 @@
       <div class="footer__content">
         <div class="footer__section">
           <h3 class="footer__title">联系我们</h3>
-          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">邮箱: repair@guitarservice.com</p>
           <p class="footer__text">电话: 123-456-7890</p>
+          <p class="footer__text">营业时间: 周一至周五 9:00-18:00</p>
         </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>
           <ul class="footer__links">
-            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="booking.html">维修预约</a></li>
             <li><a href="about.html">关于我们</a></li>
-            <li><a href="user-profile.html">个人中心</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__copyright">
-        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+        <p>&copy; 2026 吉他维修服务平台. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="音乐活动预约平台 - 吉他课程、音乐会、工作坊预约">
-  <title>音乐活动预约 | 首页</title>
+  <meta name="description" content="专业吉他维修服务 - 木吉他、电吉他、古典吉他、贝斯维修">
+  <title>吉他维修服务 | 首页</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/layout.css">
@@ -16,13 +16,13 @@
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
-        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+        <a href="index.html" aria-label="返回首页">吉他维修服务</a>
       </div>
       <ul class="header__menu">
         <li class="header__menu-item"><a href="index.html" aria-current="page">首页</a></li>
-        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="booking.html">维修预约</a></li>
         <li class="header__menu-item"><a href="about.html">关于我们</a></li>
-        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
+        <li class="header__menu-item"><a href="admin.html">管理后台</a></li>
       </ul>
       <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
         <span class="header__menu-icon"></span>
@@ -35,21 +35,44 @@
     <!-- Hero Section -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__content">
-        <h1 id="hero-title" class="hero__title">发现音乐的魅力</h1>
-        <p class="hero__subtitle">预约吉他课程、音乐会和工作坊</p>
-        <a href="activities.html" class="hero__cta button button--primary">浏览活动</a>
+        <h1 id="hero-title" class="hero__title">专业吉他维修服务</h1>
+        <p class="hero__subtitle">木吉他、电吉他、古典吉他、贝斯专业维修</p>
+        <a href="booking.html" class="hero__cta button button--primary">立即预约</a>
       </div>
     </section>
 
-    <!-- Featured Activities Section -->
-    <section class="featured" aria-labelledby="featured-title">
+    <!-- Services Section -->
+    <section class="featured" aria-labelledby="services-title">
       <div class="container">
-        <h2 id="featured-title" class="featured__title">精选活动</h2>
-        <div class="featured__grid" id="featured-activities">
-          <!-- Activities will be loaded dynamically via JavaScript -->
+        <h2 id="services-title" class="featured__title">我们的服务</h2>
+        <div class="featured__grid">
+          <div class="service-card">
+            <h3 class="service-card__title">琴颈调整</h3>
+            <p class="service-card__description">专业调整琴颈弯曲度，确保最佳手感</p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">弦距调整</h3>
+            <p class="service-card__description">精确调整弦距，提升演奏舒适度</p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">电路维修</h3>
+            <p class="service-card__description">修复拾音器、开关、插孔等电路问题</p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">换弦保养</h3>
+            <p class="service-card__description">专业换弦、清洁、上油保养服务</p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">品丝修复</h3>
+            <p class="service-card__description">品丝打磨、更换，消除打品问题</p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">结构修复</h3>
+            <p class="service-card__description">修复琴体裂缝、脱胶等结构问题</p>
+          </div>
         </div>
         <div class="featured__actions">
-          <a href="activities.html" class="button button--secondary">查看全部活动</a>
+          <a href="booking.html" class="button button--secondary">预约维修</a>
         </div>
       </div>
     </section>
@@ -59,8 +82,9 @@
       <div class="container">
         <h2 id="about-preview-title" class="about-preview__title">关于我们</h2>
         <p class="about-preview__text">
-          我们致力于为音乐爱好者提供优质的学习和交流平台。
-          无论您是初学者还是资深音乐人，都能在这里找到适合的活动。
+          我们拥有多年吉他维修经验，为各类吉他提供专业维修服务。
+          无论是日常保养还是复杂维修，我们都能为您的爱琴提供最好的照顾。
+          营业时间：周一至周五 9:00-18:00
         </p>
         <a href="about.html" class="button button--secondary">了解更多</a>
       </div>
@@ -73,20 +97,22 @@
       <div class="footer__content">
         <div class="footer__section">
           <h3 class="footer__title">联系我们</h3>
-          <p class="footer__text">邮箱: info@musicbooking.com</p>
+          <p class="footer__text">邮箱: repair@guitarservice.com</p>
           <p class="footer__text">电话: 123-456-7890</p>
+          <p class="footer__text">营业时间: 周一至周五 9:00-18:00</p>
         </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>
           <ul class="footer__links">
-            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="booking.html">维修预约</a></li>
             <li><a href="about.html">关于我们</a></li>
-            <li><a href="user-profile.html">个人中心</a></li>
+            <li><a href="admin.html">管理后台</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__copyright">
-        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+        <p>&copy; 2026 吉他维修服务平台. All rights reserved.</p>
       </div>
     </div>
   </footer>

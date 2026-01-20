@@ -28,6 +28,27 @@ export async function isAuthenticated() {
 }
 
 /**
+ * Check authentication status with detailed info
+ * @returns {Promise<{authenticated: boolean, user?: Object, session?: Object}>}
+ */
+export async function checkAuth() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      return {
+        authenticated: true,
+        user: session.user,
+        session: session
+      };
+    }
+    return { authenticated: false };
+  } catch (error) {
+    console.error('Error checking auth:', error);
+    return { authenticated: false };
+  }
+}
+
+/**
  * Get current user
  * @returns {Promise<Object|null>}
  */
@@ -205,6 +226,151 @@ export async function cancelBooking(bookingId) {
     return { success: true, data };
   } catch (error) {
     console.error('Error cancelling booking:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Create a new guitar repair order
+ * @param {Object} repairData - Repair order information
+ * @returns {Promise<Object>}
+ */
+export async function createRepairOrder(repairData) {
+  try {
+    const { data, error } = await supabase
+      .from('guitar_repairs')
+      .insert([repairData])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error creating repair order:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Fetch all repair orders
+ * @param {Object} filters - Optional filters (status, date range, etc.)
+ * @returns {Promise<Array>}
+ */
+export async function fetchRepairOrders(filters = {}) {
+  try {
+    let query = supabase
+      .from('guitar_repairs')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    // Apply filters
+    if (filters.status) {
+      query = query.eq('status', filters.status);
+    }
+    if (filters.startDate) {
+      query = query.gte('appointment_date', filters.startDate);
+    }
+    if (filters.endDate) {
+      query = query.lte('appointment_date', filters.endDate);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error fetching repair orders:', error);
+    return { success: false, error: error.message, data: [] };
+  }
+}
+
+/**
+ * Fetch repair orders by customer email
+ * @param {string} email - Customer email
+ * @returns {Promise<Array>}
+ */
+export async function fetchRepairOrdersByEmail(email) {
+  try {
+    const { data, error } = await supabase
+      .from('guitar_repairs')
+      .select('*')
+      .eq('customer_email', email)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error fetching repair orders by email:', error);
+    return { success: false, error: error.message, data: [] };
+  }
+}
+
+/**
+ * Fetch a single repair order by ID
+ * @param {string} id - Repair order ID
+ * @returns {Promise<Object>}
+ */
+export async function fetchRepairOrderById(id) {
+  try {
+    const { data, error } = await supabase
+      .from('guitar_repairs')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error fetching repair order:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Update repair order status
+ * @param {string} orderId - Repair order ID
+ * @param {string} status - New status
+ * @param {string} adminNotes - Optional admin notes
+ * @returns {Promise<Object>}
+ */
+export async function updateRepairOrderStatus(orderId, status, adminNotes = null) {
+  try {
+    const updateData = { status };
+    if (adminNotes !== null) {
+      updateData.admin_notes = adminNotes;
+    }
+
+    const { data, error } = await supabase
+      .from('guitar_repairs')
+      .update(updateData)
+      .eq('id', orderId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error updating repair order status:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Delete a repair order
+ * @param {string} orderId - Repair order ID
+ * @returns {Promise<Object>}
+ */
+export async function deleteRepairOrder(orderId) {
+  try {
+    const { error } = await supabase
+      .from('guitar_repairs')
+      .delete()
+      .eq('id', orderId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting repair order:', error);
     return { success: false, error: error.message };
   }
 }
