@@ -64,37 +64,8 @@ function initMobileMenu() {
  * Check authentication status and update UI
  */
 async function checkAuthStatus() {
-  const authenticated = await isAuthenticated();
-
-  if (authenticated) {
-    const user = await getCurrentUser();
-    updateUIForAuthenticatedUser(user);
-  }
-}
-
-/**
- * Update UI for authenticated user
- * @param {Object} user - User object
- */
-function updateUIForAuthenticatedUser(user) {
-  // Show profile section if on user-profile page
-  const authSection = document.getElementById('auth-section');
-  const profileSection = document.getElementById('profile-section');
-
-  if (authSection && profileSection) {
-    authSection.hidden = true;
-    profileSection.hidden = false;
-
-    // Populate user details
-    const userDetails = document.getElementById('user-details');
-    if (userDetails && user) {
-      userDetails.innerHTML = `
-        <p><strong>邮箱:</strong> ${user.email}</p>
-        <p><strong>姓名:</strong> ${user.user_metadata?.name || '未设置'}</p>
-        <p><strong>电话:</strong> ${user.user_metadata?.phone || '未设置'}</p>
-      `;
-    }
-  }
+  // Authentication check removed - this system doesn't require user login
+  // Only admins need to login via admin.html
 }
 
 /**
@@ -271,15 +242,3 @@ if (document.readyState === 'loading') {
   init();
 }
 
-// Listen for auth state changes
-window.addEventListener('authStateChange', (e) => {
-  const { event, session } = e.detail;
-
-  if (event === 'SIGNED_IN') {
-    // Redirect to profile page or reload
-    window.location.href = 'user-profile.html';
-  } else if (event === 'SIGNED_OUT') {
-    // Redirect to home page
-    window.location.href = 'index.html';
-  }
-});
