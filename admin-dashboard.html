@@ -35,6 +35,9 @@
         <button class="tabs__tab tabs__tab--active" role="tab" aria-selected="true" data-tab="orders">
           维修单管理
         </button>
+        <button class="tabs__tab" role="tab" aria-selected="false" data-tab="workorders">
+          维修工单
+        </button>
         <button class="tabs__tab" role="tab" aria-selected="false" data-tab="calendar">
           日历视图
         </button>
@@ -51,9 +54,10 @@
             <label for="status-filter" class="filters__label">状态筛选：</label>
             <select id="status-filter" class="filters__select">
               <option value="">全部状态</option>
-              <option value="pending">待确认</option>
+              <option value="pending">待排期</option>
               <option value="confirmed">已确认</option>
-              <option value="in_progress">维修中</option>
+              <option value="in_progress">进行中</option>
+              <option value="delayed">延期中</option>
               <option value="completed">已完成</option>
               <option value="cancelled">已取消</option>
             </select>
@@ -75,7 +79,7 @@
         <!-- Statistics -->
         <section class="stats" aria-label="统计信息">
           <div class="stats__card">
-            <h3 class="stats__title">待确认</h3>
+            <h3 class="stats__title">待排期</h3>
             <p class="stats__value" id="stat-pending">0</p>
           </div>
           <div class="stats__card">
@@ -96,6 +100,63 @@
         <section class="orders" aria-label="订单列表">
           <div id="orders-container" class="orders__container">
             <!-- Orders will be loaded here -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Tab Content: Work Orders Table -->
+      <div id="tab-workorders" class="tab-content" role="tabpanel" style="display: none;">
+        <!-- Filters -->
+        <section class="filters" aria-label="工单筛选">
+          <div class="filters__group">
+            <label for="wo-status-filter" class="filters__label">状态筛选：</label>
+            <select id="wo-status-filter" class="filters__select">
+              <option value="">全部状态</option>
+              <option value="pending">待排期</option>
+              <option value="confirmed">已确认</option>
+              <option value="in_progress">进行中</option>
+              <option value="delayed">延期中</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+
+          <div class="filters__group">
+            <label for="wo-date-filter" class="filters__label">预约日期：</label>
+            <input type="date" id="wo-date-filter" class="filters__input">
+          </div>
+
+          <div class="filters__group">
+            <label for="wo-phone-search" class="filters__label">电话搜索：</label>
+            <input type="text" id="wo-phone-search" class="filters__input" placeholder="输入电话号码">
+          </div>
+
+          <button id="wo-refresh-btn" class="button button--secondary">刷新</button>
+        </section>
+
+        <!-- Work Orders Table -->
+        <section class="workorders-table" aria-label="维修工单列表">
+          <div style="overflow-x: auto;">
+            <table id="workorders-table" style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden;">
+              <thead>
+                <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">订单ID</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">客户电话</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">吉他信息</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">问题描述</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">预约时间</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">排班人员</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">状态</th>
+                  <th style="padding: 1rem; text-align: left; font-weight: 600;">操作</th>
+                </tr>
+              </thead>
+              <tbody id="workorders-tbody">
+                <!-- Work orders will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+          <div id="workorders-empty" style="text-align: center; padding: 2rem; color: #6b7280; display: none;">
+            暂无工单数据
           </div>
         </section>
       </div>
@@ -150,9 +211,10 @@
                 <label for="export-status" class="quick-actions__label">状态筛选：</label>
                 <select id="export-status" class="quick-actions__select">
                   <option value="">全部状态</option>
-                  <option value="pending">待确认</option>
+                  <option value="pending">待排期</option>
                   <option value="confirmed">已确认</option>
-                  <option value="in_progress">维修中</option>
+                  <option value="in_progress">进行中</option>
+                  <option value="delayed">延期中</option>
                   <option value="completed">已完成</option>
                   <option value="cancelled">已取消</option>
                 </select>
@@ -174,9 +236,10 @@
               <div class="quick-actions__card-controls">
                 <label for="batch-status-from" class="quick-actions__label">当前状态：</label>
                 <select id="batch-status-from" class="quick-actions__select">
-                  <option value="pending">待确认</option>
+                  <option value="pending">待排期</option>
                   <option value="confirmed">已确认</option>
-                  <option value="in_progress">维修中</option>
+                  <option value="in_progress">进行中</option>
+                  <option value="delayed">延期中</option>
                   <option value="completed">已完成</option>
                   <option value="cancelled">已取消</option>
                 </select>
@@ -184,9 +247,10 @@
               <div class="quick-actions__card-controls">
                 <label for="batch-status-to" class="quick-actions__label">更改为：</label>
                 <select id="batch-status-to" class="quick-actions__select">
-                  <option value="pending">待确认</option>
+                  <option value="pending">待排期</option>
                   <option value="confirmed">已确认</option>
-                  <option value="in_progress">维修中</option>
+                  <option value="in_progress">进行中</option>
+                  <option value="delayed">延期中</option>
                   <option value="completed">已完成</option>
                   <option value="cancelled">已取消</option>
                 </select>
@@ -220,6 +284,60 @@
     </div>
   </div>
 
+  <!-- Status Change Modal -->
+  <div id="status-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content" style="max-width: 500px;">
+      <div class="modal__header">
+        <h2 class="modal__title">更改订单状态</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body">
+        <form id="status-change-form">
+          <input type="hidden" id="status-order-id">
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="new-status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">当前状态</label>
+            <div id="current-status-display" style="padding: 0.5rem; background: #f3f4f6; border-radius: 0.5rem;"></div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="new-status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">新状态 <span style="color: #ef4444;">*</span></label>
+            <select id="new-status" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+              <option value="">请选择新状态</option>
+              <option value="pending">待排期</option>
+              <option value="confirmed">已确认</option>
+              <option value="in_progress">进行中</option>
+              <option value="delayed">延期中</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="assigned-to" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">排班人员</label>
+            <select id="assigned-to" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+              <option value="">未分配</option>
+              <option value="木木">木木</option>
+              <option value="达三">达三</option>
+              <option value="老谢">老谢</option>
+              <option value="others">其他</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="admin-notes" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">管理员备注</label>
+            <textarea id="admin-notes" rows="3" placeholder="请输入备注信息（选填）" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; resize: vertical;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button id="cancel-status-btn" class="button button--secondary">取消</button>
+        <button id="confirm-status-btn" class="button button--primary">确认更改</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
@@ -228,7 +346,7 @@
           <h3 class="footer__title">联系我们</h3>
           <p class="footer__text">邮箱: repair@guitarservice.com</p>
           <p class="footer__text">电话: 123-456-7890</p>
-          <p class="footer__text">营业时间: 周一至周五 9:00-18:00</p>
+          <p class="footer__text">营业时间: 周一至周日 10:00-12:00, 13:00-18:00</p>
         </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>

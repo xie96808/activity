@@ -920,6 +920,79 @@ a:focus {
   color: var(--color-white);
 }
 
+/* Order Status Badges with Color Bars */
+.order-card__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 0.5rem;
+}
+
+.order-card__status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.order-card__status--pending {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.order-card__status--pending::before {
+  background-color: #3b82f6;
+}
+
+.order-card__status--confirmed {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.order-card__status--confirmed::before {
+  background-color: #3b82f6;
+}
+
+.order-card__status--in_progress {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.order-card__status--in_progress::before {
+  background-color: #f59e0b;
+}
+
+.order-card__status--delayed {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.order-card__status--delayed::before {
+  background-color: #ef4444;
+}
+
+.order-card__status--completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.order-card__status--completed::before {
+  background-color: #10b981;
+}
+
+.order-card__status--cancelled {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.order-card__status--cancelled::before {
+  background-color: #6b7280;
+}
+
 /* ========================================
    Image Preview
    ======================================== */
@@ -1386,7 +1459,7 @@ a:focus {
   background-color: var(--color-white);
 }
 
-.calendar-grid__cell:hover:not(.calendar-grid__cell--empty):not(.calendar-grid__cell--weekend) {
+.calendar-grid__cell:hover:not(.calendar-grid__cell--empty) {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -1398,7 +1471,13 @@ a:focus {
 
 .calendar-grid__cell--weekend {
   background-color: var(--color-gray-100);
-  cursor: default;
+  cursor: pointer;
+}
+
+.calendar-grid__weekend-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  margin-top: var(--spacing-xs);
 }
 
 .calendar-grid__cell--idle {

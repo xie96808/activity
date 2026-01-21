@@ -95,18 +95,39 @@ function setupEventListeners() {
   }
 
   // Modal close buttons
-  const modalCloseBtn = document.querySelector('.modal__close');
+  const modalCloseBtns = document.querySelectorAll('.modal__close');
   const closeModalBtn = document.getElementById('close-modal-btn');
-  const modalOverlay = document.querySelector('.modal__overlay');
+  const modalOverlays = document.querySelectorAll('.modal__overlay');
 
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closeModal);
-  }
+  modalCloseBtns.forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
   if (closeModalBtn) {
     closeModalBtn.addEventListener('click', closeModal);
   }
-  if (modalOverlay) {
-    modalOverlay.addEventListener('click', closeModal);
+
+  modalOverlays.forEach(overlay => {
+    overlay.addEventListener('click', closeModal);
+  });
+
+  // Status modal events
+  const cancelStatusBtn = document.getElementById('cancel-status-btn');
+  const confirmStatusBtn = document.getElementById('confirm-status-btn');
+  const statusModalOverlay = document.getElementById('status-modal')?.querySelector('.modal__overlay');
+  const statusModalClose = document.getElementById('status-modal')?.querySelector('.modal__close');
+
+  if (cancelStatusBtn) {
+    cancelStatusBtn.addEventListener('click', closeStatusModal);
+  }
+  if (confirmStatusBtn) {
+    confirmStatusBtn.addEventListener('click', confirmStatusChange);
+  }
+  if (statusModalOverlay) {
+    statusModalOverlay.addEventListener('click', closeStatusModal);
+  }
+  if (statusModalClose) {
+    statusModalClose.addEventListener('click', closeStatusModal);
   }
 
   // Calendar navigation
@@ -136,6 +157,35 @@ function setupEventListeners() {
   const batchUpdateBtn = document.getElementById('batch-update-btn');
   if (batchUpdateBtn) {
     batchUpdateBtn.addEventListener('click', handleBatchUpdate);
+  }
+
+  // Work Orders tab filters
+  const woStatusFilter = document.getElementById('wo-status-filter');
+  if (woStatusFilter) {
+    woStatusFilter.addEventListener('change', async (e) => {
+      await loadWorkOrders();
+    });
+  }
+
+  const woDateFilter = document.getElementById('wo-date-filter');
+  if (woDateFilter) {
+    woDateFilter.addEventListener('change', async (e) => {
+      await loadWorkOrders();
+    });
+  }
+
+  const woPhoneSearch = document.getElementById('wo-phone-search');
+  if (woPhoneSearch) {
+    woPhoneSearch.addEventListener('input', async (e) => {
+      await loadWorkOrders();
+    });
+  }
+
+  const woRefreshBtn = document.getElementById('wo-refresh-btn');
+  if (woRefreshBtn) {
+    woRefreshBtn.addEventListener('click', async () => {
+      await loadWorkOrders();
+    });
   }
 }
 
@@ -178,6 +228,11 @@ function switchTab(tabName) {
   if (activeContent) {
     activeContent.style.display = 'block';
     activeContent.classList.add('tab-content--active');
+  }
+
+  // Load data for specific tabs
+  if (tabName === 'workorders') {
+    loadWorkOrders();
   }
 }
 
@@ -328,6 +383,7 @@ async function viewOrderDetail(orderId) {
             <p><strong>预约日期:</strong> ${order.appointment_date}</p>
             <p><strong>预约时间:</strong> ${order.appointment_time}</p>
             <p><strong>期望完成日期:</strong> ${order.expected_completion_date}</p>
+            <p><strong>排班人员:</strong> <span style="padding: 0.25rem 0.75rem; background: #f3f4f6; border-radius: 9999px; font-size: 0.875rem;">${order.assigned_to || '未分配'}</span></p>
           </div>
 
           ${order.admin_notes ? `
@@ -351,33 +407,71 @@ async function viewOrderDetail(orderId) {
  * Change order status
  */
 async function changeOrderStatus(orderId, currentStatus) {
-  const newStatus = prompt(
-    `当前状态: ${getStatusLabel(currentStatus)}\n\n请输入新状态:\n- pending (待确认)\n- confirmed (已确认)\n- in_progress (维修中)\n- completed (已完成)\n- cancelled (已取消)`,
-    currentStatus
-  );
+  const statusModal = document.getElementById('status-modal');
+  const currentStatusDisplay = document.getElementById('current-status-display');
+  const newStatusSelect = document.getElementById('new-status');
+  const adminNotesInput = document.getElementById('admin-notes');
+  const orderIdInput = document.getElementById('status-order-id');
 
-  if (!newStatus || newStatus === currentStatus) return;
+  if (!statusModal) return;
 
-  const validStatuses = ['pending', 'confirmed', 'in_progress', 'completed', 'cancelled'];
-  if (!validStatuses.includes(newStatus)) {
-    alert('无效的状态值');
+  // Set current status
+  currentStatusDisplay.textContent = getStatusLabel(currentStatus);
+  orderIdInput.value = orderId;
+
+  // Reset form
+  newStatusSelect.value = '';
+  adminNotesInput.value = '';
+
+  // Show modal
+  statusModal.style.display = 'block';
+}
+
+/**
+ * Confirm status change
+ */
+async function confirmStatusChange() {
+  const orderId = document.getElementById('status-order-id').value;
+  const newStatus = document.getElementById('new-status').value;
+  const assignedTo = document.getElementById('assigned-to').value;
+  const adminNotes = document.getElementById('admin-notes').value;
+
+  if (!newStatus) {
+    alert('请选择新状态');
     return;
   }
 
-  const adminNotes = prompt('请输入管理员备注（可选）:');
-
   try {
-    const result = await updateRepairOrderStatus(orderId, newStatus, adminNotes);
+    // Build update data
+    const updateData = {
+      status: newStatus
+    };
 
-    if (result.success) {
-      alert('状态更新成功');
-      await loadOrders();
-    } else {
-      alert(`更新失败: ${result.error}`);
+    if (assignedTo) {
+      updateData.assigned_to = assignedTo;
     }
+
+    if (adminNotes) {
+      updateData.admin_notes = adminNotes;
+    }
+
+    // Call update function
+    const { data, error } = await supabase
+      .from('guitar_repairs')
+      .update(updateData)
+      .eq('id', orderId)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    alert('状态更新成功');
+    closeStatusModal();
+    await loadOrders();
+    await loadWorkOrders(); // Refresh work orders table
   } catch (error) {
     console.error('Error updating status:', error);
-    alert('更新失败，请重试');
+    alert(`更新失败: ${error.message}`);
   }
 }
 
@@ -428,7 +522,7 @@ function updateStatistics() {
   currentOrders.forEach(order => {
     if (order.status === 'pending') {
       stats.pending++;
-    } else if (order.status === 'confirmed' || order.status === 'in_progress') {
+    } else if (order.status === 'confirmed' || order.status === 'in_progress' || order.status === 'delayed') {
       stats.active++;
     } else if (order.status === 'completed') {
       stats.completed++;
@@ -535,23 +629,24 @@ function renderCalendar() {
     const date = new Date(year, month, day);
     const dateString = formatDate(date);
     const dayOfWeek = date.getDay();
-    const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
-    if (!isWeekday) {
-      html += `<div class="calendar-grid__cell calendar-grid__cell--weekend">
+    const dateData = calendarData.get(dateString);
+    const total = dateData ? dateData.total : 0;
+    let statusClass = 'idle';
+    if (total > 6) {
+      statusClass = 'busy';
+    } else if (total >= 4) {
+      statusClass = 'normal';
+    }
+
+    if (isWeekend) {
+      html += `<div class="calendar-grid__cell calendar-grid__cell--weekend calendar-grid__cell--${statusClass}" onclick="window.showTimeSlotDetail('${dateString}')">
         <div class="calendar-grid__date">${day}</div>
-        <div class="calendar-grid__info">休息日</div>
+        <div class="calendar-grid__info">${total}单</div>
+        <div class="calendar-grid__weekend-label">周末</div>
       </div>`;
     } else {
-      const dateData = calendarData.get(dateString);
-      const total = dateData ? dateData.total : 0;
-      let statusClass = 'idle';
-      if (total > 6) {
-        statusClass = 'busy';
-      } else if (total >= 4) {
-        statusClass = 'normal';
-      }
-
       html += `<div class="calendar-grid__cell calendar-grid__cell--${statusClass}" onclick="window.showTimeSlotDetail('${dateString}')">
         <div class="calendar-grid__date">${day}</div>
         <div class="calendar-grid__info">${total}单</div>
@@ -566,7 +661,7 @@ function renderCalendar() {
 /**
  * Show time slot detail
  */
-function showTimeSlotDetail(dateString) {
+async function showTimeSlotDetail(dateString) {
   const detailContainer = document.getElementById('time-slots-detail');
   const detailContent = document.getElementById('time-slots-detail-content');
 
@@ -580,38 +675,119 @@ function showTimeSlotDetail(dateString) {
     return;
   }
 
-  // Generate all time slots
-  const allTimeSlots = [];
-  for (let hour = 9; hour < 18; hour++) {
-    allTimeSlots.push(`${hour.toString().padStart(2, '0')}:00-${(hour + 1).toString().padStart(2, '0')}:00`);
-  }
+  // Fetch orders for this date with admin_notes
+  try {
+    const { data: orders, error } = await supabase
+      .from('guitar_repairs')
+      .select('*')
+      .eq('appointment_date', dateString)
+      .neq('status', 'cancelled')
+      .order('appointment_time');
 
-  let html = `<h4>${dateString} 时间段详情（共${dateData.total}单）</h4>`;
-  html += '<div class="time-slots-grid">';
+    if (error) throw error;
 
-  allTimeSlots.forEach(timeSlot => {
-    const count = dateData.timeSlots.get(timeSlot) || 0;
-    let statusClass = 'idle';
-    let statusText = '空闲';
-
-    if (count >= 4) {
-      statusClass = 'busy';
-      statusText = '繁忙';
-    } else if (count >= 2) {
-      statusClass = 'normal';
-      statusText = '一般';
+    // Generate all time slots
+    const allTimeSlots = [];
+    for (let hour = 10; hour < 12; hour++) {
+      allTimeSlots.push(`${hour.toString().padStart(2, '0')}:00-${(hour + 1).toString().padStart(2, '0')}:00`);
+    }
+    for (let hour = 13; hour < 18; hour++) {
+      allTimeSlots.push(`${hour.toString().padStart(2, '0')}:00-${(hour + 1).toString().padStart(2, '0')}:00`);
     }
 
-    html += `<div class="time-slot-card time-slot-card--${statusClass}">
-      <div class="time-slot-card__time">${timeSlot}</div>
-      <div class="time-slot-card__count">${count}单</div>
-      <div class="time-slot-card__status">${statusText}</div>
-    </div>`;
-  });
+    let html = `<h4>${dateString} 时间段详情（共${dateData.total}单）</h4>`;
+    html += '<div class="time-slots-grid">';
 
-  html += '</div>';
-  detailContent.innerHTML = html;
-  detailContainer.style.display = 'block';
+    allTimeSlots.forEach(timeSlot => {
+      const count = dateData.timeSlots.get(timeSlot) || 0;
+      let statusClass = 'idle';
+      let statusText = '空闲';
+
+      if (count >= 4) {
+        statusClass = 'busy';
+        statusText = '繁忙';
+      } else if (count >= 2) {
+        statusClass = 'normal';
+        statusText = '一般';
+      }
+
+      // Get orders for this time slot
+      const slotOrders = orders.filter(order => order.appointment_time === timeSlot);
+      const hasNotes = slotOrders.some(order => order.admin_notes);
+
+      html += `<div class="time-slot-card time-slot-card--${statusClass}" style="cursor: ${hasNotes ? 'pointer' : 'default'};" onclick="${hasNotes ? `window.showSlotOrders('${dateString}', '${timeSlot}')` : ''}">
+        <div class="time-slot-card__time">${timeSlot}</div>
+        <div class="time-slot-card__count">${count}单</div>
+        <div class="time-slot-card__status">${statusText}</div>
+        ${hasNotes ? '<div class="time-slot-card__notes" style="font-size: 0.75rem; color: #f59e0b; margin-top: 0.25rem;">💬 有备注</div>' : ''}
+      </div>`;
+    });
+
+    html += '</div>';
+    detailContent.innerHTML = html;
+    detailContainer.style.display = 'block';
+  } catch (error) {
+    console.error('Error loading time slot details:', error);
+    detailContent.innerHTML = '<p style="color: #ef4444;">加载失败</p>';
+    detailContainer.style.display = 'block';
+  }
+}
+
+/**
+ * Show orders for a specific time slot with notes
+ */
+async function showSlotOrders(dateString, timeSlot) {
+  try {
+    const { data: orders, error } = await supabase
+      .from('guitar_repairs')
+      .select('*')
+      .eq('appointment_date', dateString)
+      .eq('appointment_time', timeSlot)
+      .neq('status', 'cancelled')
+      .order('created_at');
+
+    if (error) throw error;
+
+    let html = `<h5 style="margin-bottom: 1rem;">${dateString} ${timeSlot} 预约详情</h5>`;
+
+    if (orders.length === 0) {
+      html += '<p>暂无预约</p>';
+    } else {
+      html += '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+
+      orders.forEach(order => {
+        html += `
+          <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem; border-left: 4px solid #3b82f6;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <strong>${order.customer_phone}</strong>
+              <span class="order-card__status order-card__status--${order.status}" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;">
+                ${getStatusLabel(order.status)}
+              </span>
+            </div>
+            <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem;">
+              ${getGuitarTypeLabel(order.guitar_type)} ${order.guitar_brand || ''} ${order.guitar_model || ''}
+            </div>
+            ${order.admin_notes ? `
+              <div style="margin-top: 0.5rem; padding: 0.5rem; background: #fef3c7; border-radius: 0.5rem; font-size: 0.875rem;">
+                <strong style="color: #92400e;">备注：</strong>
+                <div style="margin-top: 0.25rem; white-space: pre-wrap;">${order.admin_notes}</div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+
+      html += '</div>';
+    }
+
+    // Show in a modal or replace content
+    const detailContent = document.getElementById('time-slots-detail-content');
+    if (detailContent) {
+      detailContent.innerHTML = html + `<button onclick="window.showTimeSlotDetail('${dateString}')" class="button button--small button--secondary" style="margin-top: 1rem;">返回</button>`;
+    }
+  } catch (error) {
+    console.error('Error loading slot orders:', error);
+  }
 }
 
 /**
@@ -741,9 +917,10 @@ async function handleBatchUpdate() {
  */
 function getStatusLabel(status) {
   const labels = {
-    pending: '待确认',
+    pending: '待排期',
     confirmed: '已确认',
-    in_progress: '维修中',
+    in_progress: '进行中',
+    delayed: '延期中',
     completed: '已完成',
     cancelled: '已取消'
   };
@@ -788,11 +965,134 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+/**
+ * Close status modal
+ */
+function closeStatusModal() {
+  const statusModal = document.getElementById('status-modal');
+  if (statusModal) {
+    statusModal.style.display = 'none';
+  }
+}
+
+/**
+ * Load work orders table
+ */
+async function loadWorkOrders() {
+  const tbody = document.getElementById('workorders-tbody');
+  const emptyDiv = document.getElementById('workorders-empty');
+  if (!tbody) return;
+
+  // Show loading
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">加载中...</td></tr>';
+  if (emptyDiv) emptyDiv.style.display = 'none';
+
+  try {
+    // Build filters
+    const filters = {};
+    const statusFilter = document.getElementById('wo-status-filter')?.value;
+    const dateFilter = document.getElementById('wo-date-filter')?.value;
+    const phoneSearch = document.getElementById('wo-phone-search')?.value;
+
+    if (statusFilter) {
+      filters.status = statusFilter;
+    }
+    if (dateFilter) {
+      filters.startDate = dateFilter;
+      filters.endDate = dateFilter;
+    }
+
+    // Fetch orders
+    const result = await fetchRepairOrders(filters);
+
+    if (result.success) {
+      let orders = result.data;
+
+      // Filter by phone if needed
+      if (phoneSearch) {
+        orders = orders.filter(order =>
+          order.customer_phone.includes(phoneSearch)
+        );
+      }
+
+      // Sort by appointment date and time
+      orders.sort((a, b) => {
+        const dateCompare = new Date(a.appointment_date) - new Date(b.appointment_date);
+        if (dateCompare !== 0) return dateCompare;
+        return a.appointment_time.localeCompare(b.appointment_time);
+      });
+
+      renderWorkOrdersTable(orders);
+    } else {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #ef4444;">加载失败: ${result.error}</td></tr>`;
+    }
+  } catch (error) {
+    console.error('Error loading work orders:', error);
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #ef4444;">加载失败，请刷新重试</td></tr>';
+  }
+}
+
+/**
+ * Render work orders table
+ */
+function renderWorkOrdersTable(orders) {
+  const tbody = document.getElementById('workorders-tbody');
+  const emptyDiv = document.getElementById('workorders-empty');
+  if (!tbody) return;
+
+  if (orders.length === 0) {
+    tbody.innerHTML = '';
+    if (emptyDiv) emptyDiv.style.display = 'block';
+    return;
+  }
+
+  if (emptyDiv) emptyDiv.style.display = 'none';
+
+  tbody.innerHTML = orders.map(order => `
+    <tr style="border-bottom: 1px solid #e5e7eb;">
+      <td style="padding: 1rem;">
+        <span style="font-family: monospace; font-size: 0.875rem;">#${order.id.substring(0, 8)}</span>
+      </td>
+      <td style="padding: 1rem;">${order.customer_phone}</td>
+      <td style="padding: 1rem;">
+        <div>${getGuitarTypeLabel(order.guitar_type)}</div>
+        <div style="font-size: 0.875rem; color: #6b7280;">
+          ${order.guitar_brand || '-'} ${order.guitar_model || ''}
+        </div>
+      </td>
+      <td style="padding: 1rem;">
+        <div style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${order.problem_description}">
+          ${order.problem_description}
+        </div>
+      </td>
+      <td style="padding: 1rem;">
+        <div>${order.appointment_date}</div>
+        <div style="font-size: 0.875rem; color: #6b7280;">${order.appointment_time}</div>
+      </td>
+      <td style="padding: 1rem;">
+        <span style="padding: 0.25rem 0.75rem; background: #f3f4f6; border-radius: 9999px; font-size: 0.875rem;">
+          ${order.assigned_to || '未分配'}
+        </span>
+      </td>
+      <td style="padding: 1rem;">
+        <span class="order-card__status order-card__status--${order.status}" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+          ${getStatusLabel(order.status)}
+        </span>
+      </td>
+      <td style="padding: 1rem;">
+        <button class="button button--small button--primary" onclick="window.viewOrderDetail('${order.id}')" style="margin-right: 0.5rem;">查看</button>
+        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改状态</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
 // Expose functions to window for onclick handlers
 window.viewOrderDetail = viewOrderDetail;
 window.changeOrderStatus = changeOrderStatus;
 window.deleteOrder = deleteOrder;
 window.showTimeSlotDetail = showTimeSlotDetail;
+window.showSlotOrders = showSlotOrders;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {

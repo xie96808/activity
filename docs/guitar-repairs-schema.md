@@ -21,9 +21,24 @@
 | appointment_time | varchar(20) | NOT NULL | 预约时间段（如"09:00-10:00"） |
 | expected_completion_date | date | NOT NULL | 期望完成日期 |
 | status | varchar(20) | DEFAULT 'pending' | 订单状态 |
+| assigned_to | varchar(50) | | 排班人员 |
 | admin_notes | text | | 管理员备注 |
 | created_at | timestamp | DEFAULT now() | 创建时间 |
 | updated_at | timestamp | DEFAULT now() | 更新时间 |
+
+### 状态枚举值和颜色标识
+- `pending` - 待排期（蓝色 #3b82f6）
+- `confirmed` - 已确认（蓝色 #3b82f6）
+- `in_progress` - 进行中（橙色 #f59e0b）
+- `delayed` - 延期中（红色 #ef4444）
+- `completed` - 已完成（绿色 #10b981）
+- `cancelled` - 已取消（灰色 #6b7280）
+
+### 排班人员枚举值
+- `木木` - 技师木木
+- `达三` - 技师达三
+- `老谢` - 技师老谢
+- `others` - 其他技师
 
 ### 吉他类型枚举值
 - `acoustic` - 木吉他
@@ -31,13 +46,6 @@
 - `electric` - 电吉他
 - `bass` - 贝斯
 - `other` - 其他
-
-### 订单状态枚举值
-- `pending` - 待确认
-- `confirmed` - 已确认
-- `in_progress` - 维修中
-- `completed` - 已完成
-- `cancelled` - 已取消
 
 ### 文件上传支持
 - **图片格式**: JPG, PNG, WEBP
@@ -61,7 +69,8 @@ CREATE TABLE guitar_repairs (
   appointment_date date NOT NULL,
   appointment_time varchar(20) NOT NULL,
   expected_completion_date date NOT NULL,
-  status varchar(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'in_progress', 'completed', 'cancelled')),
+  status varchar(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'in_progress', 'delayed', 'completed', 'cancelled')),
+  assigned_to varchar(50),
   admin_notes text,
   created_at timestamp DEFAULT now(),
   updated_at timestamp DEFAULT now()
@@ -70,6 +79,7 @@ CREATE TABLE guitar_repairs (
 -- 创建索引
 CREATE INDEX idx_guitar_repairs_appointment_date ON guitar_repairs(appointment_date);
 CREATE INDEX idx_guitar_repairs_status ON guitar_repairs(status);
+CREATE INDEX idx_guitar_repairs_assigned_to ON guitar_repairs(assigned_to);
 CREATE INDEX idx_guitar_repairs_customer_email ON guitar_repairs(customer_email);
 
 -- 创建更新时间戳触发器
