@@ -308,13 +308,18 @@ async function viewOrderDetail(orderId) {
             <p><strong>型号:</strong> ${order.guitar_model || '未填写'}</p>
             <p><strong>问题描述:</strong></p>
             <p style="white-space: pre-wrap; background: #f3f4f6; padding: 1rem; border-radius: 0.5rem;">${order.problem_description}</p>
-            ${order.image_url ? `
+            ${(order.image_urls && order.image_urls.length > 0) ? `
               <p><strong>吉他图片/视频:</strong></p>
-              ${order.image_url.endsWith('.mp4') ? `
-                <video src="${order.image_url}" controls style="max-width: 100%; max-height: 400px; border-radius: 0.5rem; margin-top: 0.5rem;"></video>
-              ` : `
-                <img src="${order.image_url}" alt="吉他图片" style="max-width: 100%; max-height: 400px; border-radius: 0.5rem; margin-top: 0.5rem;">
-              `}
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                ${order.image_urls.map(url => {
+                  const isVideo = url.endsWith('.mp4');
+                  return isVideo ? `
+                    <video src="${url}" controls style="width: 100%; max-height: 300px; border-radius: 0.5rem;"></video>
+                  ` : `
+                    <img src="${url}" alt="吉他图片" style="width: 100%; max-height: 300px; border-radius: 0.5rem; object-fit: cover;">
+                  `;
+                }).join('')}
+              </div>
             ` : ''}
           </div>
 

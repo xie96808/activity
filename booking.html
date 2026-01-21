@@ -142,14 +142,14 @@
               name="guitarImage"
               class="form-group__input"
               accept="image/jpeg,image/png,image/webp,image/jpg,video/mp4"
+              multiple
               aria-describedby="guitar-image-hint"
             >
             <span id="guitar-image-hint" class="form-group__hint">
-              支持 JPG、PNG、WEBP、MP4 格式，最大 10MB（选填）
+              支持 JPG、PNG、WEBP、MP4 格式，最大 10MB，最多5个文件（选填）
             </span>
-            <div id="image-preview" class="form-group__preview" style="display: none;">
-              <img id="preview-img" src="" alt="图片预览" style="max-width: 300px; max-height: 300px; margin-top: 10px;">
-              <video id="preview-video" controls style="max-width: 300px; max-height: 300px; margin-top: 10px; display: none;"></video>
+            <div id="image-preview-container" class="form-group__preview-container">
+              <!-- Previews will be dynamically added here -->
             </div>
           </div>
 
@@ -253,6 +253,7 @@
   </footer>
 
   <!-- JavaScript -->
+  <script src="js/config.js"></script>
   <script type="module" src="js/supabase-client.js"></script>
   <script type="module" src="js/form-handler.js"></script>
   <script type="module" src="js/calendar.js"></script>

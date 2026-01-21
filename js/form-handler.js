@@ -3,8 +3,7 @@
  */
 
 import { createRepairOrder } from './supabase-client.js';
-import { uploadImage } from './image-upload.js';
-import { initImageUpload } from './image-upload.js';
+import { uploadImages, initMultiImageUpload, clearImagePreviews } from './image-upload.js';
 import { initRepairCalendar } from './repair-calendar.js';
 
 /**
@@ -14,8 +13,8 @@ async function initRepairForm() {
   const form = document.getElementById('repair-form');
   if (!form) return;
 
-  // Initialize image upload
-  initImageUpload('guitar-image', 'preview-img', 'image-preview');
+  // Initialize multi-image upload
+  initMultiImageUpload('guitar-image', 'image-preview-container');
 
   // Initialize repair calendar
   initRepairCalendar('appointment-date', 'time-slots-container', 'appointment-time');
@@ -39,13 +38,13 @@ async function initRepairForm() {
       // Get form data
       const formData = new FormData(form);
 
-      // Upload image if provided
-      let imageUrl = null;
-      const imageFile = formData.get('guitarImage');
-      if (imageFile && imageFile.size > 0) {
-        const uploadResult = await uploadImage(imageFile);
+      // Upload images if provided
+      let imageUrls = [];
+      const imageFiles = formData.getAll('guitarImage').filter(file => file.size > 0);
+      if (imageFiles.length > 0) {
+        const uploadResult = await uploadImages(imageFiles);
         if (uploadResult.success) {
-          imageUrl = uploadResult.url;
+          imageUrls = uploadResult.urls;
         } else {
           showError(`图片上传失败：${uploadResult.error}`);
           submitButton.disabled = false;
@@ -63,7 +62,7 @@ async function initRepairForm() {
         guitar_brand: formData.get('guitarBrand') || null,
         guitar_model: formData.get('guitarModel') || null,
         problem_description: formData.get('problemDescription'),
-        image_url: imageUrl,
+        image_urls: imageUrls.length > 0 ? imageUrls : null,
         appointment_date: formData.get('appointmentDate'),
         appointment_time: formData.get('appointmentTime'),
         expected_completion_date: formData.get('expectedCompletionDate'),
@@ -82,11 +81,9 @@ async function initRepairForm() {
         showSuccess('维修单提交成功！我们会尽快与您联系确认。');
         form.reset();
 
-        // Clear image preview
-        const previewContainer = document.getElementById('image-preview');
-        const previewImg = document.getElementById('preview-img');
-        if (previewContainer) previewContainer.style.display = 'none';
-        if (previewImg) previewImg.src = '';
+        // Clear image previews
+        const previewContainer = document.getElementById('image-preview-container');
+        clearImagePreviews(previewContainer);
 
         // Clear time slots
         const timeSlotsContainer = document.getElementById('time-slots-container');

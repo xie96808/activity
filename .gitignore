@@ -6,6 +6,9 @@ package-lock.json
 .env
 .env.local
 
+# Configuration files with sensitive data
+js/config.js
+
 # Build output
 public/css/styles.min.css
 public/js/bundle.min.js

@@ -16,7 +16,7 @@
 | guitar_brand | varchar(100) | | 吉他品牌 |
 | guitar_model | varchar(100) | | 吉他型号 |
 | problem_description | text | NOT NULL | 问题描述 |
-| image_url | varchar(500) | | 吉他图片/视频URL |
+| image_urls | text[] | | 吉他图片/视频URL数组（支持多个） |
 | appointment_date | date | NOT NULL | 预约日期 |
 | appointment_time | varchar(20) | NOT NULL | 预约时间段（如"09:00-10:00"） |
 | expected_completion_date | date | NOT NULL | 期望完成日期 |
@@ -57,7 +57,7 @@ CREATE TABLE guitar_repairs (
   guitar_brand varchar(100),
   guitar_model varchar(100),
   problem_description text NOT NULL,
-  image_url varchar(500),
+  image_urls text[],
   appointment_date date NOT NULL,
   appointment_time varchar(20) NOT NULL,
   expected_completion_date date NOT NULL,
