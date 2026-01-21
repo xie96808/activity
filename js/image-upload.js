@@ -5,27 +5,79 @@
 
 import { supabase } from './supabase-client.js';
 
+// Store selected files globally
+let selectedFiles = [];
+let uploadedUrls = [];
+
 /**
- * Upload multiple images to Supabase Storage
- * @param {File[]} files - The image files to upload
- * @param {string} bucket - The storage bucket name
+ * Reset upload state
+ */
+export function resetUploadState() {
+  selectedFiles = [];
+  uploadedUrls = [];
+}
+
+/**
+ * Get selected files count
+ */
+export function getSelectedFilesCount() {
+  return selectedFiles.length;
+}
+
+/**
+ * Format file size to human readable format
+ */
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+/**
+ * Upload multiple images to Supabase Storage with progress tracking
+ * @param {Function} progressCallback - Callback for progress updates
  * @returns {Promise<{success: boolean, urls?: string[], error?: string}>}
  */
-export async function uploadImages(files, bucket = 'guitar-images') {
-  if (!files || files.length === 0) {
+export async function uploadImages(progressCallback) {
+  if (selectedFiles.length === 0) {
     return { success: true, urls: [] };
   }
 
   const urls = [];
   const errors = [];
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const result = await uploadImage(file, bucket);
+  for (let i = 0; i < selectedFiles.length; i++) {
+    const file = selectedFiles[i];
+
+    // Update progress
+    if (progressCallback) {
+      progressCallback({
+        current: i + 1,
+        total: selectedFiles.length,
+        fileName: file.name,
+        status: 'uploading'
+      });
+    }
+
+    const result = await uploadImage(file);
+
     if (result.success) {
       urls.push(result.url);
+      uploadedUrls.push(result.url);
     } else {
-      errors.push(`文件 ${i + 1}: ${result.error}`);
+      errors.push(`${file.name}: ${result.error}`);
+    }
+
+    // Update progress
+    if (progressCallback) {
+      progressCallback({
+        current: i + 1,
+        total: selectedFiles.length,
+        fileName: file.name,
+        status: result.success ? 'completed' : 'error'
+      });
     }
   }
 
@@ -116,8 +168,8 @@ export function validateImageFiles(files) {
     return { valid: true }; // Empty is valid (optional field)
   }
 
-  if (files.length > 5) {
-    return { valid: false, error: '最多只能上传5个文件' };
+  if (selectedFiles.length + files.length > 5) {
+    return { valid: false, error: `最多只能上传5个文件，当前已选${selectedFiles.length}个` };
   }
 
   for (let i = 0; i < files.length; i++) {
@@ -147,33 +199,43 @@ export function createImagePreview(file, index, containerElement) {
   // Create preview wrapper
   const previewWrapper = document.createElement('div');
   previewWrapper.className = 'image-preview-item';
-  previewWrapper.style.cssText = 'position: relative; display: inline-block; margin: 10px; border: 1px solid #ddd; border-radius: 8px; padding: 5px;';
+  previewWrapper.dataset.index = index;
+  previewWrapper.style.cssText = 'position: relative; display: inline-block; margin: 10px; border: 1px solid #ddd; border-radius: 8px; padding: 5px; width: 200px;';
 
   // Create media element
   let mediaElement;
   if (file.type === 'video/mp4') {
     mediaElement = document.createElement('video');
     mediaElement.controls = true;
-    mediaElement.style.cssText = 'max-width: 200px; max-height: 200px; display: block;';
+    mediaElement.style.cssText = 'max-width: 190px; max-height: 150px; display: block;';
   } else {
     mediaElement = document.createElement('img');
     mediaElement.alt = `预览 ${index + 1}`;
-    mediaElement.style.cssText = 'max-width: 200px; max-height: 200px; display: block;';
+    mediaElement.style.cssText = 'max-width: 190px; max-height: 150px; display: block; object-fit: cover;';
   }
+
+  // Create info section
+  const infoDiv = document.createElement('div');
+  infoDiv.style.cssText = 'margin-top: 5px; font-size: 12px; color: #666;';
+
+  const fileName = file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name;
+  infoDiv.innerHTML = `
+    <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${file.name}">${fileName}</div>
+    <div style="color: #999;">${formatFileSize(file.size)}</div>
+  `;
 
   // Create remove button
   const removeBtn = document.createElement('button');
   removeBtn.type = 'button';
   removeBtn.textContent = '×';
   removeBtn.className = 'image-preview-remove';
-  removeBtn.style.cssText = 'position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 16px; line-height: 1;';
-  removeBtn.setAttribute('data-index', index);
+  removeBtn.style.cssText = 'position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 16px; line-height: 1; z-index: 10;';
   removeBtn.onclick = () => {
-    previewWrapper.remove();
-    updateFileList();
+    removeFile(index);
   };
 
   previewWrapper.appendChild(mediaElement);
+  previewWrapper.appendChild(infoDiv);
   previewWrapper.appendChild(removeBtn);
   containerElement.appendChild(previewWrapper);
 
@@ -193,31 +255,57 @@ export function createImagePreview(file, index, containerElement) {
 }
 
 /**
- * Clear all image previews
- * @param {HTMLElement} containerElement - The container element
+ * Remove a file from selection
+ * @param {number} index - Index of file to remove
  */
-export function clearImagePreviews(containerElement) {
-  if (containerElement) {
-    containerElement.innerHTML = '';
-    containerElement.style.display = 'none';
+export function removeFile(index) {
+  selectedFiles.splice(index, 1);
+  renderAllPreviews();
+}
+
+/**
+ * Render all previews
+ */
+export function renderAllPreviews() {
+  const container = document.getElementById('image-preview-container');
+  const reselectLink = document.getElementById('image-reselect-link');
+
+  if (!container) return;
+
+  // Clear container
+  container.innerHTML = '';
+
+  if (selectedFiles.length === 0) {
+    container.style.display = 'none';
+    if (reselectLink) reselectLink.style.display = 'none';
+  } else {
+    container.style.display = 'block';
+    if (reselectLink) reselectLink.style.display = 'block';
+
+    // Create previews for all files
+    selectedFiles.forEach((file, index) => {
+      createImagePreview(file, index, container);
+    });
   }
 }
 
 /**
- * Update file list after removing a preview
+ * Clear all image previews
+ * @param {HTMLElement} containerElement - The container element
  */
-function updateFileList() {
-  const fileInput = document.getElementById('guitar-image');
-  const container = document.getElementById('image-preview-container');
-  if (!fileInput || !container) return;
+export function clearImagePreviews(containerElement) {
+  resetUploadState();
 
-  // Get DataTransfer object to modify files
-  const dt = new DataTransfer();
-  const previews = container.querySelectorAll('.image-preview-item');
+  if (containerElement) {
+    containerElement.innerHTML = '';
+    containerElement.style.display = 'none';
+  }
 
-  // Reconstruct file list based on remaining previews
-  // Note: We can't directly modify FileList, so this is a workaround
-  // The actual file removal will be handled during form submission
+  // Hide reselect link
+  const reselectLink = document.getElementById('image-reselect-link');
+  if (reselectLink) {
+    reselectLink.style.display = 'none';
+  }
 }
 
 /**
@@ -228,17 +316,26 @@ function updateFileList() {
 export function initMultiImageUpload(inputId, previewContainerId) {
   const fileInput = document.getElementById(inputId);
   const previewContainer = document.getElementById(previewContainerId);
+  const reselectLink = document.getElementById('image-reselect-link');
+  const reselectButton = document.getElementById('reselect-files');
 
   if (!fileInput || !previewContainer) {
     console.error('Image upload elements not found');
     return;
   }
 
+  // Handle reselect files link click
+  if (reselectButton) {
+    reselectButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      fileInput.click();
+    });
+  }
+
   fileInput.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
 
     if (files.length === 0) {
-      clearImagePreviews(previewContainer);
       return;
     }
 
@@ -247,17 +344,17 @@ export function initMultiImageUpload(inputId, previewContainerId) {
     if (!validation.valid) {
       alert(validation.error);
       fileInput.value = '';
-      clearImagePreviews(previewContainer);
       return;
     }
 
-    // Clear previous previews
-    clearImagePreviews(previewContainer);
+    // Add files to selection
+    selectedFiles = [...selectedFiles, ...files];
 
-    // Create previews for all files
-    files.forEach((file, index) => {
-      createImagePreview(file, index, previewContainer);
-    });
+    // Reset file input
+    fileInput.value = '';
+
+    // Render all previews
+    renderAllPreviews();
   });
 }
 

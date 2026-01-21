@@ -7,9 +7,11 @@ import { supabase } from './supabase-client.js';
 
 // Business hours configuration
 const BUSINESS_HOURS = {
-  start: 9, // 9:00 AM
-  end: 18,  // 6:00 PM
-  workDays: [1, 2, 3, 4, 5] // Monday to Friday
+  morningStart: 10,  // 10:00 AM
+  morningEnd: 12,    // 12:00 PM
+  afternoonStart: 13, // 1:00 PM
+  afternoonEnd: 18,   // 6:00 PM
+  workDays: [0, 1, 2, 3, 4, 5, 6] // Sunday to Saturday (all days)
 };
 
 // Time slot status thresholds
@@ -26,7 +28,20 @@ const STATUS_THRESHOLDS = {
 export function generateTimeSlots() {
   const slots = [];
 
-  for (let hour = BUSINESS_HOURS.start; hour < BUSINESS_HOURS.end; hour++) {
+  // Morning slots: 10:00-12:00
+  for (let hour = BUSINESS_HOURS.morningStart; hour < BUSINESS_HOURS.morningEnd; hour++) {
+    const startTime = `${hour.toString().padStart(2, '0')}:00`;
+    const endTime = `${(hour + 1).toString().padStart(2, '0')}:00`;
+    const timeSlot = `${startTime}-${endTime}`;
+
+    slots.push({
+      time: timeSlot,
+      label: timeSlot
+    });
+  }
+
+  // Afternoon slots: 13:00-18:00
+  for (let hour = BUSINESS_HOURS.afternoonStart; hour < BUSINESS_HOURS.afternoonEnd; hour++) {
     const startTime = `${hour.toString().padStart(2, '0')}:00`;
     const endTime = `${(hour + 1).toString().padStart(2, '0')}:00`;
     const timeSlot = `${startTime}-${endTime}`;
@@ -135,7 +150,7 @@ export async function renderTimeSlots(dateString, container, onSelect) {
 
   // Check if it's a workday
   if (!isWorkday(selectedDate)) {
-    container.innerHTML = '<p class="time-slots__hint">维修店周末不营业，请选择工作日</p>';
+    container.innerHTML = '<p class="time-slots__hint">所选日期不可预约</p>';
     return;
   }
 

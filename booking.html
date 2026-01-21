@@ -148,6 +148,11 @@
             <span id="guitar-image-hint" class="form-group__hint">
               支持 JPG、PNG、WEBP、MP4 格式，最大 10MB，最多5个文件（选填）
             </span>
+            <div id="image-reselect-link" style="display: none; margin-top: 0.5rem;">
+              <a href="#" id="reselect-files" style="color: var(--color-primary); text-decoration: underline; font-size: 0.875rem;">
+                重新选择文件
+              </a>
+            </div>
             <div id="image-preview-container" class="form-group__preview-container">
               <!-- Previews will be dynamically added here -->
             </div>
@@ -253,7 +258,6 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="js/config.js"></script>
   <script type="module" src="js/supabase-client.js"></script>
   <script type="module" src="js/form-handler.js"></script>
   <script type="module" src="js/calendar.js"></script>

@@ -3,7 +3,7 @@
  */
 
 import { createRepairOrder } from './supabase-client.js';
-import { uploadImages, initMultiImageUpload, clearImagePreviews } from './image-upload.js';
+import { uploadImages, initMultiImageUpload, clearImagePreviews, getSelectedFilesCount } from './image-upload.js';
 import { initRepairCalendar } from './repair-calendar.js';
 
 /**
@@ -40,18 +40,32 @@ async function initRepairForm() {
 
       // Upload images if provided
       let imageUrls = [];
-      const imageFiles = formData.getAll('guitarImage').filter(file => file.size > 0);
-      if (imageFiles.length > 0) {
-        const uploadResult = await uploadImages(imageFiles);
+
+      // Check if there are files selected
+      if (getSelectedFilesCount() > 0) {
+        // Show upload progress
+        showUploadProgress();
+
+        const uploadResult = await uploadImages((progress) => {
+          updateUploadProgress(progress);
+        });
+
         if (uploadResult.success) {
           imageUrls = uploadResult.urls;
         } else {
+          hideUploadProgress();
           showError(`图片上传失败：${uploadResult.error}`);
           submitButton.disabled = false;
           submitButton.textContent = originalText;
           return;
         }
+
+        // Hide upload progress
+        hideUploadProgress();
       }
+
+      // Update button text to show database submission
+      submitButton.textContent = '正在保存...';
 
       // Prepare repair order data
       const repairData = {
@@ -78,7 +92,7 @@ async function initRepairForm() {
 
       // Show result
       if (result.success) {
-        showSuccess('维修单提交成功！我们会尽快与您联系确认。');
+        // Clear form first
         form.reset();
 
         // Clear image previews
@@ -91,15 +105,22 @@ async function initRepairForm() {
           timeSlotsContainer.innerHTML = '<p class="time-slots__hint">请先选择日期</p>';
         }
 
-        // Redirect to home page after 2 seconds
+        // Show success message
+        showSuccess('维修单提交成功！我们会尽快与您联系确认。<br>3秒后自动返回首页...');
+
+        // Keep submit button disabled to prevent double submission
+        submitButton.disabled = true;
+
+        // Redirect to home page after 3 seconds
         setTimeout(() => {
           window.location.href = 'index.html';
-        }, 2000);
+        }, 3000);
       } else {
         showError(`提交失败：${result.error}`);
       }
     } catch (error) {
       console.error('Error submitting repair order:', error);
+      hideUploadProgress();
       showError('提交失败，请重试');
       submitButton.disabled = false;
       submitButton.textContent = originalText;
@@ -346,6 +367,66 @@ function showError(message) {
         ${message}
       </div>
     `;
+  }
+}
+
+/**
+ * Show upload progress container
+ */
+function showUploadProgress() {
+  const statusContainer = document.getElementById('form-status');
+  if (statusContainer) {
+    statusContainer.innerHTML += `
+      <div id="upload-progress" style="margin-top: 1rem; padding: 1rem; background-color: #f3f4f6; border-radius: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span id="upload-status-text">正在上传图片...</span>
+          <span id="upload-count-text" style="font-size: 0.875rem; color: #666;">0/0</span>
+        </div>
+        <div style="width: 100%; height: 8px; background-color: #e5e7eb; border-radius: 4px; overflow: hidden;">
+          <div id="upload-progress-bar" style="width: 0%; height: 100%; background-color: #3b82f6; transition: width 0.3s ease;"></div>
+        </div>
+        <div id="upload-file-name" style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;"></div>
+      </div>
+    `;
+  }
+}
+
+/**
+ * Update upload progress
+ * @param {Object} progress - Progress data
+ */
+function updateUploadProgress(progress) {
+  const progressBar = document.getElementById('upload-progress-bar');
+  const statusText = document.getElementById('upload-status-text');
+  const countText = document.getElementById('upload-count-text');
+  const fileNameText = document.getElementById('upload-file-name');
+
+  if (progressBar && statusText && countText && fileNameText) {
+    const percentage = (progress.current / progress.total) * 100;
+    progressBar.style.width = percentage + '%';
+    countText.textContent = `${progress.current}/${progress.total}`;
+    fileNameText.textContent = progress.fileName;
+
+    if (progress.status === 'uploading') {
+      statusText.textContent = `正在上传 (${progress.current}/${progress.total})...`;
+      progressBar.style.backgroundColor = '#3b82f6';
+    } else if (progress.status === 'completed') {
+      statusText.textContent = `${progress.fileName} 上传完成`;
+      progressBar.style.backgroundColor = '#10b981';
+    } else if (progress.status === 'error') {
+      statusText.textContent = `${progress.fileName} 上传失败`;
+      progressBar.style.backgroundColor = '#ef4444';
+    }
+  }
+}
+
+/**
+ * Hide upload progress
+ */
+function hideUploadProgress() {
+  const uploadProgress = document.getElementById('upload-progress');
+  if (uploadProgress) {
+    uploadProgress.remove();
   }
 }
 

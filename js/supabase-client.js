@@ -6,19 +6,9 @@
 // Import Supabase client from CDN
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// Get Supabase configuration from config.js
-// config.js should be loaded before this script in HTML
-const SUPABASE_URL = window.SUPABASE_CONFIG?.url;
-const SUPABASE_ANON_KEY = window.SUPABASE_CONFIG?.anonKey;
-
-// Validate configuration
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error(
-    'Supabase configuration is missing!\n' +
-    'Please ensure js/config.js exists and contains valid credentials.\n' +
-    'Copy js/config.example.js to js/config.js and fill in your Supabase credentials.'
-  );
-}
+// Supabase configuration
+const SUPABASE_URL = 'https://upgcvwffkkfampecczou.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwZ2N2d2Zma2tmYW1wZWNjem91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5NjIwNjgsImV4cCI6MjA4MTUzODA2OH0.aPEY7AL4jhO7B57DuZvH6HtmfSewRWVjWNrlazmBAnA';
 
 // Create Supabase client instance
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
