@@ -3,6 +3,7 @@
  */
 
 import { isAuthenticated, getCurrentUser } from './supabase-client.js';
+import { supabase } from './supabase-client.js';
 
 /**
  * Initialize the application
@@ -19,6 +20,11 @@ async function init() {
 
   // Add keyboard navigation support
   initKeyboardNavigation();
+
+  // Initialize home calendar if on home page
+  if (document.getElementById('view-calendar-btn')) {
+    initHomeCalendar();
+  }
 }
 
 /**
@@ -233,6 +239,160 @@ export function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+/**
+ * Initialize home page calendar
+ */
+function initHomeCalendar() {
+  const viewCalendarBtn = document.getElementById('view-calendar-btn');
+  const calendarModal = document.getElementById('calendar-modal');
+  const modalOverlay = calendarModal?.querySelector('.modal__overlay');
+  const modalClose = calendarModal?.querySelector('.modal__close');
+
+  if (!viewCalendarBtn || !calendarModal) return;
+
+  // Current month and year for calendar
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+
+  // Open calendar modal
+  viewCalendarBtn.addEventListener('click', () => {
+    calendarModal.style.display = 'block';
+    renderCalendar(currentMonth, currentYear);
+  });
+
+  // Close modal handlers
+  const closeModal = () => {
+    calendarModal.style.display = 'none';
+  };
+
+  modalOverlay?.addEventListener('click', closeModal);
+  modalClose?.addEventListener('click', closeModal);
+
+  // Month navigation
+  const prevBtn = document.getElementById('prev-month-btn-home');
+  const nextBtn = document.getElementById('next-month-btn-home');
+
+  prevBtn?.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar(currentMonth, currentYear);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar(currentMonth, currentYear);
+  });
+
+  /**
+   * Render calendar for home page
+   */
+  async function renderCalendar(month, year) {
+    const calendarGrid = document.getElementById('calendar-grid-home');
+    const monthTitle = document.getElementById('calendar-month-title-home');
+
+    if (!calendarGrid || !monthTitle) return;
+
+    // Update title
+    monthTitle.textContent = `${year}年${month + 1}月`;
+
+    // Get first day of month and total days
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Fetch bookings for this month
+    const bookings = await fetchBookingsForMonth(year, month);
+
+    // Build calendar HTML
+    let html = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center;">';
+
+    // Add weekday headers
+    const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+    weekdays.forEach(day => {
+      html += `<div style="font-weight: 600; color: #d4af37; padding: 8px; font-size: 0.875rem;">${day}</div>`;
+    });
+
+    // Add empty cells for days before first day of month
+    for (let i = 0; i < firstDay; i++) {
+      html += '<div></div>';
+    }
+
+    // Add days
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const bookingCount = bookings[dateStr] || 0;
+
+      let statusColor = '#10b981'; // Green - idle
+      let statusClass = 'calendar-cell--idle';
+      let statusText = '空闲';
+
+      if (bookingCount > 6) {
+        statusColor = '#ef4444'; // Red - busy
+        statusClass = 'calendar-cell--busy';
+        statusText = '繁忙';
+      } else if (bookingCount >= 4) {
+        statusColor = '#f59e0b'; // Orange - normal
+        statusClass = 'calendar-cell--normal';
+        statusText = '一般';
+      }
+
+      const isToday = day === currentDate.getDate() &&
+                     month === currentDate.getMonth() &&
+                     year === currentDate.getFullYear();
+
+      html += `
+        <div class="calendar-cell ${statusClass} ${isToday ? 'calendar-cell--today' : ''}"
+             style="padding: 16px; border-radius: 8px; background: #ffffff;
+                    border: 2px solid ${statusColor}; transition: all 0.2s;
+                    ${isToday ? 'box-shadow: 0 0 10px ' + statusColor + ';' : ''}">
+          <div style="font-weight: 600; color: #333333; font-size: 1.125rem;">${day}</div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    calendarGrid.innerHTML = html;
+  }
+
+  /**
+   * Fetch bookings for a specific month
+   */
+  async function fetchBookingsForMonth(year, month) {
+    try {
+      const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+      const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
+
+      const { data, error } = await supabase
+        .from('guitar_repairs')
+        .select('appointment_date')
+        .gte('appointment_date', startDate)
+        .lte('appointment_date', endDate)
+        .not('status', 'eq', 'cancelled');
+
+      if (error) throw error;
+
+      // Count bookings per day
+      const bookings = {};
+      data?.forEach(booking => {
+        const date = booking.appointment_date;
+        bookings[date] = (bookings[date] || 0) + 1;
+      });
+
+      return bookings;
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      return {};
+    }
+  }
 }
 
 // Initialize app when DOM is ready

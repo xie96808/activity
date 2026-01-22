@@ -1,0 +1,1004 @@
+/**
+ * 吉他维修服务 - 动画效果
+ * Premium, Professional, Heritage Craftsmanship
+ * Elegant animations with gold accents
+ */
+
+/* ========================================
+   Premium Keyframe Animations
+   ======================================== */
+
+/* Fade in with elegance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fade in up - smooth and controlled */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in down - gentle entrance */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left - refined motion */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right - elegant entrance */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale in with sophistication */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Premium glow effect - gold shimmer */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--color-accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--color-accent-glow),
+                0 0 60px rgba(212, 175, 55, 0.5);
+  }
+}
+
+/* Subtle pulse - refined breathing effect */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Elegant spin - smooth rotation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gentle bounce - controlled elevation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Premium shake - refined attention */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+/* Progress bar - smooth fill */
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Shimmer effect - golden sheen */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Gold shimmer sweep - premium accent */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Elegant float - gentle levitation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Subtle zoom in - focused entrance */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Rotate and fade - sophisticated reveal */
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* Border reveal - elegant stroke */
+@keyframes borderReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Text reveal - character by character */
+@keyframes textReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Ripple effect - premium touch */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Counting up animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   Animation Utility Classes
+   ======================================== */
+
+/* Fade animations - elegant entrances */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.8s ease-out;
+}
+
+/* Slide animations - refined motion */
+.animate-slide-in-left {
+  animation: slideInLeft 0.7s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.7s ease-out;
+}
+
+/* Scale animation - sophisticated reveal */
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out;
+}
+
+/* Premium effects */
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.6s ease-out;
+}
+
+.animate-rotate-in {
+  animation: rotateIn 0.7s ease-out;
+}
+
+/* ========================================
+   Page Load Animations
+   ======================================== */
+
+/* Hero section - grand entrance */
+.hero__content {
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero__title {
+  animation: fadeInDown 0.8s ease-out 0.2s both;
+}
+
+.hero__subtitle {
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.hero__cta {
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+/* Card stagger animation - elegant cascade */
+.activity-card,
+.card,
+.service-card {
+  animation: fadeInUp 0.7s ease-out both;
+}
+
+.activity-card:nth-child(1),
+.card:nth-child(1),
+.service-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.activity-card:nth-child(2),
+.card:nth-child(2),
+.service-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.activity-card:nth-child(3),
+.card:nth-child(3),
+.service-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.activity-card:nth-child(4),
+.card:nth-child(4),
+.service-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.activity-card:nth-child(5),
+.card:nth-child(5),
+.service-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.activity-card:nth-child(6),
+.card:nth-child(6),
+.service-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* Team member stagger - professional reveal */
+.team-member {
+  animation: scaleIn 0.6s ease-out both;
+}
+
+.team-member:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.team-member:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.team-member:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.team-member:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* ========================================
+   Loading States
+   ======================================== */
+
+/* Premium loading spinner - gold accent */
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-bg-tertiary);
+  border-top-color: var(--color-accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-spinner--small {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.loading-spinner--large {
+  width: 60px;
+  height: 60px;
+  border-width: 6px;
+}
+
+/* Skeleton loading - golden shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-tertiary) 0%,
+    var(--color-bg-elevated) 50%,
+    var(--color-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton--text {
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.skeleton--title {
+  height: 2em;
+  width: 60%;
+  margin-bottom: 1em;
+}
+
+.skeleton--image {
+  height: 200px;
+  width: 100%;
+}
+
+.skeleton--circle {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+/* Pulse loading - subtle indication */
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Progress bar - elegant fill */
+.loading-progress {
+  height: 4px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-progress__bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-primary),
+    var(--color-accent-secondary),
+    var(--color-accent-primary)
+  );
+  background-size: 200% 100%;
+  animation: progress 2s ease-out, shimmer 1.5s linear infinite;
+  border-radius: var(--radius-full);
+}
+
+/* ========================================
+   Transition Effects
+   ======================================== */
+
+/* Smooth transitions for interactive elements */
+.transition-all {
+  transition: all var(--transition-base);
+}
+
+.transition-colors {
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.transition-transform {
+  transition: transform var(--transition-base);
+}
+
+.transition-opacity {
+  transition: opacity var(--transition-base);
+}
+
+/* Premium hover transition */
+.transition-premium {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* ========================================
+   Premium Hover Effects
+   ======================================== */
+
+/* Elegant lift - sophisticated elevation */
+.hover-lift {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Gold glow - premium accent */
+.hover-glow {
+  transition: box-shadow var(--transition-base);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px var(--color-accent-glow);
+}
+
+/* Subtle scale - refined emphasis */
+.hover-scale {
+  transition: transform var(--transition-base);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Border reveal - elegant stroke */
+.hover-border-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-border-reveal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-accent-primary),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+}
+
+.hover-border-reveal:hover::before {
+  transform: translateX(100%);
+}
+
+/* Image zoom - focused interaction */
+.hover-image-zoom {
+  overflow: hidden;
+}
+
+.hover-image-zoom img {
+  transition: transform var(--transition-slow);
+}
+
+.hover-image-zoom:hover img {
+  transform: scale(1.1);
+}
+
+/* Shine effect - premium sheen */
+.hover-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(212, 175, 55, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: transform 0.6s;
+  opacity: 0;
+}
+
+.hover-shine:hover::after {
+  animation: goldShimmer 1.5s ease-in-out;
+  opacity: 1;
+}
+
+/* ========================================
+   Focus Effects
+   ======================================== */
+
+/* Premium focus ring */
+.focus-ring:focus {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-accent-glow);
+}
+
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Soft focus - elegant indication */
+.focus-soft:focus {
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+/* ========================================
+   Premium Status Animations
+   ======================================== */
+
+/* Success message - elegant confirmation */
+.success-message {
+  background: linear-gradient(135deg, var(--color-success) 0%, #059669 100%);
+  color: var(--color-text-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-accent-primary);
+  box-shadow: var(--shadow-lg);
+  animation: slideInDown 0.5s ease-out;
+}
+
+/* Error message - refined attention */
+.error-message {
+  background: linear-gradient(135deg, var(--color-error) 0%, #dc2626 100%);
+  color: var(--color-text-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-accent-primary);
+  box-shadow: var(--shadow-lg);
+  animation: shake 0.6s ease-out;
+}
+
+/* Warning message - subtle alert */
+.warning-message {
+  background: linear-gradient(135deg, var(--color-warning) 0%, #d97706 100%);
+  color: var(--color-text-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-accent-primary);
+  box-shadow: var(--shadow-lg);
+  animation: fadeInDown 0.5s ease-out;
+}
+
+/* Info message - calm notification */
+.info-message {
+  background: linear-gradient(135deg, var(--color-info) 0%, #2563eb 100%);
+  color: var(--color-text-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-accent-primary);
+  box-shadow: var(--shadow-lg);
+  animation: fadeInDown 0.5s ease-out;
+}
+
+/* ========================================
+   Modal Animations
+   ======================================== */
+
+/* Modal backdrop - smooth fade */
+.modal__overlay {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal content - elegant reveal */
+.modal__content {
+  animation: scaleIn 0.4s ease-out;
+}
+
+/* Modal content - slide from top variant */
+.modal__content--slide {
+  animation: fadeInDown 0.4s ease-out;
+}
+
+/* ========================================
+   Scroll Animations
+   ======================================== */
+
+/* Smooth scroll behavior - elegant navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll reveal - elements fade in gracefully */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll reveal - from left variant */
+.scroll-reveal--left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-reveal--left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scroll reveal - from right variant */
+.scroll-reveal--right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+
+.scroll-reveal--right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ========================================
+   Progress Indicators
+   ======================================== */
+
+/* Premium progress bar */
+.progress-bar {
+  height: 6px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-primary),
+    var(--color-accent-secondary)
+  );
+  animation: progress 2s ease-out;
+  box-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+/* Circular progress */
+.progress-circle {
+  transform: rotate(-90deg);
+}
+
+.progress-circle__circle {
+  transition: stroke-dashoffset 0.6s ease-out;
+}
+
+/* ========================================
+   Notification Animations
+   ======================================== */
+
+/* Toast notification - elegant slide */
+.toast {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.toast--exit {
+  animation: slideInRight 0.5s ease-out reverse;
+}
+
+/* Toast with gold accent */
+.toast--premium {
+  background: var(--color-bg-secondary);
+  border-left: 4px solid var(--color-accent-primary);
+  box-shadow: var(--shadow-xl), 0 0 20px var(--color-accent-glow);
+}
+
+/* ========================================
+   Form Validation Animations
+   ======================================== */
+
+/* Invalid input - subtle shake */
+.form-group__input:invalid:not(:focus):not(:placeholder-shown) {
+  animation: shake 0.4s ease-in-out;
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px var(--color-error-light);
+}
+
+/* Valid input - elegant confirmation */
+.form-group__input:valid:not(:focus):not(:placeholder-shown) {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+/* Focus glow - premium accent */
+.form-group__input:focus,
+.form-group__textarea:focus,
+.form-group__select:focus {
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+/* ========================================
+   Button Animation Variants
+   ======================================== */
+
+/* Ripple effect */
+.button--ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.button--ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button--ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Shine sweep */
+.button--shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.button--shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.3),
+    transparent
+  );
+  transition: left var(--transition-slow);
+}
+
+.button--shine:hover::before {
+  left: 100%;
+}
+
+/* ========================================
+   Stagger Animation Delays
+   ======================================== */
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+.stagger-7 { animation-delay: 0.7s; }
+.stagger-8 { animation-delay: 0.8s; }
+.stagger-9 { animation-delay: 0.9s; }
+.stagger-10 { animation-delay: 1s; }
+
+/* ========================================
+   Animation Durations
+   ======================================== */
+
+.duration-fast { animation-duration: 0.3s; }
+.duration-base { animation-duration: 0.5s; }
+.duration-slow { animation-duration: 0.8s; }
+.duration-slower { animation-duration: 1.2s; }
+
+/* ========================================
+   Animation Timing Functions
+   ======================================== */
+
+.ease-smooth { animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+.ease-bounce { animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+.ease-elastic { animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* ========================================
+   Accessibility - Reduced Motion
+   ======================================== */
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scroll-reveal,
+  .scroll-reveal--left,
+  .scroll-reveal--right {
+    opacity: 1;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========================================
+   Custom Animation Examples
+   ======================================== */
+
+/* Premium card entrance */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-card-entrance {
+  animation: cardEntrance 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gold shimmer effect */
+@keyframes goldShimmerEffect {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-primary) 0%,
+    #f4d03f 25%,
+    #f9e79f 50%,
+    #f4d03f 75%,
+    var(--color-accent-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmerEffect 3s linear infinite;
+}
+
+/* Elegant reveal */
+@keyframes elegantReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.animate-elegant-reveal {
+  animation: elegantReveal 1s cubic-bezier(0.4, 0, 0.2, 1);
+}

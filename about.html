@@ -3,26 +3,234 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="关于我们 - 了解我们的团队和使命">
-  <title>关于我们 | 音乐活动预约</title>
+  <meta name="description" content="411吉他工作室 - 深圳专业吉他维修服务">
+  <title>关于我们 | 411吉他工作室</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout-new.css">
+  <link rel="stylesheet" href="css/responsive-new.css">
+  <link rel="stylesheet" href="css/animations-new.css">
+
+  <style>
+    /* About Page Specific Styles */
+    .about-hero {
+      padding: var(--spacing-4xl) var(--spacing-2xl);
+      text-align: center;
+      background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
+    }
+
+    .about-hero__badge {
+      display: inline-block;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+      color: var(--color-text-inverse);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-lg);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .about-hero__title {
+      font-size: var(--font-size-5xl);
+      font-weight: 700;
+      color: var(--color-accent-primary);
+      margin-bottom: var(--spacing-lg);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .about-hero__subtitle {
+      font-size: var(--font-size-xl);
+      color: var(--color-text-secondary);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .about-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--spacing-4xl) var(--spacing-2xl);
+    }
+
+    .about-section {
+      margin-bottom: var(--spacing-4xl);
+      padding: var(--spacing-3xl);
+      background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-tertiary) 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-wood-dark);
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+    }
+
+    .about-section__icon {
+      font-size: var(--font-size-4xl);
+      margin-bottom: var(--spacing-md);
+      display: block;
+    }
+
+    .about-section__title {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      color: var(--color-accent-primary);
+      margin-bottom: var(--spacing-lg);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .about-section__text {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.9;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .about-section__highlight {
+      color: var(--color-accent-primary);
+      font-weight: 600;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .service-item {
+      padding: var(--spacing-xl);
+      background: var(--color-bg-primary);
+      border: 1px solid var(--color-wood-dark);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+
+    .service-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .service-item__icon {
+      font-size: var(--font-size-3xl);
+      margin-bottom: var(--spacing-md);
+      display: block;
+    }
+
+    .service-item__title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .service-item__description {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .contact-card {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .contact-item {
+      padding: var(--spacing-xl);
+      background: var(--color-bg-primary);
+      border-left: 4px solid var(--color-accent-primary);
+      border-radius: var(--radius-md);
+    }
+
+    .contact-item__label {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .contact-item__value {
+      font-size: var(--font-size-base);
+      color: var(--color-text-secondary);
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: var(--spacing-4xl) var(--spacing-2xl);
+      background: linear-gradient(
+        135deg,
+        rgba(212, 175, 55, 0.1) 0%,
+        rgba(201, 168, 54, 0.05) 100%
+      );
+      border-radius: var(--radius-xl);
+      margin-top: var(--spacing-4xl);
+      border: 1px solid var(--color-accent-primary);
+    }
+
+    .cta-section__title {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      color: var(--color-accent-primary);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .cta-section__text {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    @media (max-width: 768px) {
+      .about-hero__title {
+        font-size: var(--font-size-3xl);
+      }
+
+      .about-hero__subtitle {
+        font-size: var(--font-size-base);
+      }
+
+      .about-section {
+        padding: var(--spacing-xl);
+      }
+
+      .services-grid,
+      .contact-card {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header Navigation -->
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
-        <a href="index.html" aria-label="返回首页">音乐活动预约</a>
+        <a href="index.html" aria-label="返回首页">411吉他工作室</a>
       </div>
       <ul class="header__menu">
         <li class="header__menu-item"><a href="index.html">首页</a></li>
-        <li class="header__menu-item"><a href="activities.html">活动列表</a></li>
+        <li class="header__menu-item"><a href="booking.html">维修预约</a></li>
         <li class="header__menu-item"><a href="about.html" aria-current="page">关于我们</a></li>
-        <li class="header__menu-item"><a href="user-profile.html">个人中心</a></li>
+        <li class="header__menu-item"><a href="admin.html">管理后台</a></li>
       </ul>
       <button class="header__menu-toggle" aria-label="切换菜单" aria-expanded="false">
         <span class="header__menu-icon"></span>
@@ -32,83 +240,95 @@
 
   <!-- Main Content -->
   <main class="main" role="main">
-    <div class="container">
-      <!-- Page Header -->
-      <header class="page-header">
-        <h1 class="page-header__title">关于我们</h1>
-        <p class="page-header__subtitle">致力于为音乐爱好者提供优质的学习和交流平台</p>
-      </header>
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <span class="about-hero__badge">📍 深圳</span>
+      <h1 class="about-hero__title">411吉他工作室</h1>
+      <p class="about-hero__subtitle">
+        深圳吉他手必打卡的宝藏店铺，长期为职业音乐人和吉他爱好者提供优质的吉他维修服务
+      </p>
+    </section>
 
-      <!-- Mission Section -->
-      <section class="about-section" aria-labelledby="mission-title">
-        <h2 id="mission-title" class="about-section__title">我们的使命</h2>
+    <!-- Content Section -->
+    <div class="about-content">
+      <!-- Introduction -->
+      <section class="about-section animate-fade-in-up">
+        <h2 class="about-section__title">🎸 关于我们</h2>
         <p class="about-section__text">
-          我们相信音乐能够连接人心，激发创造力。我们的平台致力于为音乐爱好者提供
-          便捷的活动预约服务，让每个人都能轻松找到适合自己的音乐学习和交流机会。
+          <span class="about-section__highlight">411吉他工作室</span>是深圳一家以吉他维修为主的专业店铺，
+          长期为大量<span class="about-section__highlight">职业音乐人</span>以及<span class="about-section__highlight">吉他爱好者</span>朋友，
+          提供非常优质的吉他相关服务。
+        </p>
+        <p class="about-section__text">
+          我们非常乐意结交对音乐感兴趣和"爱折腾"设备的朋友们，欢迎所有朋友到店做客！
         </p>
       </section>
 
-      <!-- Team Section -->
-      <section class="team" aria-labelledby="team-title">
-        <h2 id="team-title" class="team__title">我们的团队</h2>
-        <div class="team__grid" id="team-members">
-          <!-- Team members will be loaded dynamically or can be static -->
-          <article class="team-member">
-            <img
-              src="images/team/member-placeholder.jpg"
-              alt="团队成员照片"
-              class="team-member__image"
-            >
-            <h3 class="team-member__name">张老师</h3>
-            <p class="team-member__role">吉他教师</p>
-            <p class="team-member__bio">拥有15年教学经验，擅长古典吉他和指弹</p>
-          </article>
-
-          <article class="team-member">
-            <img
-              src="images/team/member-placeholder.jpg"
-              alt="团队成员照片"
-              class="team-member__image"
-            >
-            <h3 class="team-member__name">李老师</h3>
-            <p class="team-member__role">音乐理论讲师</p>
-            <p class="team-member__bio">音乐学院毕业，专注于音乐理论和作曲教学</p>
-          </article>
-
-          <article class="team-member">
-            <img
-              src="images/team/member-placeholder.jpg"
-              alt="团队成员照片"
-              class="team-member__image"
-            >
-            <h3 class="team-member__name">王老师</h3>
-            <p class="team-member__role">电吉他教师</p>
-            <p class="team-member__bio">摇滚乐队主音吉他手，擅长电吉他和效果器使用</p>
-          </article>
+      <!-- Services -->
+      <section class="about-section animate-fade-in-up">
+        <h2 class="about-section__title">🔧 我们的服务</h2>
+        <p class="about-section__text">
+          专注吉他相关服务，为您提供最专业的技术支持
+        </p>
+        <div class="services-grid">
+          <div class="service-item">
+            <span class="service-item__icon">🎯</span>
+            <h3 class="service-item__title">吉他调琴</h3>
+            <p class="service-item__description">专业的琴颈调整、音准校正，让您的吉他发挥最佳状态</p>
+          </div>
+          <div class="service-item">
+            <span class="service-item__icon">✨</span>
+            <h3 class="service-item__title">吉他保养</h3>
+            <p class="service-item__description">指板护理、品丝打磨、换弦清洁，延长爱琴使用寿命</p>
+          </div>
+          <div class="service-item">
+            <span class="service-item__icon">🔨</span>
+            <h3 class="service-item__title">吉他维修</h3>
+            <p class="service-item__description">修复各类吉他故障，从打品到电路问题，专业解决</p>
+          </div>
+          <div class="service-item">
+            <span class="service-item__icon">⚡</span>
+            <h3 class="service-item__title">吉他改装</h3>
+            <p class="service-item__description">拾音器安装、电路改装、音色优化，定制专属音色</p>
+          </div>
         </div>
       </section>
 
-      <!-- Contact Section -->
-      <section class="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title" class="contact__title">联系我们</h2>
-        <div class="contact__info">
-          <div class="contact__item">
-            <h3 class="contact__item-title">地址</h3>
-            <p class="contact__item-text">北京市朝阳区音乐街123号</p>
+      <!-- Why Choose Us -->
+      <section class="about-section animate-fade-in-up">
+        <h2 class="about-section__title">💎 为什么选择我们</h2>
+        <p class="about-section__text">
+          • <span class="about-section__highlight">经验丰富</span>：长期服务职业音乐人，技术过硬<br>
+          • <span class="about-section__highlight">品质保证</span>：用心对待每一把吉他，精益求精<br>
+          • <span class="about-section__highlight">友好热情</span>：爱交朋友，乐意分享音乐和设备知识<br>
+          • <span class="about-section__highlight">专业专注</span>：专注吉他维修，做最擅长的事
+        </p>
+      </section>
+
+      <!-- Contact -->
+      <section class="about-section animate-fade-in-up">
+        <h2 class="about-section__title">📞 联系我们</h2>
+        <div class="contact-card">
+          <div class="contact-item">
+            <div class="contact-item__label">店铺名称</div>
+            <div class="contact-item__value">411吉他工作室</div>
           </div>
-          <div class="contact__item">
-            <h3 class="contact__item-title">邮箱</h3>
-            <p class="contact__item-text">info@musicbooking.com</p>
+          <div class="contact-item">
+            <div class="contact-item__label">所在城市</div>
+            <div class="contact-item__value">深圳</div>
           </div>
-          <div class="contact__item">
-            <h3 class="contact__item-title">电话</h3>
-            <p class="contact__item-text">123-456-7890</p>
-          </div>
-          <div class="contact__item">
-            <h3 class="contact__item-title">营业时间</h3>
-            <p class="contact__item-text">周一至周日 9:00 - 21:00</p>
+          <div class="contact-item">
+            <div class="contact-item__label">服务对象</div>
+            <div class="contact-item__value">职业音乐人 · 吉他爱好者</div>
           </div>
         </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section animate-fade-in-up">
+        <h2 class="cta-section__title">准备好让您的爱琴重焕新生了吗？</h2>
+        <p class="cta-section__text">立即预约，享受专业的吉他维修服务</p>
+        <a href="booking.html" class="button button--primary button--large">立即预约</a>
       </section>
     </div>
   </main>
@@ -118,21 +338,22 @@
     <div class="container">
       <div class="footer__content">
         <div class="footer__section">
-          <h3 class="footer__title">联系我们</h3>
-          <p class="footer__text">邮箱: info@musicbooking.com</p>
-          <p class="footer__text">电话: 123-456-7890</p>
+          <h3 class="footer__title">411吉他工作室</h3>
+          <p class="footer__text">深圳吉他手必打卡的宝藏店铺</p>
+          <p class="footer__text">专业吉他维修 · 保养 · 改装</p>
         </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>
           <ul class="footer__links">
-            <li><a href="activities.html">活动列表</a></li>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="booking.html">维修预约</a></li>
             <li><a href="about.html">关于我们</a></li>
-            <li><a href="user-profile.html">个人中心</a></li>
+            <li><a href="admin.html">管理后台</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__copyright">
-        <p>&copy; 2026 音乐活动预约平台. All rights reserved.</p>
+        <p>&copy; 2026 411吉他工作室. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="专业吉他维修服务 - 木吉他、电吉他、古典吉他、贝斯维修">
-  <title>吉他维修服务 | 首页</title>
+  <title>411吉他工作室 | 首页</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout-new.css">
+  <link rel="stylesheet" href="css/responsive-new.css">
+  <link rel="stylesheet" href="css/animations-new.css">
 </head>
 <body>
   <!-- Header Navigation -->
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
-        <a href="index.html" aria-label="返回首页">吉他维修服务</a>
+        <a href="index.html" aria-label="返回首页">411吉他工作室</a>
       </div>
       <ul class="header__menu">
         <li class="header__menu-item"><a href="index.html" aria-current="page">首页</a></li>
@@ -37,7 +37,10 @@
       <div class="hero__content">
         <h1 id="hero-title" class="hero__title">专业吉他维修服务</h1>
         <p class="hero__subtitle">木吉他、电吉他、古典吉他、贝斯专业维修</p>
-        <a href="booking.html" class="hero__cta button button--primary">立即预约</a>
+        <div class="hero__actions">
+          <a href="booking.html" class="hero__cta button button--primary">立即预约</a>
+          <button id="view-calendar-btn" class="hero__cta button button--calendar">查看闲忙</button>
+        </div>
       </div>
     </section>
 
@@ -71,36 +74,53 @@
             <p class="service-card__description">修复琴体裂缝、脱胶等结构问题</p>
           </div>
         </div>
-        <div class="featured__actions">
-          <a href="booking.html" class="button button--secondary">预约维修</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about-preview" aria-labelledby="about-preview-title">
-      <div class="container">
-        <h2 id="about-preview-title" class="about-preview__title">关于我们</h2>
-        <p class="about-preview__text">
-          我们拥有多年吉他维修经验，为各类吉他提供专业维修服务。
-          无论是日常保养还是复杂维修，我们都能为您的爱琴提供最好的照顾。
-          营业时间：周一至周五 9:00-18:00
-        </p>
-        <a href="about.html" class="button button--secondary">了解更多</a>
       </div>
     </section>
   </main>
+
+  <!-- Calendar Modal -->
+  <div id="calendar-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content modal__content--large">
+      <div class="modal__header">
+        <h2 class="modal__title">查看闲忙</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div class="calendar-view">
+          <div class="calendar-view__header">
+            <button id="prev-month-btn-home" class="button button--small button--secondary">← 上月</button>
+            <h2 id="calendar-month-title-home" class="calendar-view__title"></h2>
+            <button id="next-month-btn-home" class="button button--small button--secondary">下月 →</button>
+          </div>
+
+          <div class="calendar-view__legend">
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--idle"></span>
+              空闲 (≤3单/天)
+            </span>
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--normal"></span>
+              一般 (4-6单/天)
+            </span>
+            <span class="calendar-view__legend-item">
+              <span class="calendar-view__legend-color calendar-view__legend-color--busy"></span>
+              繁忙 (>6单/天)
+            </span>
+          </div>
+
+          <div id="calendar-grid-home" class="calendar-grid">
+            <!-- Calendar will be rendered here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer__content">
-        <div class="footer__section">
-          <h3 class="footer__title">联系我们</h3>
-          <p class="footer__text">邮箱: repair@guitarservice.com</p>
-          <p class="footer__text">电话: 123-456-7890</p>
-          <p class="footer__text">营业时间: 周一至周五 9:00-18:00</p>
-        </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>
           <ul class="footer__links">
@@ -110,9 +130,39 @@
             <li><a href="admin.html">管理后台</a></li>
           </ul>
         </div>
+
+        <div class="footer__section">
+          <h3 class="footer__title">社交媒体</h3>
+          <ul class="footer__links footer__links--social">
+            <li>
+              <a href="https://xhslink.com/m/4SM0Fk9mh2I" target="_blank" rel="noopener noreferrer" class="footer__social-link">
+                <span class="footer__social-icon">📕</span>
+                <span>小红书-411吉他工作室</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://b23.tv/yA896Lk" target="_blank" rel="noopener noreferrer" class="footer__social-link">
+                <span class="footer__social-icon">📺</span>
+                <span>哔哩哔哩-411吉他工作室</span>
+              </a>
+            </li>
+            <li>
+              <span class="footer__social-link footer__social-link--disabled">
+                <span class="footer__social-icon">💬</span>
+                <span>微信（敬请期待）</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">411吉他工作室-木木：13355788990</p>
+          <p class="footer__text">深圳 · 职业音乐人与吉他爱好者的港湾</p>
+        </div>
       </div>
       <div class="footer__copyright">
-        <p>&copy; 2026 吉他维修服务平台. All rights reserved.</p>
+        <p>&copy; 2026 411吉他工作室. All rights reserved.</p>
       </div>
     </div>
   </footer>

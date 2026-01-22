@@ -1,0 +1,831 @@
+/**
+ * 吉他维修服务 - 响应式样式
+ * Premium, Professional, Heritage Craftsmanship
+ * Mobile-first approach
+ */
+
+/* ========================================
+   Tablet & Below (768px)
+   ======================================== */
+@media (max-width: 768px) {
+  /* Typography scaling */
+  :root {
+    --font-size-5xl: 2.25rem;
+    --font-size-4xl: 1.875rem;
+    --font-size-3xl: 1.5rem;
+    --font-size-2xl: 1.25rem;
+  }
+
+  /* Header Navigation */
+  .header__nav {
+    height: 60px;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .header__logo a {
+    font-size: var(--font-size-lg);
+  }
+
+  .header__menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-secondary);
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    z-index: 99;
+    border-top: 2px solid var(--color-accent-primary);
+  }
+
+  .header__menu--open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+  }
+
+  .header__menu-icon {
+    width: 24px;
+    height: 2px;
+    background: var(--color-accent-primary);
+    transition: all var(--transition-base);
+    position: relative;
+  }
+
+  .header__menu-icon::before,
+  .header__menu-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: var(--color-accent-primary);
+    transition: all var(--transition-base);
+  }
+
+  .header__menu-icon::before {
+    top: -8px;
+  }
+
+  .header__menu-icon::after {
+    bottom: -8px;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon {
+    background-color: transparent;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  .header__menu-toggle[aria-expanded='true'] .header__menu-icon::after {
+    transform: rotate(-45deg);
+    bottom: 0;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 60vh;
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .hero__content {
+    padding: var(--spacing-xl);
+  }
+
+  .hero__title {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    letter-spacing: 0.05em;
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  /* Buttons */
+  .button {
+    padding: 0.625rem 1.5rem;
+    font-size: var(--font-size-sm);
+  }
+
+  .button--large {
+    padding: 0.875rem 2rem;
+    font-size: var(--font-size-base);
+  }
+
+  /* Cards & Grid */
+  .featured__grid,
+  .activities__grid,
+  .team__grid,
+  .service-cards {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .card,
+  .service-card {
+    padding: var(--spacing-lg);
+  }
+
+  /* Forms */
+  .form-group__input,
+  .form-group__textarea,
+  .form-group__select {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Booking & Activity Detail */
+  .booking__actions,
+  .activity-detail__actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .booking__actions .button,
+  .activity-detail__actions .button {
+    width: 100%;
+  }
+
+  /* Filters */
+  .filters {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .filters__group {
+    width: 100%;
+  }
+
+  .filters__select,
+  .filters__input {
+    width: 100%;
+  }
+
+  .filters__button {
+    width: 100%;
+  }
+
+  /* Footer */
+  .footer {
+    padding: var(--spacing-2xl) 0 var(--spacing-lg);
+  }
+
+  .footer__content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  /* Admin Dashboard */
+  .tabs {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .tabs__tab {
+    flex: 1 1 calc(50% - var(--spacing-xs));
+    min-width: 120px;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .orders__container {
+    grid-template-columns: 1fr;
+  }
+
+  /* Calendar View */
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .calendar-cell {
+    min-height: 50px;
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+  }
+
+  .calendar-cell__date {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Table Responsive */
+  table {
+    font-size: var(--font-size-sm);
+  }
+
+  table th,
+  table td {
+    padding: var(--spacing-sm);
+  }
+
+  /* Quick Actions */
+  .quick-actions__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Spacing adjustments */
+  .main {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* ========================================
+   Mobile (480px and below)
+   ======================================== */
+@media (max-width: 480px) {
+  /* Typography */
+  :root {
+    --font-size-5xl: 2rem;
+    --font-size-4xl: 1.5rem;
+    --font-size-3xl: 1.25rem;
+    --font-size-2xl: 1.125rem;
+    --font-size-xl: 1rem;
+  }
+
+  /* Header */
+  .header__nav {
+    height: 56px;
+    padding: 0 var(--spacing-md);
+  }
+
+  .header__logo a {
+    font-size: var(--font-size-base);
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 50vh;
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+
+  .hero__title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Buttons */
+  .button {
+    padding: 0.5rem 1.25rem;
+    font-size: var(--font-size-xs);
+  }
+
+  .button--large {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--font-size-sm);
+  }
+
+  /* Cards */
+  .card {
+    padding: var(--spacing-md);
+  }
+
+  .card__header {
+    padding: var(--spacing-md);
+  }
+
+  .card__title {
+    font-size: var(--font-size-xl);
+  }
+
+  .service-card {
+    padding: var(--spacing-md);
+  }
+
+  .service-card__title {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Forms */
+  .form-group__input,
+  .form-group__textarea,
+  .form-group__select {
+    padding: var(--spacing-sm);
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .form-group__label {
+    font-size: var(--font-size-xs);
+  }
+
+  /* Activity Cards */
+  .activity-card__image {
+    height: 180px;
+  }
+
+  .activity-card__title {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Team Members */
+  .team-member__image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .team-member__name {
+    font-size: var(--font-size-base);
+  }
+
+  /* Breadcrumb */
+  .breadcrumb__list {
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-xs);
+  }
+
+  /* Activity Detail */
+  .activity-detail__meta-label {
+    min-width: 50px;
+    font-size: var(--font-size-xs);
+  }
+
+  .activity-detail__meta-value {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Admin Dashboard */
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .stats__card {
+    padding: var(--spacing-md);
+  }
+
+  .stats__title {
+    font-size: var(--font-size-xs);
+  }
+
+  .stats__value {
+    font-size: var(--font-size-xl);
+  }
+
+  .order-card {
+    padding: var(--spacing-md);
+  }
+
+  .order-card__title {
+    font-size: var(--font-size-base);
+  }
+
+  /* Calendar */
+  .calendar-cell {
+    min-height: 40px;
+    font-size: 10px;
+  }
+
+  .calendar-cell__date {
+    font-size: var(--font-size-xs);
+  }
+
+  .calendar-view__legend {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: flex-start;
+  }
+
+  /* Modal */
+  .modal__content {
+    margin: var(--spacing-md);
+    max-height: calc(100vh - var(--spacing-md) * 2);
+  }
+
+  .modal__content--large {
+    max-width: 95vw;
+  }
+
+  .modal__header {
+    padding: var(--spacing-md);
+  }
+
+  .modal__body {
+    padding: var(--spacing-md);
+  }
+
+  .modal__footer {
+    padding: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .modal__footer .button {
+    width: 100%;
+  }
+
+  /* Quick Actions */
+  .quick-actions__card {
+    padding: var(--spacing-md);
+  }
+
+  .quick-actions__card-title {
+    font-size: var(--font-size-base);
+  }
+
+  .quick-actions__label {
+    font-size: var(--font-size-xs);
+  }
+
+  /* Spacing */
+  .page-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section {
+    padding: var(--spacing-xl) 0;
+  }
+}
+
+/* ========================================
+   Large Screens (1200px and above)
+   ======================================== */
+@media (min-width: 1200px) {
+  /* Grid layouts */
+  .featured__grid,
+  .activities__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .team__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .service-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Hero */
+  .hero__title {
+    font-size: clamp(3rem, 10vw, 6rem);
+  }
+
+  /* Wider containers */
+  .container {
+    max-width: 1600px;
+  }
+
+  .header__nav {
+    max-width: 1600px;
+  }
+
+  .featured__grid {
+    max-width: 1600px;
+  }
+
+  .footer__content {
+    max-width: 1600px;
+  }
+
+  /* Enhanced spacing */
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-2xl), 0 0 50px var(--color-accent-glow);
+  }
+
+  .service-card:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-2xl), 0 0 60px var(--color-accent-glow);
+  }
+}
+
+/* ========================================
+   Extra Large Screens (1400px and above)
+   ======================================== */
+@media (min-width: 1400px) {
+  .hero__title {
+    letter-spacing: 0.15em;
+  }
+
+  .featured__grid,
+  .activities__grid {
+    gap: var(--spacing-3xl);
+  }
+
+  /* Larger text for better readability */
+  .card__body,
+  .service-card__description {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+@media print {
+  /* Hide non-essential elements */
+  .header,
+  .footer,
+  .button,
+  .filters,
+  .breadcrumb,
+  .tabs,
+  .modal__overlay,
+  .calendar-view__legend,
+  .quick-actions {
+    display: none !important;
+  }
+
+  /* Adjust colors for print */
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .hero {
+    background: #fff;
+    min-height: auto;
+  }
+
+  .hero__content {
+    padding: var(--spacing-md);
+  }
+
+  /* Cards and containers */
+  .card,
+  .service-card,
+  .order-card {
+    background: #fff;
+    border: 1px solid #000;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .card__header,
+  .service-card::before {
+    background: #000;
+    color: #fff;
+  }
+
+  /* Text colors */
+  h1, h2, h3, h4, h5, h6,
+  .card__title,
+  .service-card__title,
+  .activity-card__title {
+    color: #000;
+  }
+
+  p,
+  .card__body,
+  .service-card__description {
+    color: #000;
+  }
+
+  /* Links */
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  /* Ensure content fits */
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* Page breaks */
+  .order-card,
+  .stats__card,
+  .team-member {
+    page-break-inside: avoid;
+  }
+
+  .stats__card {
+    border: 1px solid #ccc;
+  }
+
+  /* Show URLs for links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: var(--font-size-xs);
+  }
+
+  /* Table styling */
+  table {
+    border: 1px solid #000;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #000;
+  }
+}
+
+/* ========================================
+   Accessibility - Reduced Motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero::before {
+    animation: none;
+  }
+
+  .button::before {
+    transition: none;
+  }
+
+  .card:hover,
+  .service-card:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+   Accessibility - High Contrast Mode
+   ======================================== */
+@media (prefers-contrast: high) {
+  :root {
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e0e0e0;
+    --color-accent-primary: #ffdd00;
+    --color-accent-secondary: #ffcc00;
+  }
+
+  .button {
+    border-width: 3px;
+  }
+
+  .card,
+  .service-card {
+    border-width: 2px;
+  }
+
+  .form-group__input:focus,
+  .form-group__textarea:focus,
+  .form-group__select:focus {
+    outline: 3px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a:hover {
+    text-decoration-style: double;
+  }
+}
+
+/* ========================================
+   Landscape Orientation (Mobile)
+   ======================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero {
+    min-height: 80vh;
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .hero__title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .activity-card__image {
+    height: 150px;
+  }
+
+  /* Reduced header height */
+  .header__nav {
+    height: 50px;
+  }
+
+  /* Compact modal */
+  .modal__content {
+    max-height: calc(100vh - var(--spacing-lg));
+  }
+}
+
+/* ========================================
+   Touch Device Optimizations
+   ======================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .button,
+  .header__menu-item a,
+  .header__menu-toggle,
+  .tabs__tab,
+  .calendar-cell,
+  .form-group__checkbox {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .card:hover,
+  .service-card:hover {
+    transform: none;
+  }
+
+  .button:hover,
+  .button:focus {
+    transform: none;
+  }
+
+  /* Larger form inputs */
+  .form-group__input,
+  .form-group__textarea,
+  .form-group__select,
+  .filters__select,
+  .filters__input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: var(--spacing-md) var(--spacing-lg);
+    min-height: 44px;
+  }
+
+  /* Enhanced touch feedback */
+  .button:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+
+  .card:active,
+  .service-card:active {
+    transform: scale(0.99);
+  }
+
+  /* Larger clickable areas in tables */
+  table button,
+  table a {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Wider calendar cells */
+  .calendar-cell {
+    min-height: 55px;
+  }
+
+  /* Enhanced modal close button */
+  .modal__close {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ========================================
+   Tablet Specific (768px - 1024px)
+   ======================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .featured__grid,
+  .activities__grid,
+  .service-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero {
+    min-height: 70vh;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .orders__container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
