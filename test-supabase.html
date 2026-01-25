@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase 连接测试</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a1a;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #d4af37;
+    }
+    .status {
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+    .success {
+      background: #10b981;
+      border: 2px solid #059669;
+    }
+    .error {
+      background: #ef4444;
+      border: 2px solid #dc2626;
+    }
+    .loading {
+      background: #f59e0b;
+      border: 2px solid #d97706;
+    }
+    pre {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔧 Supabase 连接测试</h1>
+  <div id="status" class="status loading">⏳ 正在测试连接...</div>
+  <div id="details"></div>
+
+  <script type="module">
+    const statusDiv = document.getElementById('status');
+    const detailsDiv = document.getElementById('details');
+
+    async function testConnection() {
+      try {
+        console.log('开始测试...');
+
+        // 测试 1: 导入模块
+        statusDiv.textContent = '⏳ 正在导入 Supabase 模块...';
+        const { supabase } = await import('./js/supabase-client.js');
+        console.log('✓ 模块导入成功');
+
+        // 测试 2: 检查客户端
+        statusDiv.textContent = '⏳ 正在检查 Supabase 客户端...';
+        if (!supabase) {
+          throw new Error('Supabase 客户端未初始化');
+        }
+        console.log('✓ 客户端已初始化');
+
+        // 测试 3: 查询数据库
+        statusDiv.textContent = '⏳ 正在查询数据库...';
+        const { data, error } = await supabase
+          .from('guitar_repairs')
+          .select('id')
+          .limit(1);
+
+        if (error) {
+          throw error;
+        }
+
+        console.log('✓ 数据库查询成功');
+
+        // 成功
+        statusDiv.className = 'status success';
+        statusDiv.textContent = '✅ 所有测试通过！Supabase 连接正常。';
+
+        detailsDiv.innerHTML = `
+          <h2>测试结果</h2>
+          <pre>✓ 模块导入成功
+✓ 客户端已初始化
+✓ 数据库连接成功
+✓ 查询返回 ${data ? data.length : 0} 条记录</pre>
+          <p style="color: #10b981; font-weight: bold;">
+            🎉 修复成功！现在可以正常使用所有按钮功能了。
+          </p>
+          <p>
+            <a href="index.html" style="color: #d4af37; font-size: 18px;">← 返回主页测试按钮</a>
+          </p>
+        `;
+
+      } catch (error) {
+        console.error('测试失败:', error);
+
+        statusDiv.className = 'status error';
+        statusDiv.textContent = '❌ 测试失败';
+
+        detailsDiv.innerHTML = `
+          <h2>错误详情</h2>
+          <pre>${error.message}</pre>
+          <pre>${error.stack || ''}</pre>
+          <p style="color: #ef4444;">
+            如果看到此错误，请联系技术支持并提供上述错误信息。
+          </p>
+        `;
+      }
+    }
+
+    testConnection();
+  </script>
+</body>
+</html>
