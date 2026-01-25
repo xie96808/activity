@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生产环境诊断</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #00ff00;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #d4af37;
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: #2a2a2a;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border-left: 4px solid #d4af37;
+    }
+    .test-section h2 {
+      color: #d4af37;
+      margin-top: 0;
+    }
+    .status {
+      padding: 5px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 5px 0;
+      font-weight: bold;
+    }
+    .status.success {
+      background: #10b981;
+      color: white;
+    }
+    .status.error {
+      background: #ef4444;
+      color: white;
+    }
+    .status.warning {
+      background: #f59e0b;
+      color: white;
+    }
+    .log {
+      background: #000;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-left: 3px solid #666;
+      padding-left: 10px;
+    }
+    .log-entry.error {
+      border-left-color: #ef4444;
+      color: #ef4444;
+    }
+    .log-entry.success {
+      border-left-color: #10b981;
+      color: #10b981;
+    }
+    .log-entry.info {
+      border-left-color: #3b82f6;
+      color: #3b82f6;
+    }
+    button {
+      background: #d4af37;
+      color: #1a1a1a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 5px;
+    }
+    button:hover {
+      background: #c49d2f;
+    }
+    .info {
+      color: #9ca3af;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 生产环境诊断工具</h1>
+  <p class="info">当前时间: <span id="current-time"></span></p>
+  <p class="info">当前 URL: <span id="current-url"></span></p>
+  <p class="info">User Agent: <span id="user-agent"></span></p>
+
+  <div class="test-section">
+    <h2>1. 基础环境检测</h2>
+    <div id="env-test"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>2. DOM 元素检测</h2>
+    <div id="dom-test"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>3. JavaScript 模块加载测试</h2>
+    <div id="module-test"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>4. Supabase 连接测试</h2>
+    <div id="supabase-test"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>5. 按钮功能测试</h2>
+    <button id="test-calendar-btn">测试查看闲忙按钮</button>
+    <button id="test-address-btn">测试路线指引按钮</button>
+    <button id="test-wechat-btn">测试微信二维码按钮</button>
+    <div id="button-test"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>6. 控制台日志</h2>
+    <div id="console-log" class="log"></div>
+  </div>
+
+  <script>
+    // 拦截控制台输出
+    const consoleLog = document.getElementById('console-log');
+    const originalLog = console.log;
+    const originalError = console.error;
+    const originalWarn = console.warn;
+
+    function addLog(message, type = 'info') {
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      consoleLog.appendChild(entry);
+      consoleLog.scrollTop = consoleLog.scrollHeight;
+    }
+
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      addLog(args.join(' '), 'info');
+    };
+
+    console.error = function(...args) {
+      originalError.apply(console, args);
+      addLog('ERROR: ' + args.join(' '), 'error');
+    };
+
+    console.warn = function(...args) {
+      originalWarn.apply(console, args);
+      addLog('WARN: ' + args.join(' '), 'warning');
+    };
+
+    // 捕获未处理的错误
+    window.addEventListener('error', (e) => {
+      addLog(`未捕获的错误: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+    });
+
+    window.addEventListener('unhandledrejection', (e) => {
+      addLog(`未处理的 Promise 拒绝: ${e.reason}`, 'error');
+    });
+
+    // 显示基础信息
+    document.getElementById('current-time').textContent = new Date().toLocaleString('zh-CN');
+    document.getElementById('current-url').textContent = window.location.href;
+    document.getElementById('user-agent').textContent = navigator.userAgent;
+
+    console.log('诊断工具已启动');
+
+    // 测试 1: 基础环境
+    function testEnvironment() {
+      const envTest = document.getElementById('env-test');
+      let html = '';
+
+      const tests = [
+        { name: 'ES6 模块支持', test: () => typeof Symbol !== 'undefined' },
+        { name: 'Fetch API 支持', test: () => typeof fetch !== 'undefined' },
+        { name: 'Promise 支持', test: () => typeof Promise !== 'undefined' },
+        { name: 'async/await 支持', test: () => {
+          try {
+            eval('(async () => {})');
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }},
+        { name: 'localStorage 可用', test: () => {
+          try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }}
+      ];
+
+      tests.forEach(({ name, test }) => {
+        const result = test();
+        html += `<div class="status ${result ? 'success' : 'error'}">${result ? '✓' : '✗'} ${name}</div><br>`;
+        console.log(`${name}: ${result ? '通过' : '失败'}`);
+      });
+
+      envTest.innerHTML = html;
+    }
+
+    // 测试 2: DOM 元素
+    function testDOM() {
+      const domTest = document.getElementById('dom-test');
+      let html = '';
+
+      const elements = [
+        { id: 'view-calendar-btn', name: '查看闲忙按钮' },
+        { id: 'view-address-btn-hero', name: '路线指引按钮(Hero)' },
+        { id: 'view-address-btn', name: '路线指引按钮(Footer)' },
+        { id: 'view-wechat-btn', name: '微信二维码按钮' },
+        { id: 'calendar-modal', name: '日历模态框' },
+        { id: 'address-modal', name: '地址模态框' },
+        { id: 'wechat-modal', name: '微信模态框' }
+      ];
+
+      elements.forEach(({ id, name }) => {
+        const element = document.getElementById(id);
+        const exists = !!element;
+        html += `<div class="status ${exists ? 'success' : 'error'}">${exists ? '✓' : '✗'} ${name} (${id})</div><br>`;
+        console.log(`${name}: ${exists ? '找到' : '未找到'}`);
+      });
+
+      domTest.innerHTML = html;
+    }
+
+    // 测试 3: 模块加载
+    async function testModules() {
+      const moduleTest = document.getElementById('module-test');
+      moduleTest.innerHTML = '<div class="status warning">⏳ 正在测试...</div>';
+
+      try {
+        console.log('尝试加载 supabase-client.js...');
+        const supabaseModule = await import('./js/supabase-client.js');
+        console.log('supabase-client.js 加载成功');
+
+        console.log('尝试加载 main.js...');
+        const mainModule = await import('./js/main.js');
+        console.log('main.js 加载成功');
+
+        moduleTest.innerHTML = `
+          <div class="status success">✓ supabase-client.js 加载成功</div><br>
+          <div class="status success">✓ main.js 加载成功</div><br>
+          <div class="info">Supabase 客户端: ${supabaseModule.supabase ? '已初始化' : '未初始化'}</div>
+        `;
+      } catch (error) {
+        console.error('模块加载失败:', error);
+        moduleTest.innerHTML = `
+          <div class="status error">✗ 模块加载失败</div><br>
+          <div class="info">错误信息: ${error.message}</div>
+          <div class="info">错误堆栈: <pre>${error.stack}</pre></div>
+        `;
+      }
+    }
+
+    // 测试 4: Supabase 连接
+    async function testSupabase() {
+      const supabaseTest = document.getElementById('supabase-test');
+      supabaseTest.innerHTML = '<div class="status warning">⏳ 正在测试...</div>';
+
+      try {
+        console.log('尝试连接 Supabase...');
+        const { supabase } = await import('./js/supabase-client.js');
+
+        console.log('尝试查询数据库...');
+        const { data, error } = await supabase
+          .from('guitar_repairs')
+          .select('id')
+          .limit(1);
+
+        if (error) {
+          throw error;
+        }
+
+        console.log('Supabase 连接成功');
+        supabaseTest.innerHTML = `
+          <div class="status success">✓ Supabase 连接成功</div><br>
+          <div class="info">查询结果: ${data ? data.length + ' 条记录' : '无数据'}</div>
+        `;
+      } catch (error) {
+        console.error('Supabase 连接失败:', error);
+        supabaseTest.innerHTML = `
+          <div class="status error">✗ Supabase 连接失败</div><br>
+          <div class="info">错误信息: ${error.message}</div>
+        `;
+      }
+    }
+
+    // 测试 5: 按钮功能
+    function testButtons() {
+      const buttonTest = document.getElementById('button-test');
+      let html = '<div class="info">点击上方按钮进行测试...</div>';
+      buttonTest.innerHTML = html;
+
+      // 测试查看闲忙按钮
+      document.getElementById('test-calendar-btn').addEventListener('click', () => {
+        console.log('测试查看闲忙按钮...');
+        const btn = document.getElementById('view-calendar-btn');
+        const modal = document.getElementById('calendar-modal');
+
+        if (!btn) {
+          buttonTest.innerHTML += '<div class="status error">✗ 查看闲忙按钮不存在</div><br>';
+          return;
+        }
+
+        if (!modal) {
+          buttonTest.innerHTML += '<div class="status error">✗ 日历模态框不存在</div><br>';
+          return;
+        }
+
+        // 模拟点击
+        btn.click();
+
+        setTimeout(() => {
+          const isVisible = modal.style.display === 'block';
+          buttonTest.innerHTML += `<div class="status ${isVisible ? 'success' : 'error'}">${isVisible ? '✓' : '✗'} 查看闲忙按钮: ${isVisible ? '正常' : '失败'}</div><br>`;
+          console.log(`查看闲忙按钮测试: ${isVisible ? '通过' : '失败'}`);
+
+          if (isVisible) {
+            modal.style.display = 'none';
+          }
+        }, 100);
+      });
+
+      // 测试路线指引按钮
+      document.getElementById('test-address-btn').addEventListener('click', () => {
+        console.log('测试路线指引按钮...');
+        const btn = document.getElementById('view-address-btn-hero');
+        const modal = document.getElementById('address-modal');
+
+        if (!btn) {
+          buttonTest.innerHTML += '<div class="status error">✗ 路线指引按钮不存在</div><br>';
+          return;
+        }
+
+        if (!modal) {
+          buttonTest.innerHTML += '<div class="status error">✗ 地址模态框不存在</div><br>';
+          return;
+        }
+
+        // 模拟点击
+        btn.click();
+
+        setTimeout(() => {
+          const isVisible = modal.style.display === 'block';
+          buttonTest.innerHTML += `<div class="status ${isVisible ? 'success' : 'error'}">${isVisible ? '✓' : '✗'} 路线指引按钮: ${isVisible ? '正常' : '失败'}</div><br>`;
+          console.log(`路线指引按钮测试: ${isVisible ? '通过' : '失败'}`);
+
+          if (isVisible) {
+            modal.style.display = 'none';
+          }
+        }, 100);
+      });
+
+      // 测试微信二维码按钮
+      document.getElementById('test-wechat-btn').addEventListener('click', () => {
+        console.log('测试微信二维码按钮...');
+        const btn = document.getElementById('view-wechat-btn');
+        const modal = document.getElementById('wechat-modal');
+
+        if (!btn) {
+          buttonTest.innerHTML += '<div class="status error">✗ 微信二维码按钮不存在</div><br>';
+          return;
+        }
+
+        if (!modal) {
+          buttonTest.innerHTML += '<div class="status error">✗ 微信模态框不存在</div><br>';
+          return;
+        }
+
+        // 模拟点击
+        btn.click();
+
+        setTimeout(() => {
+          const isVisible = modal.style.display === 'block';
+          buttonTest.innerHTML += `<div class="status ${isVisible ? 'success' : 'error'}">${isVisible ? '✓' : '✗'} 微信二维码按钮: ${isVisible ? '正常' : '失败'}</div><br>`;
+          console.log(`微信二维码按钮测试: ${isVisible ? '通过' : '失败'}`);
+
+          if (isVisible) {
+            modal.style.display = 'none';
+          }
+        }, 100);
+      });
+    }
+
+    // 运行所有测试
+    async function runAllTests() {
+      console.log('开始运行所有测试...');
+      testEnvironment();
+      testDOM();
+      await testModules();
+      await testSupabase();
+      testButtons();
+      console.log('所有测试完成');
+    }
+
+    // 页面加载完成后运行测试
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runAllTests);
+    } else {
+      runAllTests();
+    }
+  </script>
+</body>
+</html>
