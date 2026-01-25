@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/layout-new.css">
   <link rel="stylesheet" href="css/responsive-new.css">
   <link rel="stylesheet" href="css/animations-new.css">
+  <link rel="stylesheet" href="css/booking.css">
 </head>
 <body>
   <!-- Header Navigation -->
@@ -117,7 +118,7 @@
 
           <div class="form-group">
             <label for="problem-description" class="form-group__label">
-              问题描述 <span class="form-group__required" aria-label="必填">*</span>
+              问题描述与备注 <span class="form-group__required" aria-label="必填">*</span>
             </label>
             <textarea
               id="problem-description"
@@ -211,7 +212,7 @@
                 aria-required="true"
                 aria-describedby="terms-error"
               >
-              <span>我已阅读并同意<a href="#" class="form-group__link">服务条款</a></span>
+              <span>我已阅读并同意<a href="#" id="view-terms-btn" class="form-group__link">服务条款</a></span>
             </label>
             <span id="terms-error" class="form-group__error" role="alert"></span>
           </div>
@@ -231,6 +232,60 @@
       </section>
     </div>
   </main>
+
+  <!-- Service Terms Modal -->
+  <div id="terms-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title">411吉他维修工作室服务条款</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body" style="max-height: 70vh; overflow-y: auto;">
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">服务时效</h3>
+        <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #1a1a1a;">
+          维修周期将根据具体维修项目，在接收乐器时与客户协商确定。我方将尽力在约定时间内完成维修，但具体交付时间可能因实际工作量、配件供应等因素有所调整。
+        </p>
+
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">付款方式</h3>
+        <p style="margin-bottom: 0.5rem; line-height: 1.8; color: #1a1a1a;">
+          客户需预付维修总费用20% 作为定金，以确认并排期维修服务。
+        </p>
+        <p style="margin-bottom: 0.5rem; line-height: 1.8; color: #1a1a1a;">
+          余款需在维修完成、客户验收无误后，取件时一次性付清。
+        </p>
+        <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #1a1a1a;">
+          在余款结清前，我方有权留置已维修完成的乐器。
+        </p>
+
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">不可抗力与交付延迟</h3>
+        <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #1a1a1a;">
+          如因自然灾害、政府行为、战争、罢工、疫情、供应链中断、配件短缺等不可抗力因素，或非因我方故意或重大过失导致的意外情况，造成维修交付延迟，我方不构成违约，并有权相应顺延交付时间。
+        </p>
+
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">客户责任</h3>
+        <p style="margin-bottom: 0.5rem; line-height: 1.8; color: #1a1a1a;">
+          客户应在交付维修前，如实告知乐器的已知状况、损坏历史及特殊要求。
+        </p>
+        <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #1a1a1a;">
+          对于因客户隐瞒或未告知的既有问题导致的额外维修或风险，我方不承担责任。
+        </p>
+
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">免责声明</h3>
+        <p style="margin-bottom: 0.5rem; line-height: 1.8; color: #1a1a1a;">
+          维修服务旨在恢复乐器的基本演奏功能与状态。对于因乐器本身老化、材料固有缺陷或无法预见的结构性风险，我方在尽到合理注意义务后，不承担无限责任。
+        </p>
+        <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #1a1a1a;">
+          对于极其珍贵或具有特殊意义的乐器，建议客户事先自行购买相应保险。
+        </p>
+
+        <h3 style="color: var(--color-accent-primary); margin-bottom: 1rem;">争议解决</h3>
+        <p style="margin-bottom: 1rem; line-height: 1.8; color: #1a1a1a;">
+          本条款受中华人民共和国法律管辖。如双方就服务发生争议，应首先友好协商解决；协商不成的，任何一方可向我方工作室所在地人民法院提起诉讼。
+        </p>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer" role="contentinfo">

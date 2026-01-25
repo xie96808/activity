@@ -25,6 +25,16 @@ async function init() {
   if (document.getElementById('view-calendar-btn')) {
     initHomeCalendar();
   }
+
+  // Initialize address modal if on home page
+  if (document.getElementById('view-address-btn') || document.getElementById('view-address-btn-hero')) {
+    initAddressModal();
+  }
+
+  // Initialize wechat modal if on home page
+  if (document.getElementById('view-wechat-btn')) {
+    initWechatModal();
+  }
 }
 
 /**
@@ -393,6 +403,87 @@ function initHomeCalendar() {
       return {};
     }
   }
+}
+
+/**
+ * Initialize address modal
+ */
+function initAddressModal() {
+  const viewAddressBtn = document.getElementById('view-address-btn');
+  const viewAddressBtnHero = document.getElementById('view-address-btn-hero');
+  const addressModal = document.getElementById('address-modal');
+  const modalOverlay = addressModal?.querySelector('.modal__overlay');
+  const modalClose = addressModal?.querySelector('.modal__close');
+
+  if (!addressModal) return;
+
+  // Open address modal function
+  const openModal = () => {
+    addressModal.style.display = 'block';
+    // Reset scroll position to top when opening
+    setTimeout(() => {
+      const modalBody = addressModal.querySelector('.modal__body');
+      if (modalBody) {
+        modalBody.scrollTop = 0;
+      }
+    }, 0);
+  };
+
+  // Attach click handlers to both buttons if they exist
+  if (viewAddressBtn) {
+    viewAddressBtn.addEventListener('click', openModal);
+  }
+
+  if (viewAddressBtnHero) {
+    viewAddressBtnHero.addEventListener('click', openModal);
+  }
+
+  // Close modal handlers
+  const closeModal = () => {
+    addressModal.style.display = 'none';
+  };
+
+  modalOverlay?.addEventListener('click', closeModal);
+  modalClose?.addEventListener('click', closeModal);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && addressModal.style.display === 'block') {
+      closeModal();
+    }
+  });
+}
+
+/**
+ * Initialize wechat modal
+ */
+function initWechatModal() {
+  const viewWechatBtn = document.getElementById('view-wechat-btn');
+  const wechatModal = document.getElementById('wechat-modal');
+  const modalOverlay = wechatModal?.querySelector('.modal__overlay');
+  const modalClose = wechatModal?.querySelector('.modal__close');
+
+  if (!viewWechatBtn || !wechatModal) return;
+
+  // Open wechat modal
+  viewWechatBtn.addEventListener('click', () => {
+    wechatModal.style.display = 'block';
+  });
+
+  // Close modal handlers
+  const closeModal = () => {
+    wechatModal.style.display = 'none';
+  };
+
+  modalOverlay?.addEventListener('click', closeModal);
+  modalClose?.addEventListener('click', closeModal);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && wechatModal.style.display === 'block') {
+      closeModal();
+    }
+  });
 }
 
 // Initialize app when DOM is ready

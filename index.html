@@ -16,6 +16,7 @@
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
+        <img src="images/background/logo.png" alt="411吉他工作室" class="header__logo-img">
         <a href="index.html" aria-label="返回首页">411吉他工作室</a>
       </div>
       <ul class="header__menu">
@@ -35,43 +36,57 @@
     <!-- Hero Section -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__content">
-        <h1 id="hero-title" class="hero__title">专业吉他维修服务</h1>
-        <p class="hero__subtitle">木吉他、电吉他、古典吉他、贝斯专业维修</p>
+        <p class="hero__subtitle-top">411 Guitar Tech</p>
+        <h1 id="hero-title" class="hero__title">吉他维修 · 保养 · 寄售</h1>
+        <p class="hero__subtitle">我们是深圳一家以吉他维修保养为主的工作室，拥有超过一万支吉他的维修保养和调试经验，长期为大量职业音乐人以及爱好者朋友，提供非常优质的吉他相关服务~</p>
         <div class="hero__actions">
           <a href="booking.html" class="hero__cta button button--primary">立即预约</a>
           <button id="view-calendar-btn" class="hero__cta button button--calendar">查看闲忙</button>
+          <button id="view-address-btn-hero" class="hero__cta button button--address">路线指引</button>
         </div>
       </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- 411 Time Section -->
     <section class="featured" aria-labelledby="services-title">
       <div class="container">
-        <h2 id="services-title" class="featured__title">我们的服务</h2>
-        <div class="featured__grid">
-          <div class="service-card">
-            <h3 class="service-card__title">琴颈调整</h3>
-            <p class="service-card__description">专业调整琴颈弯曲度，确保最佳手感</p>
+        <h2 id="services-title" class="featured__title">411 Time</h2>
+        <div class="time-grid">
+          <div class="time-card">
+            <div class="time-card__image">
+              <img src="images/background/post.jpg" alt="吉他维修保养">
+            </div>
+            <div class="time-card__content">
+              <h3 class="time-card__title">我们的主营业务</h3>
+              <p class="time-card__description">从打品到断弦，从琴颈变形到拾音器罢工，只要你的琴还有救，我们就能让它重获新生！十年老师傅坐镇，手艺靠谱到让你怀疑人生✨</p>
+            </div>
           </div>
-          <div class="service-card">
-            <h3 class="service-card__title">弦距调整</h3>
-            <p class="service-card__description">精确调整弦距，提升演奏舒适度</p>
+          <div class="time-card">
+            <div class="time-card__image">
+              <img src="images/background/discussion.png" alt="乐器效果器评测">
+            </div>
+            <div class="time-card__content">
+              <h3 class="time-card__title">好玩的乐器、效果器评测！</h3>
+              <p class="time-card__description">新出的单块效果器？小众品牌的神仙吉他？我们都帮你试过了！真实测评不吹不黑，让你少走弯路少花冤枉钱🎸</p>
+            </div>
           </div>
-          <div class="service-card">
-            <h3 class="service-card__title">电路维修</h3>
-            <p class="service-card__description">修复拾音器、开关、插孔等电路问题</p>
+          <div class="time-card">
+            <div class="time-card__image">
+              <img src="images/background/coffee1.png" alt="咖啡品鉴">
+            </div>
+            <div class="time-card__content">
+              <h3 class="time-card__title">Coffee Time!</h3>
+              <p class="time-card__description">修琴累了？来杯手冲咖啡压压惊！从埃塞俄比亚到哥伦比亚，我们的豆子比琴弦还讲究。边喝边聊音乐，这才是正经事儿☕</p>
+            </div>
           </div>
-          <div class="service-card">
-            <h3 class="service-card__title">换弦保养</h3>
-            <p class="service-card__description">专业换弦、清洁、上油保养服务</p>
-          </div>
-          <div class="service-card">
-            <h3 class="service-card__title">品丝修复</h3>
-            <p class="service-card__description">品丝打磨、更换，消除打品问题</p>
-          </div>
-          <div class="service-card">
-            <h3 class="service-card__title">结构修复</h3>
-            <p class="service-card__description">修复琴体裂缝、脱胶等结构问题</p>
+          <div class="time-card">
+            <div class="time-card__image">
+              <img src="images/background/zheteng.png" alt="吉他改装">
+            </div>
+            <div class="time-card__content">
+              <h3 class="time-card__title">折腾无止境</h3>
+              <p class="time-card__description">想给你的琴换个拾音器？改个电路？甚至重新喷漆？来吧！我们就是那群闲不住的疯子，专治各种"我有个大胆的想法"🔧</p>
+            </div>
           </div>
         </div>
       </div>
@@ -117,6 +132,35 @@
     </div>
   </div>
 
+  <!-- Address Modal -->
+  <div id="address-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content modal__content--large">
+      <div class="modal__header">
+        <h2 class="modal__title">如何找到我们</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body modal__body--image">
+        <img src="images/background/address.jpg" alt="411吉他工作室地址导航" class="modal__address-image">
+      </div>
+    </div>
+  </div>
+
+  <!-- WeChat QR Code Modal -->
+  <div id="wechat-modal" class="modal" style="display: none;">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title">微信二维码</h2>
+        <button class="modal__close" aria-label="关闭">&times;</button>
+      </div>
+      <div class="modal__body modal__body--qrcode">
+        <img src="images/background/qrcode.png" alt="411吉他工作室微信二维码" class="modal__qrcode-image">
+        <p class="modal__qrcode-text">扫码添加微信，随时咨询吉他问题</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
@@ -147,10 +191,10 @@
               </a>
             </li>
             <li>
-              <span class="footer__social-link footer__social-link--disabled">
+              <button id="view-wechat-btn" class="footer__social-link footer__social-link--wechat">
                 <span class="footer__social-icon">💬</span>
-                <span>微信（敬请期待）</span>
-              </span>
+                <span>微信二维码</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -158,6 +202,8 @@
         <div class="footer__section">
           <h3 class="footer__title">联系我们</h3>
           <p class="footer__text">411吉他工作室-木木：13355788990</p>
+          <p class="footer__text">地址：深圳市福田区八卦岭工业区618栋3楼320</p>
+          <button id="view-address-btn" class="footer__address-btn">📍 路线指引</button>
           <p class="footer__text">深圳 · 职业音乐人与吉他爱好者的港湾</p>
         </div>
       </div>

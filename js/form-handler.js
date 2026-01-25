@@ -129,6 +129,42 @@ async function initRepairForm() {
 
   // Add real-time validation
   addRealTimeValidation(form);
+
+  // Initialize service terms modal
+  initTermsModal();
+}
+
+/**
+ * Initialize service terms modal
+ */
+function initTermsModal() {
+  const viewTermsBtn = document.getElementById('view-terms-btn');
+  const termsModal = document.getElementById('terms-modal');
+  const modalOverlay = termsModal?.querySelector('.modal__overlay');
+  const modalClose = termsModal?.querySelector('.modal__close');
+
+  if (!viewTermsBtn || !termsModal) return;
+
+  // Open terms modal
+  viewTermsBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    termsModal.style.display = 'block';
+  });
+
+  // Close modal handlers
+  const closeModal = () => {
+    termsModal.style.display = 'none';
+  };
+
+  modalOverlay?.addEventListener('click', closeModal);
+  modalClose?.addEventListener('click', closeModal);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && termsModal.style.display === 'block') {
+      closeModal();
+    }
+  });
 }
 
 /**
@@ -165,8 +201,8 @@ function validateForm(form) {
   if (!problemInput.value.trim()) {
     showFieldError(problemInput, '请描述吉他的问题');
     isValid = false;
-  } else if (problemInput.value.trim().length < 10) {
-    showFieldError(problemInput, '问题描述至少需要10个字符');
+  } else if (problemInput.value.trim().length < 2) {
+    showFieldError(problemInput, '问题描述至少需要2个字符');
     isValid = false;
   }
 
@@ -308,8 +344,8 @@ function validateField(input) {
     }
   }
 
-  if (id === 'problem-description' && value && value.length < 10) {
-    showFieldError(input, '问题描述至少需要10个字符');
+  if (id === 'problem-description' && value && value.length < 2) {
+    showFieldError(input, '问题描述至少需要2个字符');
     return;
   }
 

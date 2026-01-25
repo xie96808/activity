@@ -179,7 +179,7 @@ export async function renderTimeSlots(dateString, container, onSelect) {
       slotElement.dataset.status = status;
 
       slotElement.innerHTML = `
-        <div class="time-slot__time">${slot.label}</div>
+        <span class="time-slot__time">${slot.label}</span>
         <span class="time-slot__status time-slot__status--${status}">${statusLabel}</span>
       `;
 
