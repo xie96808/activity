@@ -384,6 +384,10 @@ async function viewOrderDetail(orderId) {
             <p><strong>预约时间:</strong> ${order.appointment_time}</p>
             <p><strong>期望完成日期:</strong> ${order.expected_completion_date}</p>
             <p><strong>排班人员:</strong> <span style="padding: 0.25rem 0.75rem; background: #f3f4f6; border-radius: 9999px; font-size: 0.875rem;">${order.assigned_to || '未分配'}</span></p>
+            ${order.customer_notes ? `
+              <p><strong>客户备注:</strong></p>
+              <p style="white-space: pre-wrap; background: #e0f2fe; padding: 1rem; border-radius: 0.5rem;">${order.customer_notes}</p>
+            ` : ''}
           </div>
 
           ${order.admin_notes ? `
@@ -815,7 +819,7 @@ async function handleExportCSV() {
       }
 
       // Generate CSV
-      const headers = ['订单ID', '客户电话', '吉他类型', '品牌', '型号', '问题描述', '预约日期', '预约时间', '期望完成日期', '状态', '创建时间'];
+      const headers = ['订单ID', '客户电话', '吉他类型', '品牌', '型号', '问题描述', '预约日期', '预约时间', '期望完成日期', '客户备注', '状态', '创建时间'];
       const rows = orders.map(order => [
         order.id,
         order.customer_phone,
@@ -826,6 +830,7 @@ async function handleExportCSV() {
         order.appointment_date,
         order.appointment_time,
         order.expected_completion_date,
+        order.customer_notes || '',
         getStatusLabel(order.status),
         formatDateTime(order.created_at)
       ]);

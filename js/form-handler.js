@@ -80,6 +80,7 @@ async function initRepairForm() {
         appointment_date: formData.get('appointmentDate'),
         appointment_time: formData.get('appointmentTime'),
         expected_completion_date: formData.get('expectedCompletionDate'),
+        customer_notes: formData.get('customerNotes') || null,
         status: 'pending',
       };
 

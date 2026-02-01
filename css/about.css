@@ -1,0 +1,798 @@
+/**
+ * About Page - 关于我们
+ * Design: Warm Craftsmanship, Storytelling, Heritage
+ */
+
+/* ========================================
+   Hero Section - Full Screen Impact
+   ======================================== */
+.about-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    url('/images/background/door2.jpg') center/cover no-repeat;
+  background-attachment: fixed;
+}
+
+.about-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(15, 13, 10, 0.6) 0%,
+      rgba(15, 13, 10, 0.4) 50%,
+      rgba(15, 13, 10, 0.8) 100%);
+}
+
+.about-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--spacing-3xl);
+}
+
+.about-hero__tagline {
+  font-family: var(--font-navigation);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  color: var(--color-accent-primary);
+  margin-bottom: var(--spacing-lg);
+  text-transform: uppercase;
+}
+
+.about-hero__title {
+  font-family: var(--font-handwriting);
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+}
+
+.about-hero__subtitle {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-4xl);
+}
+
+.about-hero__scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.about-hero__scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--color-accent-primary), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; height: 50px; }
+  50% { opacity: 1; height: 70px; }
+}
+
+/* ========================================
+   Story Section
+   ======================================== */
+.about-story {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background: var(--color-bg-primary);
+}
+
+.about-story__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4xl);
+  align-items: center;
+}
+
+.about-story__label {
+  font-family: var(--font-navigation);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+.about-story__title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.4;
+}
+
+.about-story__desc {
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+  line-height: 2;
+  margin-bottom: var(--spacing-lg);
+}
+
+.about-story__signature {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.about-story__signature-text {
+  font-family: var(--font-handwriting);
+  font-size: 1.25rem;
+  color: var(--color-accent-primary);
+}
+
+.about-story__image {
+  position: relative;
+}
+
+.about-story__image img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+}
+
+.about-story__image-caption {
+  position: absolute;
+  bottom: -1rem;
+  right: -1rem;
+  background: var(--color-accent-primary);
+  color: var(--color-text-inverse);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   Stats Section
+   ======================================== */
+.about-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-3xl);
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background: var(--color-bg-secondary);
+  border-top: 1px solid rgba(201, 162, 39, 0.1);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+
+.about-stats__item {
+  text-align: center;
+}
+
+.about-stats__number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 300;
+  color: var(--color-accent-primary);
+  line-height: 1;
+  margin-bottom: var(--spacing-sm);
+}
+
+.about-stats__label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.about-stats__divider {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom,
+    transparent,
+    rgba(201, 162, 39, 0.3),
+    transparent);
+}
+
+/* ========================================
+   Founders Section - Dual Management
+   ======================================== */
+.about-founders {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background: var(--color-bg-primary);
+}
+
+.about-founders__header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--spacing-4xl);
+}
+
+.about-founders__label {
+  font-family: var(--font-navigation);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+.about-founders__title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.about-founders__subtitle {
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.about-founders__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-founder-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-slow);
+}
+
+.about-founder-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(201, 162, 39, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), var(--shadow-warm);
+}
+
+.about-founder-card__image-wrapper {
+  position: relative;
+  height: 380px;
+  overflow: hidden;
+}
+
+.about-founder-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9);
+  transition: transform var(--transition-slow);
+}
+
+.about-founder-card:hover .about-founder-card__image {
+  transform: scale(1.05);
+  filter: saturate(1);
+}
+
+.about-founder-card__content {
+  padding: var(--spacing-2xl);
+}
+
+.about-founder-card__name {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.about-founder-card__role {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-lg);
+}
+
+.about-founder-card__quote {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: var(--color-accent-warm);
+  line-height: 1.8;
+  margin: 0 0 var(--spacing-lg);
+  padding-left: var(--spacing-lg);
+  border-left: 2px solid var(--color-accent-primary);
+}
+
+.about-founder-card__bio {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+  margin: 0;
+}
+
+.about-founders__contact {
+  text-align: center;
+  margin-top: var(--spacing-3xl);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  border-radius: var(--radius-md);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-founders__contact p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.about-founders__contact strong {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   Services Section
+   ======================================== */
+.about-services {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background: var(--color-bg-secondary);
+}
+
+.about-services__header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-4xl);
+}
+
+.about-services__label {
+  font-family: var(--font-navigation);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+.about-services__title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.about-services__desc {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.about-services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-service-card {
+  background: var(--color-bg-primary);
+  border: 1px solid rgba(201, 162, 39, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.about-service-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201, 162, 39, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), var(--shadow-warm);
+}
+
+.about-service-card__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--spacing-lg);
+  color: var(--color-accent-primary);
+}
+
+.about-service-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.about-service-card__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.about-service-card__desc {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* ========================================
+   Gallery Section
+   ======================================== */
+.about-gallery {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background: var(--color-bg-primary);
+}
+
+.about-gallery__header {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.about-gallery__label {
+  font-family: var(--font-navigation);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+.about-gallery__title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.about-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 280px);
+  gap: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.about-gallery__item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.about-gallery__item--large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.about-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.about-gallery__item:hover img {
+  transform: scale(1.05);
+}
+
+.about-gallery__caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-lg);
+  background: linear-gradient(to top, rgba(15, 13, 10, 0.9), transparent);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transform: translateY(100%);
+  transition: transform var(--transition-base);
+}
+
+.about-gallery__item:hover .about-gallery__caption {
+  transform: translateY(0);
+}
+
+/* ========================================
+   Philosophy Section
+   ======================================== */
+.about-philosophy {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  background:
+    linear-gradient(rgba(15, 13, 10, 0.92), rgba(15, 13, 10, 0.92)),
+    url('/images/background/post2.png') center/cover no-repeat;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+.about-philosophy__content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-philosophy__label {
+  font-family: var(--font-navigation);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-xl);
+}
+
+.about-philosophy__quote {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+}
+
+.about-philosophy__text {
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+  line-height: 2;
+}
+
+/* ========================================
+   CTA Section
+   ======================================== */
+.about-cta {
+  position: relative;
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.about-cta__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.about-cta__background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.3) saturate(0.8);
+}
+
+.about-cta__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+}
+
+.about-cta__title {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.about-cta__text {
+  font-size: 1.0625rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.about-cta__actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.about-cta__address {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   Responsive - Tablet
+   ======================================== */
+@media (max-width: 1024px) {
+  .about-story__container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3xl);
+  }
+
+  .about-story__image {
+    order: -1;
+  }
+
+  .about-founders__grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+    max-width: 600px;
+  }
+
+  .about-founder-card__image-wrapper {
+    height: 320px;
+  }
+
+  .about-services__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 200px);
+  }
+
+  .about-gallery__item--large {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+}
+
+/* ========================================
+   Responsive - Mobile
+   ======================================== */
+@media (max-width: 768px) {
+  .about-hero {
+    background-attachment: scroll;
+  }
+
+  .about-hero__title {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .about-stats {
+    flex-direction: column;
+    gap: var(--spacing-xl);
+  }
+
+  .about-stats__divider {
+    width: 60px;
+    height: 1px;
+  }
+
+  .about-founders {
+    padding: var(--spacing-3xl) var(--spacing-lg);
+  }
+
+  .about-founders__grid {
+    gap: var(--spacing-xl);
+  }
+
+  .about-founder-card__image-wrapper {
+    height: 280px;
+  }
+
+  .about-founder-card__content {
+    padding: var(--spacing-xl);
+  }
+
+  .about-founder-card__name {
+    font-size: 1.75rem;
+  }
+
+  .about-founder-card__quote {
+    font-size: 1rem;
+    padding-left: var(--spacing-md);
+  }
+
+  .about-founder-card__bio {
+    font-size: 0.875rem;
+  }
+
+  .about-services__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-gallery__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .about-gallery__item,
+  .about-gallery__item--large {
+    grid-column: span 1;
+    grid-row: span 1;
+    height: 250px;
+  }
+
+  .about-gallery__caption {
+    transform: translateY(0);
+  }
+
+  .about-philosophy {
+    background-attachment: scroll;
+  }
+
+  .about-cta__actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .about-cta__actions .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero__subtitle {
+    font-size: 1.125rem;
+    letter-spacing: 0.05em;
+  }
+
+  .about-story__title {
+    font-size: 1.5rem;
+  }
+
+  .about-story__desc {
+    font-size: 1rem;
+  }
+
+  .about-founders__title {
+    font-size: 1.75rem;
+  }
+
+  .about-founder-card__image-wrapper {
+    height: 240px;
+  }
+
+  .about-founder-card__content {
+    padding: var(--spacing-lg);
+  }
+
+  .about-founder-card__name {
+    font-size: 1.5rem;
+  }
+
+  .about-founder-card__role {
+    font-size: 0.8125rem;
+  }
+
+  .about-founder-card__quote {
+    font-size: 0.9375rem;
+  }
+
+  .about-founder-card__bio {
+    font-size: 0.8125rem;
+    line-height: 1.8;
+  }
+
+  .about-service-card {
+    padding: var(--spacing-xl);
+  }
+
+  .about-philosophy__quote {
+    font-size: 1.5rem;
+  }
+}

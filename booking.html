@@ -88,7 +88,7 @@
 
           <div class="form-group">
             <label for="guitar-brand" class="form-group__label">
-              吉他品牌
+              吉他品牌 <span class="form-group__optional">选填</span>
             </label>
             <input
               type="text"
@@ -98,12 +98,11 @@
               placeholder="例如：Martin, Fender, Gibson"
               aria-describedby="guitar-brand-hint"
             >
-            <span id="guitar-brand-hint" class="form-group__hint">选填</span>
           </div>
 
           <div class="form-group">
             <label for="guitar-model" class="form-group__label">
-              吉他型号
+              吉他型号 <span class="form-group__optional">选填</span>
             </label>
             <input
               type="text"
@@ -113,7 +112,6 @@
               placeholder="例如：D-28, Stratocaster"
               aria-describedby="guitar-model-hint"
             >
-            <span id="guitar-model-hint" class="form-group__hint">选填</span>
           </div>
 
           <div class="form-group">
@@ -200,6 +198,20 @@
               aria-describedby="expected-completion-date-error"
             >
             <span id="expected-completion-date-error" class="form-group__error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-notes" class="form-group__label">
+              备注 <span class="form-group__optional">选填</span>
+            </label>
+            <textarea
+              id="customer-notes"
+              name="customerNotes"
+              class="form-group__textarea"
+              rows="3"
+              aria-describedby="customer-notes-hint"
+              placeholder="如有其他需要说明的事项，请在此填写"
+            ></textarea>
           </div>
 
           <div class="form-group">

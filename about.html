@@ -3,227 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="411吉他工作室 - 深圳专业吉他维修服务">
+  <meta name="description" content="411吉他工作室 - 深圳专业吉他维修服务，超过一万支吉他的维修经验">
   <title>关于我们 | 411吉他工作室</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/layout-new.css">
   <link rel="stylesheet" href="css/responsive-new.css">
   <link rel="stylesheet" href="css/animations-new.css">
-
-  <style>
-    /* About Page Specific Styles */
-    .about-hero {
-      padding: var(--spacing-4xl) var(--spacing-2xl);
-      text-align: center;
-      background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
-    }
-
-    .about-hero__badge {
-      display: inline-block;
-      padding: var(--spacing-sm) var(--spacing-lg);
-      background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
-      color: var(--color-text-inverse);
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border-radius: var(--radius-full);
-      margin-bottom: var(--spacing-lg);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .about-hero__title {
-      font-size: var(--font-size-5xl);
-      font-weight: 700;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-lg);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .about-hero__subtitle {
-      font-size: var(--font-size-xl);
-      color: var(--color-text-secondary);
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    .about-content {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: var(--spacing-4xl) var(--spacing-2xl);
-    }
-
-    .about-section {
-      margin-bottom: var(--spacing-4xl);
-      padding: var(--spacing-3xl);
-      background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-tertiary) 100%);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--color-wood-dark);
-      box-shadow: var(--shadow-xl);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .about-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
-    }
-
-    .about-section__icon {
-      font-size: var(--font-size-4xl);
-      margin-bottom: var(--spacing-md);
-      display: block;
-    }
-
-    .about-section__title {
-      font-size: var(--font-size-2xl);
-      font-weight: 600;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-lg);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .about-section__text {
-      font-size: var(--font-size-lg);
-      color: var(--color-text-secondary);
-      line-height: 1.9;
-      margin-bottom: var(--spacing-md);
-    }
-
-    .about-section__highlight {
-      color: var(--color-accent-primary);
-      font-weight: 600;
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing-xl);
-      margin-top: var(--spacing-2xl);
-    }
-
-    .service-item {
-      padding: var(--spacing-xl);
-      background: var(--color-bg-primary);
-      border: 1px solid var(--color-wood-dark);
-      border-radius: var(--radius-lg);
-      text-align: center;
-      transition: all var(--transition-base);
-    }
-
-    .service-item:hover {
-      transform: translateY(-4px);
-      border-color: var(--color-accent-primary);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .service-item__icon {
-      font-size: var(--font-size-3xl);
-      margin-bottom: var(--spacing-md);
-      display: block;
-    }
-
-    .service-item__title {
-      font-size: var(--font-size-lg);
-      font-weight: 600;
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .service-item__description {
-      font-size: var(--font-size-sm);
-      color: var(--color-text-muted);
-      line-height: 1.6;
-    }
-
-    .contact-card {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--spacing-xl);
-      margin-top: var(--spacing-2xl);
-    }
-
-    .contact-item {
-      padding: var(--spacing-xl);
-      background: var(--color-bg-primary);
-      border-left: 4px solid var(--color-accent-primary);
-      border-radius: var(--radius-md);
-    }
-
-    .contact-item__label {
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      color: var(--color-accent-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--spacing-sm);
-    }
-
-    .contact-item__value {
-      font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
-    }
-
-    .cta-section {
-      text-align: center;
-      padding: var(--spacing-4xl) var(--spacing-2xl);
-      background: linear-gradient(
-        135deg,
-        rgba(212, 175, 55, 0.1) 0%,
-        rgba(201, 168, 54, 0.05) 100%
-      );
-      border-radius: var(--radius-xl);
-      margin-top: var(--spacing-4xl);
-      border: 1px solid var(--color-accent-primary);
-    }
-
-    .cta-section__title {
-      font-size: var(--font-size-3xl);
-      font-weight: 700;
-      color: var(--color-accent-primary);
-      margin-bottom: var(--spacing-md);
-    }
-
-    .cta-section__text {
-      font-size: var(--font-size-lg);
-      color: var(--color-text-secondary);
-      margin-bottom: var(--spacing-xl);
-    }
-
-    @media (max-width: 768px) {
-      .about-hero__title {
-        font-size: var(--font-size-3xl);
-      }
-
-      .about-hero__subtitle {
-        font-size: var(--font-size-base);
-      }
-
-      .about-section {
-        padding: var(--spacing-xl);
-      }
-
-      .services-grid,
-      .contact-card {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/about.css">
 </head>
 <body>
   <!-- Header Navigation -->
   <header class="header" role="banner">
     <nav class="header__nav" role="navigation" aria-label="主导航">
       <div class="header__logo">
+        <img src="images/background/logo.png" alt="411吉他工作室" class="header__logo-img">
         <a href="index.html" aria-label="返回首页">411吉他工作室</a>
       </div>
       <ul class="header__menu">
@@ -240,97 +34,249 @@
 
   <!-- Main Content -->
   <main class="main" role="main">
-    <!-- Hero Section -->
+
+    <!-- Hero Section - Full Screen -->
     <section class="about-hero">
-      <span class="about-hero__badge">📍 深圳</span>
-      <h1 class="about-hero__title">411吉他工作室</h1>
-      <p class="about-hero__subtitle">
-        深圳吉他手必打卡的宝藏店铺，长期为职业音乐人和吉他爱好者提供优质的吉他维修服务
-      </p>
+      <div class="about-hero__overlay"></div>
+      <div class="about-hero__content">
+        <p class="about-hero__tagline">Since 2018 · Shenzhen</p>
+        <h1 class="about-hero__title">411 Guitar Tech</h1>
+        <p class="about-hero__subtitle">每一把琴，都值得被认真对待</p>
+        <div class="about-hero__scroll">
+          <span>向下探索</span>
+          <div class="about-hero__scroll-line"></div>
+        </div>
+      </div>
     </section>
 
-    <!-- Content Section -->
-    <div class="about-content">
-      <!-- Introduction -->
-      <section class="about-section animate-fade-in-up">
-        <h2 class="about-section__title">🎸 关于我们</h2>
-        <p class="about-section__text">
-          <span class="about-section__highlight">411吉他工作室</span>是深圳一家以吉他维修为主的专业店铺，
-          长期为大量<span class="about-section__highlight">职业音乐人</span>以及<span class="about-section__highlight">吉他爱好者</span>朋友，
-          提供非常优质的吉他相关服务。
-        </p>
-        <p class="about-section__text">
-          我们非常乐意结交对音乐感兴趣和"爱折腾"设备的朋友们，欢迎所有朋友到店做客！
-        </p>
-      </section>
-
-      <!-- Services -->
-      <section class="about-section animate-fade-in-up">
-        <h2 class="about-section__title">🔧 我们的服务</h2>
-        <p class="about-section__text">
-          专注吉他相关服务，为您提供最专业的技术支持
-        </p>
-        <div class="services-grid">
-          <div class="service-item">
-            <span class="service-item__icon">🎯</span>
-            <h3 class="service-item__title">吉他调琴</h3>
-            <p class="service-item__description">专业的琴颈调整、音准校正，让您的吉他发挥最佳状态</p>
-          </div>
-          <div class="service-item">
-            <span class="service-item__icon">✨</span>
-            <h3 class="service-item__title">吉他保养</h3>
-            <p class="service-item__description">指板护理、品丝打磨、换弦清洁，延长爱琴使用寿命</p>
-          </div>
-          <div class="service-item">
-            <span class="service-item__icon">🔨</span>
-            <h3 class="service-item__title">吉他维修</h3>
-            <p class="service-item__description">修复各类吉他故障，从打品到电路问题，专业解决</p>
-          </div>
-          <div class="service-item">
-            <span class="service-item__icon">⚡</span>
-            <h3 class="service-item__title">吉他改装</h3>
-            <p class="service-item__description">拾音器安装、电路改装、音色优化，定制专属音色</p>
+    <!-- Story Section -->
+    <section class="about-story">
+      <div class="about-story__container">
+        <div class="about-story__text">
+          <p class="about-story__label">Our Story</p>
+          <h2 class="about-story__title">源于热爱，忠于手艺</h2>
+          <p class="about-story__desc">
+            411吉他工作室诞生于深圳这座充满活力的城市。我们相信，每一把吉他都有它独特的灵魂，每一次维修都是与乐器的深度对话。
+          </p>
+          <p class="about-story__desc">
+            从最初的小工作室到如今服务过上万支吉他，我们始终坚持用匠人精神对待每一把送修的乐器。无论是价值连城的vintage古董琴，还是陪伴你青春岁月的第一把吉他，在我们眼里，它们同样珍贵。
+          </p>
+          <div class="about-story__signature">
+            <span class="about-story__signature-text">— 411吉他工作室团队</span>
           </div>
         </div>
-      </section>
+        <div class="about-story__image">
+          <img src="images/background/guitar1.jpg" alt="精心维护的吉他">
+          <div class="about-story__image-caption">用心对待每一把琴</div>
+        </div>
+      </div>
+    </section>
 
-      <!-- Why Choose Us -->
-      <section class="about-section animate-fade-in-up">
-        <h2 class="about-section__title">💎 为什么选择我们</h2>
-        <p class="about-section__text">
-          • <span class="about-section__highlight">经验丰富</span>：长期服务职业音乐人，技术过硬<br>
-          • <span class="about-section__highlight">品质保证</span>：用心对待每一把吉他，精益求精<br>
-          • <span class="about-section__highlight">友好热情</span>：爱交朋友，乐意分享音乐和设备知识<br>
-          • <span class="about-section__highlight">专业专注</span>：专注吉他维修，做最擅长的事
-        </p>
-      </section>
+    <!-- Stats Section -->
+    <section class="about-stats">
+      <div class="about-stats__item">
+        <span class="about-stats__number">10000+</span>
+        <span class="about-stats__label">累计维修</span>
+      </div>
+      <div class="about-stats__divider"></div>
+      <div class="about-stats__item">
+        <span class="about-stats__number">7</span>
+        <span class="about-stats__label">年专业经验</span>
+      </div>
+      <div class="about-stats__divider"></div>
+      <div class="about-stats__item">
+        <span class="about-stats__number">100+</span>
+        <span class="about-stats__label">合作音乐人</span>
+      </div>
+      <div class="about-stats__divider"></div>
+      <div class="about-stats__item">
+        <span class="about-stats__number">99%</span>
+        <span class="about-stats__label">客户好评</span>
+      </div>
+    </section>
 
-      <!-- Contact -->
-      <section class="about-section animate-fade-in-up">
-        <h2 class="about-section__title">📞 联系我们</h2>
-        <div class="contact-card">
-          <div class="contact-item">
-            <div class="contact-item__label">店铺名称</div>
-            <div class="contact-item__value">411吉他工作室</div>
+    <!-- Founders Section - Dual Management -->
+    <section class="about-founders">
+      <div class="about-founders__header">
+        <p class="about-founders__label">Meet the Founders</p>
+        <h2 class="about-founders__title">双主理人</h2>
+        <p class="about-founders__subtitle">两位对吉他充满热爱的匠人，携手打造深圳最专业的吉他工作室</p>
+      </div>
+
+      <div class="about-founders__grid">
+        <!-- 达三 -->
+        <div class="about-founder-card">
+          <div class="about-founder-card__image-wrapper">
+            <img src="images/background/manager.jpg" alt="主理人达三" class="about-founder-card__image">
           </div>
-          <div class="contact-item">
-            <div class="contact-item__label">所在城市</div>
-            <div class="contact-item__value">深圳</div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-item__label">服务对象</div>
-            <div class="contact-item__value">职业音乐人 · 吉他爱好者</div>
+          <div class="about-founder-card__content">
+            <h3 class="about-founder-card__name">达三</h3>
+            <p class="about-founder-card__role">411吉他工作室 · 联合创始人</p>
+            <blockquote class="about-founder-card__quote">
+              "吉他维修不只是一份工作，更是一种与音乐对话的方式。每当看到一把'病入膏肓'的琴在我手中重获新生，那种成就感无可替代。"
+            </blockquote>
+            <p class="about-founder-card__bio">
+              拥有超过十年的吉他维修经验，曾为众多知名乐队和职业音乐人提供技术支持。对各类吉他构造了如指掌，擅长处理复杂的琴颈调整、品丝更换和电路改装。技术流派的代表，追求每一个细节的完美。
+            </p>
           </div>
         </div>
-      </section>
 
-      <!-- CTA -->
-      <section class="cta-section animate-fade-in-up">
-        <h2 class="cta-section__title">准备好让您的爱琴重焕新生了吗？</h2>
-        <p class="cta-section__text">立即预约，享受专业的吉他维修服务</p>
-        <a href="booking.html" class="button button--primary button--large">立即预约</a>
-      </section>
-    </div>
+        <!-- 木木 -->
+        <div class="about-founder-card">
+          <div class="about-founder-card__image-wrapper">
+            <img src="images/background/mumu.jpg" alt="主理人木木" class="about-founder-card__image">
+          </div>
+          <div class="about-founder-card__content">
+            <h3 class="about-founder-card__name">木木</h3>
+            <p class="about-founder-card__role">411吉他工作室 · 联合创始人</p>
+            <blockquote class="about-founder-card__quote">
+              "每把琴都有自己的脾气，修琴就像交朋友，要先懂它，才能帮它。顺便，来杯手冲？"
+            </blockquote>
+            <p class="about-founder-card__bio">
+              资深吉他玩家，同时也是一位狂热的咖啡爱好者。擅长与客户沟通，总能精准理解琴友们的需求。在工作室负责客户服务与乐器评估，用他的话说："好音乐和好咖啡一样，都需要用心打磨。"闲暇时喜欢研究各种小众效果器和精品咖啡豆。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-founders__contact">
+        <p>联系我们：<strong>13355788990</strong></p>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="about-services">
+      <div class="about-services__header">
+        <p class="about-services__label">What We Do</p>
+        <h2 class="about-services__title">专业服务</h2>
+        <p class="about-services__desc">从日常保养到深度维修，我们提供全方位的吉他护理方案</p>
+      </div>
+
+      <div class="about-services__grid">
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">精准调校</h3>
+          <p class="about-service-card__desc">琴颈曲度调整、弦距优化、八度音准校正，让你的琴手感如丝般顺滑</p>
+        </div>
+
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">深度保养</h3>
+          <p class="about-service-card__desc">指板深层清洁与滋润、品丝抛光、全琴清洁护理，延长爱琴寿命</p>
+        </div>
+
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">专业维修</h3>
+          <p class="about-service-card__desc">打品修复、品丝更换、琴桥修复、裂缝修补，疑难杂症药到病除</p>
+        </div>
+
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">电路改装</h3>
+          <p class="about-service-card__desc">拾音器更换、线路升级、主被动切换改装，打造你的专属音色</p>
+        </div>
+
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">外观翻新</h3>
+          <p class="about-service-card__desc">漆面修复、金属件翻新、护板定制，让老琴焕发新生</p>
+        </div>
+
+        <div class="about-service-card">
+          <div class="about-service-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="about-service-card__title">乐器寄售</h3>
+          <p class="about-service-card__desc">帮你的爱琴找到下一位有缘人，专业估价、安全交易</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workshop Gallery -->
+    <section class="about-gallery">
+      <div class="about-gallery__header">
+        <p class="about-gallery__label">Our Space</p>
+        <h2 class="about-gallery__title">工作室一隅</h2>
+      </div>
+      <div class="about-gallery__grid">
+        <div class="about-gallery__item about-gallery__item--large">
+          <img src="images/background/door1.png" alt="工作室门面">
+          <div class="about-gallery__caption">八卦岭工业区 · 618栋320</div>
+        </div>
+        <div class="about-gallery__item">
+          <img src="images/background/machine1.jpg" alt="专业设备">
+          <div class="about-gallery__caption">专业维修设备</div>
+        </div>
+        <div class="about-gallery__item">
+          <img src="images/background/coffee1.png" alt="咖啡角落">
+          <div class="about-gallery__caption">修琴之余，来杯手冲</div>
+        </div>
+        <div class="about-gallery__item">
+          <img src="images/background/discussion.png" alt="交流讨论">
+          <div class="about-gallery__caption">和琴友们聊聊音乐</div>
+        </div>
+        <div class="about-gallery__item">
+          <img src="images/background/zheteng.png" alt="折腾改装">
+          <div class="about-gallery__caption">永不停歇的折腾精神</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="about-philosophy">
+      <div class="about-philosophy__content">
+        <p class="about-philosophy__label">Our Philosophy</p>
+        <h2 class="about-philosophy__quote">
+          "不只是修琴，<br>
+          更是延续音乐的生命。"
+        </h2>
+        <p class="about-philosophy__text">
+          我们相信，每一把吉他都承载着主人的故事与情感。可能是深夜里陪你度过低谷的旋律，可能是舞台上闪耀的那一刻，也可能只是午后阳光下的随意弹唱。这些记忆，值得被好好守护。
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-cta">
+      <div class="about-cta__background">
+        <img src="images/background/post.jpg" alt="">
+      </div>
+      <div class="about-cta__content">
+        <h2 class="about-cta__title">让你的琴，重新歌唱</h2>
+        <p class="about-cta__text">无论是日常保养还是疑难维修，我们都在这里等你</p>
+        <div class="about-cta__actions">
+          <a href="booking.html" class="button button--primary button--large">预约维修</a>
+          <a href="index.html#calendar-modal" class="button button--secondary button--large" id="view-calendar-btn-about">查看档期</a>
+        </div>
+        <div class="about-cta__address">
+          <p>深圳市福田区八卦岭工业区618栋3楼320</p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
@@ -339,8 +285,8 @@
       <div class="footer__content">
         <div class="footer__section">
           <h3 class="footer__title">411吉他工作室</h3>
-          <p class="footer__text">深圳吉他手必打卡的宝藏店铺</p>
-          <p class="footer__text">专业吉他维修 · 保养 · 改装</p>
+          <p class="footer__text">深圳 · 职业音乐人与吉他爱好者的港湾</p>
+          <p class="footer__text">专业吉他维修 · 保养 · 寄售</p>
         </div>
         <div class="footer__section">
           <h3 class="footer__title">快速链接</h3>
@@ -348,8 +294,12 @@
             <li><a href="index.html">首页</a></li>
             <li><a href="booking.html">维修预约</a></li>
             <li><a href="about.html">关于我们</a></li>
-            <li><a href="admin.html">管理后台</a></li>
           </ul>
+        </div>
+        <div class="footer__section">
+          <h3 class="footer__title">联系我们</h3>
+          <p class="footer__text">达三 & 木木：13355788990</p>
+          <p class="footer__text">深圳市福田区八卦岭工业区618栋3楼320</p>
         </div>
       </div>
       <div class="footer__copyright">
