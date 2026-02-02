@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="订单查询 - 411吉他工作室">
+  <title>订单查询 | 411吉他工作室</title>
+  <link rel="stylesheet" href="css/layout-new.css">
+  <link rel="stylesheet" href="css/responsive-new.css">
+  <link rel="stylesheet" href="css/animations-new.css">
+  <style>
+    /* Override dark theme */
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      min-height: 100vh;
+      color: #1f2937 !important;
+    }
+
+    .query-container {
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 2rem;
+    }
+
+    .query-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 3rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .query-card__title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .query-card__subtitle {
+      text-align: center;
+      color: #6b7280 !important;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+    }
+
+    .query-form {
+      margin-bottom: 2rem;
+    }
+
+    .query-form__group {
+      margin-bottom: 1.5rem;
+    }
+
+    .query-form__label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #374151 !important;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .query-form__input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .query-form__input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .query-form__button {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .query-form__button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .query-form__button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .query-form__back {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .query-form__back a {
+      color: #667eea !important;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .query-form__back a:hover {
+      color: #764ba2 !important;
+      text-decoration: underline;
+    }
+
+    /* Results */
+    .query-results {
+      display: none;
+    }
+
+    .query-results--visible {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .results-header__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+    }
+
+    .results-header__count {
+      font-size: 0.875rem;
+      color: #6b7280 !important;
+      background: #f3f4f6;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+
+    .order-item {
+      background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+      border: 2px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .order-item:hover {
+      border-color: #667eea;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .order-item__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .order-item__id {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #6b7280 !important;
+      font-family: monospace;
+    }
+
+    .order-item__status {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .order-item__status--pending {
+      background: #fef3c7;
+      color: #92400e !important;
+    }
+
+    .order-item__status--confirmed {
+      background: #dbeafe;
+      color: #1e40af !important;
+    }
+
+    .order-item__status--in_progress {
+      background: #ede9fe;
+      color: #5b21b6 !important;
+    }
+
+    .order-item__status--delayed {
+      background: #fee2e2;
+      color: #991b1b !important;
+    }
+
+    .order-item__status--completed {
+      background: #d1fae5;
+      color: #065f46 !important;
+    }
+
+    .order-item__status--cancelled {
+      background: #f3f4f6;
+      color: #4b5563 !important;
+    }
+
+    .order-item__info {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .order-item__info-row {
+      display: flex;
+      align-items: center;
+      font-size: 0.875rem;
+      color: #4b5563 !important;
+    }
+
+    .order-item__info-label {
+      font-weight: 600;
+      color: #374151 !important;
+      min-width: 80px;
+    }
+
+    .order-item__notes {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #fef3c7;
+      border-radius: 0.5rem;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .order-item__notes-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #92400e !important;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .order-item__notes-content {
+      font-size: 0.875rem;
+      color: #78350f !important;
+      white-space: pre-wrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .empty-state__icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #374151 !important;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state__text {
+      color: #6b7280 !important;
+      font-size: 0.875rem;
+    }
+
+    .error-message {
+      background: #fee2e2;
+      color: #991b1b !important;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      border-left: 4px solid #ef4444;
+      display: none;
+    }
+
+    .error-message--visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="query-container">
+    <div class="query-card">
+      <h1 class="query-card__title">订单查询</h1>
+      <p class="query-card__subtitle">输入预约时使用的手机号查看订单状态</p>
+
+      <div id="error-message" class="error-message"></div>
+
+      <form id="query-form" class="query-form">
+        <div class="query-form__group">
+          <label for="phone" class="query-form__label">手机号码</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            class="query-form__input"
+            placeholder="请输入11位手机号"
+            pattern="[0-9]{11}"
+            required
+            maxlength="11"
+          >
+        </div>
+
+        <button type="submit" class="query-form__button" id="query-button">
+          查询订单
+        </button>
+
+        <div class="query-form__back">
+          <a href="index.html">← 返回首页</a>
+        </div>
+      </form>
+
+      <div id="query-results" class="query-results">
+        <div class="results-header">
+          <h2 class="results-header__title">查询结果</h2>
+          <span class="results-header__count" id="results-count">0 个订单</span>
+        </div>
+        <div id="results-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase } from './js/supabase-client.js';
+
+    const queryForm = document.getElementById('query-form');
+    const queryButton = document.getElementById('query-button');
+    const errorMessage = document.getElementById('error-message');
+    const queryResults = document.getElementById('query-results');
+    const resultsContainer = document.getElementById('results-container');
+    const resultsCount = document.getElementById('results-count');
+
+    // Status labels
+    const statusLabels = {
+      pending: '待排期',
+      confirmed: '已确认',
+      in_progress: '进行中',
+      delayed: '延期中',
+      completed: '已完成',
+      cancelled: '已取消'
+    };
+
+    // Guitar type labels
+    const guitarTypeLabels = {
+      acoustic: '木吉他',
+      classical: '古典吉他',
+      electric: '电吉他',
+      bass: '贝斯',
+      other: '其他'
+    };
+
+    // Format date time
+    function formatDateTime(dateTimeString) {
+      const date = new Date(dateTimeString);
+      return date.toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Show error
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add('error-message--visible');
+      setTimeout(() => {
+        errorMessage.classList.remove('error-message--visible');
+      }, 5000);
+    }
+
+    // Render orders
+    function renderOrders(orders) {
+      if (orders.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__icon">🔍</div>
+            <h3 class="empty-state__title">未找到订单</h3>
+            <p class="empty-state__text">该手机号暂无预约记录</p>
+          </div>
+        `;
+        return;
+      }
+
+      resultsContainer.innerHTML = orders.map(order => `
+        <div class="order-item">
+          <div class="order-item__header">
+            <span class="order-item__id">#${order.id.substring(0, 8)}</span>
+            <span class="order-item__status order-item__status--${order.status}">
+              ${statusLabels[order.status] || order.status}
+            </span>
+          </div>
+          <div class="order-item__info">
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">吉他类型：</span>
+              <span>${guitarTypeLabels[order.guitar_type] || order.guitar_type}</span>
+            </div>
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">品牌型号：</span>
+              <span>${order.guitar_brand || '未填写'} ${order.guitar_model || ''}</span>
+            </div>
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">预约时间：</span>
+              <span>${order.appointment_date} ${order.appointment_time}</span>
+            </div>
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">期望完成：</span>
+              <span>${order.expected_completion_date}</span>
+            </div>
+            ${order.assigned_to ? `
+              <div class="order-item__info-row">
+                <span class="order-item__info-label">排班人员：</span>
+                <span>${order.assigned_to}</span>
+              </div>
+            ` : ''}
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">创建时间：</span>
+              <span>${formatDateTime(order.created_at)}</span>
+            </div>
+            <div class="order-item__info-row">
+              <span class="order-item__info-label">更新时间：</span>
+              <span>${formatDateTime(order.updated_at)}</span>
+            </div>
+          </div>
+          ${order.admin_notes ? `
+            <div class="order-item__notes">
+              <div class="order-item__notes-title">💬 管理员备注</div>
+              <div class="order-item__notes-content">${order.admin_notes}</div>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Handle form submission
+    queryForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const phone = document.getElementById('phone').value.trim();
+
+      // Validate phone number
+      if (!/^1[3-9]\d{9}$/.test(phone)) {
+        showError('请输入正确的11位手机号');
+        return;
+      }
+
+      // Disable button
+      queryButton.disabled = true;
+      queryButton.textContent = '查询中...';
+
+      try {
+        // Query orders
+        const { data, error } = await supabase
+          .from('guitar_repairs')
+          .select('*')
+          .eq('customer_phone', phone)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        // Show results
+        queryResults.classList.add('query-results--visible');
+        resultsCount.textContent = `${data.length} 个订单`;
+        renderOrders(data);
+
+        // Scroll to results
+        queryResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (error) {
+        console.error('Query error:', error);
+        showError('查询失败，请稍后重试');
+      } finally {
+        queryButton.disabled = false;
+        queryButton.textContent = '查询订单';
+      }
+    });
+
+    // Auto-fill phone from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const phoneParam = urlParams.get('phone');
+    if (phoneParam) {
+      document.getElementById('phone').value = phoneParam;
+      queryForm.dispatchEvent(new Event('submit'));
+    }
+  </script>
+</body>
+</html>

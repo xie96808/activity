@@ -10,6 +10,1325 @@
   <link rel="stylesheet" href="css/layout-new.css">
   <link rel="stylesheet" href="css/responsive-new.css">
   <link rel="stylesheet" href="css/animations-new.css">
+
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* Modern Dashboard Styles */
+    :root {
+      --dashboard-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --card-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    /* Override dark theme for admin dashboard */
+    body {
+      background: #f5f7fa !important;
+      color: #1f2937 !important;
+    }
+
+    .container {
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+      padding: 0 2rem !important;
+    }
+
+    /* Enhanced Header */
+    .header {
+      background: white !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header__nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header__logo a {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header__user {
+      font-weight: 500;
+      color: #4b5563 !important;
+    }
+
+    /* Main Container */
+    .main {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1f2937 !important;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    /* Enhanced Tabs */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .tabs__tab {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: none;
+      background: transparent;
+      color: #6b7280 !important;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tabs__tab:hover {
+      background: #f3f4f6;
+      color: #374151 !important;
+    }
+
+    .tabs__tab--active {
+      background: var(--primary-gradient);
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Enhanced Statistics Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stats__card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats__card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary-gradient);
+    }
+
+    .stats__card:nth-child(1)::before {
+      background: var(--warning-gradient);
+    }
+
+    .stats__card:nth-child(2)::before {
+      background: var(--info-gradient);
+    }
+
+    .stats__card:nth-child(3)::before {
+      background: var(--success-gradient);
+    }
+
+    .stats__card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .stats__title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6b7280 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats__value {
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    .stats__card:nth-child(1) .stats__value {
+      background: var(--warning-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats__card:nth-child(2) .stats__value {
+      background: var(--info-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats__card:nth-child(3) .stats__value {
+      background: var(--success-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Dashboard Charts Section */
+    .dashboard-charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .chart-card__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* Enhanced Filters */
+    .filters {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .filters__group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filters__label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151 !important;
+      margin-bottom: 0.5rem;
+    }
+
+    .filters__select,
+    .filters__input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+
+    .filters__select:focus,
+    .filters__input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Enhanced Orders Container */
+    .orders__container {
+      display: grid;
+      gap: 1rem;
+    }
+
+    /* Enhanced Table Styles */
+    .workorders-table {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    #workorders-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    #workorders-table thead tr {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    #workorders-table th {
+      padding: 1.25rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: white;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    #workorders-table tbody tr {
+      border-bottom: 1px solid #f3f4f6;
+      transition: all 0.3s ease;
+    }
+
+    #workorders-table tbody tr:hover {
+      background: #f9fafb;
+      transform: scale(1.01);
+    }
+
+    #workorders-table td {
+      padding: 1.25rem 1rem;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    /* Enhanced Calendar */
+    .calendar-view {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .calendar-view__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 3px solid #f3f4f6;
+    }
+
+    .calendar-view__title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    .calendar-view__legend {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+      border-radius: 1rem;
+      border: 2px solid #e5e7eb;
+    }
+
+    .calendar-view__legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      padding: 0.5rem 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .calendar-view__legend-color {
+      width: 32px;
+      height: 32px;
+      border-radius: 0.5rem;
+      border: 3px solid #e5e7eb;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-view__legend-color--idle {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #10b981;
+    }
+
+    .calendar-view__legend-color--normal {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #3b82f6;
+    }
+
+    .calendar-view__legend-color--busy {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border-color: #ef4444;
+    }
+
+    .calendar-grid {
+      display: block;
+    }
+
+    /* Calendar Grid */
+    .calendar-grid__header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .calendar-grid__day-name {
+      text-align: center;
+      font-weight: 800;
+      color: #667eea !important;
+      padding: 1rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border-radius: 0.75rem;
+    }
+
+    .calendar-grid__body {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.75rem;
+    }
+
+    .calendar-grid__cell {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      min-height: 120px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid #e5e7eb;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .calendar-grid__cell:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      border-color: #667eea;
+      z-index: 10;
+    }
+
+    .calendar-grid__cell--empty {
+      background: #fafafa;
+      cursor: default;
+      border: 2px dashed #e5e7eb;
+      opacity: 0.5;
+    }
+
+    .calendar-grid__cell--empty:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #e5e7eb;
+    }
+
+    .calendar-grid__cell--weekend {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-color: #fbbf24;
+    }
+
+    .calendar-grid__cell--weekend:hover {
+      border-color: #f59e0b;
+    }
+
+    .calendar-grid__cell--idle {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #10b981;
+    }
+
+    .calendar-grid__cell--idle:hover {
+      border-color: #059669;
+    }
+
+    .calendar-grid__cell--normal {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #3b82f6;
+    }
+
+    .calendar-grid__cell--normal:hover {
+      border-color: #2563eb;
+    }
+
+    .calendar-grid__cell--busy {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border-color: #ef4444;
+    }
+
+    .calendar-grid__cell--busy:hover {
+      border-color: #dc2626;
+    }
+
+    .calendar-grid__date {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #1f2937 !important;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .calendar-grid__info {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #4b5563 !important;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .calendar-grid__weekend-label {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #92400e;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 2px solid #fbbf24;
+    }
+
+    /* Time Slots Detail */
+    .time-slots-detail {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      margin-top: 2rem;
+      box-shadow: var(--card-shadow);
+      border: 3px solid #e5e7eb;
+    }
+
+    .time-slots-detail__title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #f3f4f6;
+    }
+
+    .time-slots-detail__content {
+      /* Content styles */
+    }
+
+    .time-slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .time-slot-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 3px solid #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .time-slot-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .time-slot-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .time-slot-card--idle {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #10b981;
+    }
+
+    .time-slot-card--idle::before {
+      background: #10b981;
+    }
+
+    .time-slot-card--normal {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #3b82f6;
+    }
+
+    .time-slot-card--normal::before {
+      background: #3b82f6;
+    }
+
+    .time-slot-card--busy {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border-color: #ef4444;
+    }
+
+    .time-slot-card--busy::before {
+      background: #ef4444;
+    }
+
+    .time-slot-card__time {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1f2937 !important;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .time-slot-card__count {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #1f2937 !important;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .time-slot-card__status {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #4b5563 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.5rem;
+      display: inline-block;
+    }
+
+    /* Calendar Responsive */
+    @media (max-width: 1024px) {
+      .calendar-grid__cell {
+        min-height: 100px;
+        padding: 1rem;
+      }
+
+      .calendar-grid__date {
+        font-size: 1.5rem;
+      }
+
+      .calendar-grid__info {
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .calendar-view {
+        padding: 1.5rem;
+      }
+
+      .calendar-view__header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .calendar-view__legend {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .calendar-grid__header,
+      .calendar-grid__body {
+        gap: 0.5rem;
+      }
+
+      .calendar-grid__cell {
+        min-height: 80px;
+        padding: 0.75rem;
+      }
+
+      .calendar-grid__date {
+        font-size: 1.25rem;
+      }
+
+      .calendar-grid__info {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
+      }
+
+      .calendar-grid__day-name {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      .time-slots-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+
+      .time-slot-card {
+        padding: 1rem;
+      }
+
+      .time-slot-card__count {
+        font-size: 2rem;
+      }
+    }
+
+    /* Enhanced Quick Actions */
+    .quick-actions {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .quick-actions__title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+      margin-bottom: 2rem;
+    }
+
+    .quick-actions__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .quick-actions__card {
+      background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+      border: 2px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .quick-actions__card:hover {
+      border-color: #667eea;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .quick-actions__card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-actions__card-desc {
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .quick-actions__card-controls {
+      margin-bottom: 1rem;
+    }
+
+    .quick-actions__label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+
+    .quick-actions__select,
+    .quick-actions__input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+
+    .quick-actions__select:focus,
+    .quick-actions__input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Enhanced Buttons */
+    .button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.875rem;
+    }
+
+    .button--primary {
+      background: var(--primary-gradient);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .button--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .button--secondary {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .button--secondary:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .button--small {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Enhanced Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal__content {
+      position: relative;
+      background: white;
+      border-radius: 1rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlideIn 0.3s ease;
+      z-index: 1;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal__header {
+      padding: 2rem;
+      border-bottom: 2px solid #f3f4f6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal__title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+      margin: 0;
+    }
+
+    .modal__close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #9ca3af !important;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      line-height: 1;
+    }
+
+    .modal__close:hover {
+      color: #374151 !important;
+    }
+
+    .modal__body {
+      padding: 2rem;
+    }
+
+    .modal__footer {
+      padding: 1.5rem 2rem;
+      border-top: 2px solid #f3f4f6;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header__nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-charts {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .quick-actions__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Order Cards */
+    .order-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      border-left: 4px solid #667eea;
+    }
+
+    .order-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .order-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .order-card__title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+      margin: 0;
+    }
+
+    .order-card__status {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .order-card__status--pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .order-card__status--confirmed {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .order-card__status--in_progress {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .order-card__status--delayed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .order-card__status--completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .order-card__status--cancelled {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .order-card__body {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .order-card__info p {
+      margin: 0.5rem 0;
+      color: #4b5563 !important;
+      font-size: 0.875rem;
+    }
+
+    .order-card__info strong {
+      color: #1f2937 !important;
+      font-weight: 600;
+    }
+
+    .order-card__actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Order Detail */
+    .order-detail__section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .order-detail__section:last-child {
+      border-bottom: none;
+    }
+
+    .order-detail__section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 1rem;
+    }
+
+    .order-detail__section p {
+      margin: 0.75rem 0;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    /* Status Change Modal Styles */
+    .status-modal__content {
+      max-width: 600px;
+    }
+
+    .status-form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .status-form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1f2937 !important;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-required {
+      color: #ef4444 !important;
+      font-weight: 700;
+    }
+
+    .status-current-display {
+      padding: 1rem;
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1f2937 !important;
+      text-align: center;
+      border: 2px solid #d1d5db;
+    }
+
+    /* Status Options Grid */
+    .status-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .status-radio {
+      display: none;
+    }
+
+    .status-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      border-radius: 1rem;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .status-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.1;
+      transition: opacity 0.3s ease;
+    }
+
+    .status-option:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .status-option__icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-option__text {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Status Option Colors */
+    .status-option--pending {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-color: #fbbf24;
+    }
+
+    .status-option--pending::before {
+      background: #f59e0b;
+    }
+
+    .status-option--pending .status-option__text {
+      color: #92400e;
+    }
+
+    .status-option--confirmed {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border-color: #60a5fa;
+    }
+
+    .status-option--confirmed::before {
+      background: #3b82f6;
+    }
+
+    .status-option--confirmed .status-option__text {
+      color: #1e40af;
+    }
+
+    .status-option--in_progress {
+      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+      border-color: #a78bfa;
+    }
+
+    .status-option--in_progress::before {
+      background: #8b5cf6;
+    }
+
+    .status-option--in_progress .status-option__text {
+      color: #5b21b6;
+    }
+
+    .status-option--delayed {
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      border-color: #f87171;
+    }
+
+    .status-option--delayed::before {
+      background: #ef4444;
+    }
+
+    .status-option--delayed .status-option__text {
+      color: #991b1b;
+    }
+
+    .status-option--completed {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #34d399;
+    }
+
+    .status-option--completed::before {
+      background: #10b981;
+    }
+
+    .status-option--completed .status-option__text {
+      color: #065f46;
+    }
+
+    .status-option--cancelled {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border-color: #9ca3af;
+    }
+
+    .status-option--cancelled::before {
+      background: #6b7280;
+    }
+
+    .status-option--cancelled .status-option__text {
+      color: #374151;
+    }
+
+    /* Selected State */
+    .status-radio:checked + .status-option {
+      border-width: 4px;
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .status-radio:checked + .status-option::before {
+      opacity: 0.2;
+    }
+
+    .status-radio:checked + .status-option::after {
+      content: '✓';
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+    }
+
+    .status-radio:checked + .status-option--pending::after {
+      color: #f59e0b;
+    }
+
+    .status-radio:checked + .status-option--confirmed::after {
+      color: #3b82f6;
+    }
+
+    .status-radio:checked + .status-option--in_progress::after {
+      color: #8b5cf6;
+    }
+
+    .status-radio:checked + .status-option--delayed::after {
+      color: #ef4444;
+    }
+
+    .status-radio:checked + .status-option--completed::after {
+      color: #10b981;
+    }
+
+    .status-radio:checked + .status-option--cancelled::after {
+      color: #6b7280;
+    }
+
+    /* Form Elements */
+    .status-form-select,
+    .status-form-textarea {
+      width: 100%;
+      padding: 0.875rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .status-form-select:focus,
+    .status-form-textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .status-form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .status-form-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234b5563' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.875rem center;
+      padding-right: 2.5rem;
+    }
+
+    /* Responsive for Status Modal */
+    @media (max-width: 640px) {
+      .status-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header Navigation -->
@@ -20,6 +1339,7 @@
       </div>
       <div class="header__actions">
         <span id="admin-email" class="header__user"></span>
+        <a href="index.html" class="button button--small button--secondary">返回主页</a>
         <button id="logout-btn" class="button button--small button--secondary">退出登录</button>
       </div>
     </nav>
@@ -48,34 +1368,6 @@
 
       <!-- Tab Content: Orders Management -->
       <div id="tab-orders" class="tab-content tab-content--active" role="tabpanel">
-        <!-- Filters -->
-        <section class="filters" aria-label="订单筛选">
-          <div class="filters__group">
-            <label for="status-filter" class="filters__label">状态筛选：</label>
-            <select id="status-filter" class="filters__select">
-              <option value="">全部状态</option>
-              <option value="pending">待排期</option>
-              <option value="confirmed">已确认</option>
-              <option value="in_progress">进行中</option>
-              <option value="delayed">延期中</option>
-              <option value="completed">已完成</option>
-              <option value="cancelled">已取消</option>
-            </select>
-          </div>
-
-          <div class="filters__group">
-            <label for="date-filter" class="filters__label">日期筛选：</label>
-            <input type="date" id="date-filter" class="filters__input">
-          </div>
-
-          <div class="filters__group">
-            <label for="phone-search" class="filters__label">电话搜索：</label>
-            <input type="text" id="phone-search" class="filters__input" placeholder="输入电话号码">
-          </div>
-
-          <button id="refresh-btn" class="button button--secondary">刷新列表</button>
-        </section>
-
         <!-- Statistics -->
         <section class="stats" aria-label="统计信息">
           <div class="stats__card">
@@ -94,6 +1386,50 @@
             <h3 class="stats__title">总订单</h3>
             <p class="stats__value" id="stat-total">0</p>
           </div>
+        </section>
+
+        <!-- Dashboard Charts -->
+        <section class="dashboard-charts" aria-label="数据可视化">
+          <div class="chart-card">
+            <h3 class="chart-card__title">订单状态分布</h3>
+            <div class="chart-container">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-card__title">近7天订单趋势</h3>
+            <div class="chart-container">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters" aria-label="订单筛选">
+          <div class="filters__group">
+            <label for="status-filter" class="filters__label">状态筛选</label>
+            <select id="status-filter" class="filters__select">
+              <option value="">全部状态</option>
+              <option value="pending">待排期</option>
+              <option value="confirmed">已确认</option>
+              <option value="in_progress">进行中</option>
+              <option value="delayed">延期中</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+
+          <div class="filters__group">
+            <label for="date-filter" class="filters__label">日期筛选</label>
+            <input type="date" id="date-filter" class="filters__input">
+          </div>
+
+          <div class="filters__group">
+            <label for="phone-search" class="filters__label">电话搜索</label>
+            <input type="text" id="phone-search" class="filters__input" placeholder="输入电话号码">
+          </div>
+
+          <button id="refresh-btn" class="button button--secondary">刷新列表</button>
         </section>
 
         <!-- Orders List -->
@@ -287,7 +1623,7 @@
   <!-- Status Change Modal -->
   <div id="status-modal" class="modal" style="display: none;">
     <div class="modal__overlay"></div>
-    <div class="modal__content" style="max-width: 500px;">
+    <div class="modal__content status-modal__content">
       <div class="modal__header">
         <h2 class="modal__title">更改订单状态</h2>
         <button class="modal__close" aria-label="关闭">&times;</button>
@@ -296,27 +1632,57 @@
         <form id="status-change-form">
           <input type="hidden" id="status-order-id">
 
-          <div class="form-group" style="margin-bottom: 1rem;">
-            <label for="new-status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">当前状态</label>
-            <div id="current-status-display" style="padding: 0.5rem; background: #f3f4f6; border-radius: 0.5rem;"></div>
+          <div class="status-form-group">
+            <label class="status-form-label">当前状态</label>
+            <div id="current-status-display" class="status-current-display"></div>
           </div>
 
-          <div class="form-group" style="margin-bottom: 1rem;">
-            <label for="new-status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">新状态 <span style="color: #ef4444;">*</span></label>
-            <select id="new-status" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
-              <option value="">请选择新状态</option>
-              <option value="pending">待排期</option>
-              <option value="confirmed">已确认</option>
-              <option value="in_progress">进行中</option>
-              <option value="delayed">延期中</option>
-              <option value="completed">已完成</option>
-              <option value="cancelled">已取消</option>
-            </select>
+          <div class="status-form-group">
+            <label class="status-form-label">
+              选择新状态 <span class="status-required">*</span>
+            </label>
+            <div class="status-options-grid">
+              <input type="radio" name="new-status" id="status-pending" value="pending" class="status-radio" required>
+              <label for="status-pending" class="status-option status-option--pending">
+                <span class="status-option__icon">⏳</span>
+                <span class="status-option__text">待排期</span>
+              </label>
+
+              <input type="radio" name="new-status" id="status-confirmed" value="confirmed" class="status-radio">
+              <label for="status-confirmed" class="status-option status-option--confirmed">
+                <span class="status-option__icon">✓</span>
+                <span class="status-option__text">已确认</span>
+              </label>
+
+              <input type="radio" name="new-status" id="status-in_progress" value="in_progress" class="status-radio">
+              <label for="status-in_progress" class="status-option status-option--in_progress">
+                <span class="status-option__icon">🔧</span>
+                <span class="status-option__text">进行中</span>
+              </label>
+
+              <input type="radio" name="new-status" id="status-delayed" value="delayed" class="status-radio">
+              <label for="status-delayed" class="status-option status-option--delayed">
+                <span class="status-option__icon">⚠</span>
+                <span class="status-option__text">延期中</span>
+              </label>
+
+              <input type="radio" name="new-status" id="status-completed" value="completed" class="status-radio">
+              <label for="status-completed" class="status-option status-option--completed">
+                <span class="status-option__icon">✔</span>
+                <span class="status-option__text">已完成</span>
+              </label>
+
+              <input type="radio" name="new-status" id="status-cancelled" value="cancelled" class="status-radio">
+              <label for="status-cancelled" class="status-option status-option--cancelled">
+                <span class="status-option__icon">✕</span>
+                <span class="status-option__text">已取消</span>
+              </label>
+            </div>
           </div>
 
-          <div class="form-group" style="margin-bottom: 1rem;">
-            <label for="assigned-to" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">排班人员</label>
-            <select id="assigned-to" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+          <div class="status-form-group">
+            <label for="assigned-to" class="status-form-label">排班人员</label>
+            <select id="assigned-to" class="status-form-select">
               <option value="">未分配</option>
               <option value="木木">木木</option>
               <option value="达三">达三</option>
@@ -325,9 +1691,28 @@
             </select>
           </div>
 
-          <div class="form-group" style="margin-bottom: 1rem;">
-            <label for="admin-notes" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">管理员备注</label>
-            <textarea id="admin-notes" rows="3" placeholder="请输入备注信息（选填）" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; resize: vertical;"></textarea>
+          <div class="status-form-group">
+            <label for="appointment-date" class="status-form-label">预约日期</label>
+            <input type="date" id="appointment-date" class="status-form-select">
+          </div>
+
+          <div class="status-form-group">
+            <label for="appointment-time" class="status-form-label">预约时间段</label>
+            <select id="appointment-time" class="status-form-select">
+              <option value="">请选择时间段</option>
+              <option value="10:00-11:00">10:00-11:00</option>
+              <option value="11:00-12:00">11:00-12:00</option>
+              <option value="13:00-14:00">13:00-14:00</option>
+              <option value="14:00-15:00">14:00-15:00</option>
+              <option value="15:00-16:00">15:00-16:00</option>
+              <option value="16:00-17:00">16:00-17:00</option>
+              <option value="17:00-18:00">17:00-18:00</option>
+            </select>
+          </div>
+
+          <div class="status-form-group">
+            <label for="admin-notes" class="status-form-label">管理员备注</label>
+            <textarea id="admin-notes" rows="4" placeholder="请输入备注信息（选填）" class="status-form-textarea"></textarea>
           </div>
         </form>
       </div>
@@ -363,7 +1748,170 @@
   </footer>
 
   <!-- JavaScript -->
-  <script type="module" src="js\supabase-client.js"></script>
-  <script type="module" src="js\admin-dashboard.js"></script>
+  <script type="module" src="js/supabase-client.js"></script>
+  <script type="module" src="js/admin-dashboard.js"></script>
+
+  <!-- Chart Initialization Script -->
+  <script>
+    // Store chart instances
+    let statusChartInstance = null;
+    let trendChartInstance = null;
+
+    // Initialize charts after data is loaded
+    window.initializeCharts = function(ordersData) {
+      // Status Distribution Chart
+      const statusCtx = document.getElementById('statusChart');
+      if (statusCtx && window.Chart) {
+        const statusCounts = {
+          pending: 0,
+          confirmed: 0,
+          in_progress: 0,
+          delayed: 0,
+          completed: 0,
+          cancelled: 0
+        };
+
+        ordersData.forEach(order => {
+          if (statusCounts.hasOwnProperty(order.status)) {
+            statusCounts[order.status]++;
+          }
+        });
+
+        const statusData = [
+          statusCounts.pending,
+          statusCounts.confirmed,
+          statusCounts.in_progress,
+          statusCounts.delayed,
+          statusCounts.completed,
+          statusCounts.cancelled
+        ];
+
+        // Destroy existing chart if it exists
+        if (statusChartInstance) {
+          statusChartInstance.destroy();
+        }
+
+        statusChartInstance = new Chart(statusCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['待排期', '已确认', '进行中', '延期中', '已完成', '已取消'],
+            datasets: [{
+              data: statusData,
+              backgroundColor: [
+                '#f59e0b',
+                '#3b82f6',
+                '#8b5cf6',
+                '#ef4444',
+                '#10b981',
+                '#6b7280'
+              ],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: {
+                    size: 12,
+                    weight: '600'
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Trend Chart - Last 7 days
+      const trendCtx = document.getElementById('trendChart');
+      if (trendCtx && window.Chart) {
+        const last7Days = [];
+        const today = new Date();
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date(today);
+          date.setDate(date.getDate() - i);
+          last7Days.push(date.toISOString().split('T')[0]);
+        }
+
+        const dailyCounts = last7Days.map(date => {
+          return ordersData.filter(order => {
+            const orderDate = new Date(order.created_at).toISOString().split('T')[0];
+            return orderDate === date;
+          }).length;
+        });
+
+        const labels = last7Days.map(date => {
+          const d = new Date(date);
+          return `${d.getMonth() + 1}/${d.getDate()}`;
+        });
+
+        // Destroy existing chart if it exists
+        if (trendChartInstance) {
+          trendChartInstance.destroy();
+        }
+
+        trendChartInstance = new Chart(trendCtx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '订单数量',
+              data: dailyCounts,
+              borderColor: '#667eea',
+              backgroundColor: 'rgba(102, 126, 234, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              pointBackgroundColor: '#667eea',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                  font: {
+                    size: 12,
+                    weight: '600'
+                  }
+                },
+                grid: {
+                  color: '#f3f4f6'
+                }
+              },
+              x: {
+                ticks: {
+                  font: {
+                    size: 12,
+                    weight: '600'
+                  }
+                },
+                grid: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+      }
+    };
+  </script>
 </body>
 </html>

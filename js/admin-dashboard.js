@@ -413,22 +413,45 @@ async function viewOrderDetail(orderId) {
 async function changeOrderStatus(orderId, currentStatus) {
   const statusModal = document.getElementById('status-modal');
   const currentStatusDisplay = document.getElementById('current-status-display');
-  const newStatusSelect = document.getElementById('new-status');
   const adminNotesInput = document.getElementById('admin-notes');
   const orderIdInput = document.getElementById('status-order-id');
+  const assignedToSelect = document.getElementById('assigned-to');
+  const appointmentDateInput = document.getElementById('appointment-date');
+  const appointmentTimeSelect = document.getElementById('appointment-time');
 
   if (!statusModal) return;
 
-  // Set current status
-  currentStatusDisplay.textContent = getStatusLabel(currentStatus);
-  orderIdInput.value = orderId;
+  // Fetch current order details
+  try {
+    const result = await fetchRepairOrderById(orderId);
+    if (result.success) {
+      const order = result.data;
 
-  // Reset form
-  newStatusSelect.value = '';
-  adminNotesInput.value = '';
+      // Set current status with styled badge
+      const statusLabel = getStatusLabel(currentStatus);
+      const statusClass = `order-card__status order-card__status--${currentStatus}`;
+      currentStatusDisplay.innerHTML = `<span class="${statusClass}" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 9999px;">${statusLabel}</span>`;
+      orderIdInput.value = orderId;
 
-  // Show modal
-  statusModal.style.display = 'block';
+      // Reset form
+      const radioButtons = document.querySelectorAll('input[name="new-status"]');
+      radioButtons.forEach(radio => {
+        radio.checked = false;
+      });
+      adminNotesInput.value = order.admin_notes || '';
+      if (assignedToSelect) assignedToSelect.value = order.assigned_to || '';
+
+      // Set current appointment date and time
+      if (appointmentDateInput) appointmentDateInput.value = order.appointment_date || '';
+      if (appointmentTimeSelect) appointmentTimeSelect.value = order.appointment_time || '';
+
+      // Show modal
+      statusModal.style.display = 'flex';
+    }
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+    alert('获取订单详情失败');
+  }
 }
 
 /**
@@ -436,9 +459,12 @@ async function changeOrderStatus(orderId, currentStatus) {
  */
 async function confirmStatusChange() {
   const orderId = document.getElementById('status-order-id').value;
-  const newStatus = document.getElementById('new-status').value;
+  const selectedRadio = document.querySelector('input[name="new-status"]:checked');
+  const newStatus = selectedRadio ? selectedRadio.value : '';
   const assignedTo = document.getElementById('assigned-to').value;
   const adminNotes = document.getElementById('admin-notes').value;
+  const appointmentDate = document.getElementById('appointment-date').value;
+  const appointmentTime = document.getElementById('appointment-time').value;
 
   if (!newStatus) {
     alert('请选择新状态');
@@ -459,6 +485,15 @@ async function confirmStatusChange() {
       updateData.admin_notes = adminNotes;
     }
 
+    // Update appointment date and time if provided
+    if (appointmentDate) {
+      updateData.appointment_date = appointmentDate;
+    }
+
+    if (appointmentTime) {
+      updateData.appointment_time = appointmentTime;
+    }
+
     // Call update function
     const { data, error } = await supabase
       .from('guitar_repairs')
@@ -469,10 +504,13 @@ async function confirmStatusChange() {
 
     if (error) throw error;
 
-    alert('状态更新成功');
+    alert('订单更新成功');
     closeStatusModal();
+
+    // Reload all data to reflect changes
     await loadOrders();
-    await loadWorkOrders(); // Refresh work orders table
+    await loadWorkOrders();
+    await loadCalendar(); // Reload calendar to reflect date/time changes
   } catch (error) {
     console.error('Error updating status:', error);
     alert(`更新失败: ${error.message}`);
@@ -542,6 +580,11 @@ function updateStatistics() {
   if (statActive) statActive.textContent = stats.active;
   if (statCompleted) statCompleted.textContent = stats.completed;
   if (statTotal) statTotal.textContent = stats.total;
+
+  // Initialize charts with current orders data
+  if (typeof window.initializeCharts === 'function') {
+    window.initializeCharts(currentOrders);
+  }
 }
 
 /**

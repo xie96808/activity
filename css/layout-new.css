@@ -314,6 +314,28 @@ a:hover {
   display: none;
 }
 
+/* Admin Link - Hidden Style */
+.header__actions {
+  display: flex;
+  align-items: center;
+}
+
+.header__admin-link {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.header__admin-link:hover {
+  opacity: 1;
+  color: var(--color-text-secondary);
+  background: rgba(138, 130, 121, 0.15);
+}
+
 /* ========================================
    Hero Section - Premium Craftsmanship
    ======================================== */
@@ -514,6 +536,25 @@ a:hover {
 }
 
 .button--calendar::before {
+  display: none;
+}
+
+.button--query {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.5);
+  color: #667eea;
+  backdrop-filter: blur(4px);
+}
+
+.button--query:hover,
+.button--query:focus {
+  background: rgba(102, 126, 234, 0.3);
+  border-color: #667eea;
+  color: #667eea;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.button--query::before {
   display: none;
 }
 
