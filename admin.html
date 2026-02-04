@@ -6,16 +6,25 @@
   <meta name="description" content="吉他维修预约系统 - 管理员登录">
   <title>管理员登录 - 吉他维修预约系统</title>
   <link rel="stylesheet" href="css/layout-new.css">
+
+  <!-- Google Fonts: Fira Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    /* Define missing color variables for admin page */
+    /* Professional Login Page Design */
+    * {
+      font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
     :root {
-      --color-gray-300: #d1d5db;
-      --color-gray-400: #9ca3af;
-      --color-gray-600: #4b5563;
-      --color-gray-700: #374151;
-      --color-gray-900: #111827;
-      --color-primary: #667eea;
-      --color-primary-dark: #5a67d8;
+      --primary-color: #0891B2;
+      --primary-hover: #0E7490;
+      --secondary-color: #22D3EE;
+      --background: #ECFEFF;
+      --text-primary: #164E63;
+      --text-secondary: #0E7490;
     }
 
     .login-container {
@@ -23,94 +32,128 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: var(--spacing-lg);
+      background: linear-gradient(135deg, #0891B2 0%, #22D3EE 100%);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
 
     .login-card {
       background: white;
-      border-radius: var(--radius-lg);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: var(--spacing-2xl);
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(8, 145, 178, 0.25);
+      padding: 2.5rem;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
     .login-card__title {
-      font-size: var(--font-size-2xl);
+      font-size: 1.875rem;
       font-weight: 700;
-      color: var(--color-gray-900);
-      margin-bottom: var(--spacing-sm);
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
       text-align: center;
+      letter-spacing: -0.02em;
     }
 
     .login-card__subtitle {
-      font-size: var(--font-size-sm);
-      color: var(--color-gray-600);
-      margin-bottom: var(--spacing-2xl);
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
       text-align: center;
+      font-weight: 500;
     }
 
     .login-form__group {
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: 1.5rem;
     }
 
     .login-form__label {
       display: block;
-      font-size: var(--font-size-sm);
-      font-weight: 500;
-      color: var(--color-gray-700);
-      margin-bottom: var(--spacing-xs);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
     }
 
     .login-form__input {
       width: 100%;
-      padding: var(--spacing-md);
-      border: 2px solid var(--color-gray-300);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-base);
-      transition: all var(--transition-base);
+      padding: 0.875rem 1rem;
+      border: 1.5px solid rgba(8, 145, 178, 0.2);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      background: white;
+      color: var(--text-primary);
+      font-family: 'Fira Sans', sans-serif;
     }
 
     .login-form__input:focus {
       outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+    }
+
+    .login-form__input::placeholder {
+      color: rgba(8, 145, 178, 0.4);
     }
 
     .login-form__button {
       width: 100%;
-      padding: var(--spacing-md);
-      background: var(--color-primary);
+      padding: 0.875rem 1rem;
+      background: linear-gradient(135deg, #0891B2 0%, #22D3EE 100%);
       color: white;
       border: none;
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-base);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all var(--transition-base);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+      letter-spacing: -0.01em;
     }
 
     .login-form__button:hover {
-      background: var(--color-primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 6px 16px rgba(8, 145, 178, 0.4);
     }
 
     .login-form__button:disabled {
-      background: var(--color-gray-400);
+      background: #9CA3AF;
       cursor: not-allowed;
       transform: none;
+      box-shadow: none;
     }
 
     .login-form__error {
-      margin-top: var(--spacing-md);
-      padding: var(--spacing-md);
-      background: #fee2e2;
-      color: #991b1b;
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
+      margin-top: 1rem;
+      padding: 0.875rem;
+      background: #FEE2E2;
+      color: #991B1B;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
       display: none;
+      border: 1px solid #FECACA;
     }
 
     .login-form__error--visible {
@@ -118,20 +161,35 @@
     }
 
     .login-form__back {
-      margin-top: var(--spacing-lg);
+      margin-top: 1.5rem;
       text-align: center;
     }
 
     .login-form__back a {
-      color: var(--color-primary);
+      color: var(--primary-color);
       text-decoration: none;
-      font-size: var(--font-size-sm);
-      transition: color var(--transition-base);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
     }
 
     .login-form__back a:hover {
-      color: var(--color-primary-dark);
+      color: var(--secondary-color);
       text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1rem;
+      }
+
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .login-card__title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>

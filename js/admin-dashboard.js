@@ -297,7 +297,7 @@ function renderOrders(orders) {
     <div class="order-card" data-order-id="${order.id}">
       <div class="order-card__header">
         <h3 class="order-card__title">订单 #${order.id.substring(0, 8)}</h3>
-        <span class="order-card__status order-card__status--${order.status}">${getStatusLabel(order.status)}</span>
+        <span class="order-card__status order-card__status--${order.status}" onclick="window.quickChangeStatus('${order.id}', '${order.status}', this)" title="点击快速修改状态">${getStatusLabel(order.status)}</span>
       </div>
       <div class="order-card__body">
         <div class="order-card__info">
@@ -316,7 +316,7 @@ function renderOrders(orders) {
       </div>
       <div class="order-card__actions">
         <button class="button button--small button--primary" onclick="window.viewOrderDetail('${order.id}')">查看详情</button>
-        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改状态</button>
+        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改订单状态</button>
         ${order.status === 'cancelled' ? `<button class="button button--small button--danger" onclick="window.deleteOrder('${order.id}')">删除</button>` : ''}
       </div>
     </div>
@@ -408,11 +408,176 @@ async function viewOrderDetail(orderId) {
 }
 
 /**
+ * Quick change order status with dropdown
+ */
+async function quickChangeStatus(orderId, currentStatus, element) {
+  // Prevent event bubbling
+  event.stopPropagation();
+
+  // Check if dropdown already exists for this order
+  const existingDropdown = document.querySelector('.status-quick-dropdown');
+  if (existingDropdown) {
+    const existingOrderId = existingDropdown.getAttribute('data-order-id');
+    if (existingOrderId === orderId) {
+      // Same order - close the dropdown
+      existingDropdown.remove();
+      return;
+    }
+    // Different order - remove old dropdown
+    existingDropdown.remove();
+  }
+
+  // Create dropdown with custom options list
+  const dropdown = document.createElement('div');
+  dropdown.className = 'status-quick-dropdown';
+  dropdown.setAttribute('data-order-id', orderId);
+
+  const statuses = [
+    { value: 'pending', label: '待排期' },
+    { value: 'confirmed', label: '已确认' },
+    { value: 'in_progress', label: '进行中' },
+    { value: 'delayed', label: '延期中' },
+    { value: 'completed', label: '已完成' },
+    { value: 'cancelled', label: '已取消' }
+  ];
+
+  const optionsHTML = statuses
+    .map(s => {
+      const isCurrentStatus = s.value === currentStatus;
+      const currentClass = isCurrentStatus ? ' status-quick-option--current' : '';
+      return `
+        <div class="status-quick-option status-quick-option--${s.value}${currentClass}" data-status="${s.value}">
+          <span class="status-quick-option__label">${s.label}</span>
+        </div>
+      `;
+    }).join('');
+
+  dropdown.innerHTML = optionsHTML;
+
+  // Position dropdown near the status badge with boundary detection
+  const rect = element.getBoundingClientRect();
+  dropdown.style.position = 'fixed';
+  dropdown.style.zIndex = '1000';
+  dropdown.style.width = `${rect.width}px`; // Match status badge width
+
+  document.body.appendChild(dropdown);
+
+  // Get dropdown dimensions after adding to DOM
+  const dropdownRect = dropdown.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Calculate position - center dropdown under the badge
+  let top = rect.bottom + 5;
+  let left = rect.left + (rect.width / 2) - (dropdownRect.width / 2);
+
+  // Check if dropdown exceeds right edge
+  if (left + dropdownRect.width > viewportWidth - 10) {
+    left = viewportWidth - dropdownRect.width - 10;
+  }
+
+  // Check if dropdown exceeds left edge
+  if (left < 10) {
+    left = 10;
+  }
+
+  // Check if dropdown exceeds bottom edge
+  if (top + dropdownRect.height > viewportHeight - 10) {
+    // Show above the badge instead
+    top = rect.top - dropdownRect.height - 5;
+  }
+
+  // Check if dropdown exceeds top edge (rare case)
+  if (top < 10) {
+    top = 10;
+  }
+
+  dropdown.style.top = `${top}px`;
+  dropdown.style.left = `${left}px`;
+
+  // Handle option click
+  const options = dropdown.querySelectorAll('.status-quick-option');
+  options.forEach(option => {
+    option.addEventListener('click', async () => {
+      const newStatus = option.getAttribute('data-status');
+
+      // Don't update if clicking current status
+      if (!newStatus || newStatus === currentStatus) {
+        dropdown.remove();
+        return;
+      }
+
+      // Close dropdown immediately
+      dropdown.remove();
+
+      // Optimistic update - update UI immediately
+      const statusBadge = element;
+      const oldClass = `order-card__status--${currentStatus}`;
+      const newClass = `order-card__status--${newStatus}`;
+
+      statusBadge.classList.remove(oldClass);
+      statusBadge.classList.add(newClass);
+      statusBadge.textContent = getStatusLabel(newStatus);
+
+      try {
+        // Update database in background
+        const { data, error } = await supabase
+          .from('guitar_repairs')
+          .update({ status: newStatus })
+          .eq('id', orderId)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        // Update local data without full reload
+        const orderIndex = currentOrders.findIndex(o => o.id === orderId);
+        if (orderIndex !== -1) {
+          currentOrders[orderIndex].status = newStatus;
+          updateStatistics(false); // Don't update trend chart, only status distribution
+        }
+
+      } catch (error) {
+        console.error('Error updating status:', error);
+
+        // Revert UI on error
+        statusBadge.classList.remove(newClass);
+        statusBadge.classList.add(oldClass);
+        statusBadge.textContent = getStatusLabel(currentStatus);
+
+        alert(`更新失败: ${error.message}`);
+      }
+    });
+  });
+
+  // Close dropdown when clicking outside
+  const closeDropdown = (e) => {
+    if (!dropdown.contains(e.target)) {
+      dropdown.remove();
+      document.removeEventListener('click', closeDropdown);
+    }
+  };
+
+  // Add listener after a short delay to prevent immediate closing
+  setTimeout(() => {
+    document.addEventListener('click', closeDropdown);
+  }, 100);
+
+  // Close on Escape key
+  const handleEscape = (e) => {
+    if (e.key === 'Escape') {
+      dropdown.remove();
+      document.removeEventListener('keydown', handleEscape);
+    }
+  };
+  document.addEventListener('keydown', handleEscape);
+}
+
+/**
  * Change order status
  */
 async function changeOrderStatus(orderId, currentStatus) {
   const statusModal = document.getElementById('status-modal');
-  const currentStatusDisplay = document.getElementById('current-status-display');
   const adminNotesInput = document.getElementById('admin-notes');
   const orderIdInput = document.getElementById('status-order-id');
   const assignedToSelect = document.getElementById('assigned-to');
@@ -427,17 +592,9 @@ async function changeOrderStatus(orderId, currentStatus) {
     if (result.success) {
       const order = result.data;
 
-      // Set current status with styled badge
-      const statusLabel = getStatusLabel(currentStatus);
-      const statusClass = `order-card__status order-card__status--${currentStatus}`;
-      currentStatusDisplay.innerHTML = `<span class="${statusClass}" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 9999px;">${statusLabel}</span>`;
       orderIdInput.value = orderId;
 
-      // Reset form
-      const radioButtons = document.querySelectorAll('input[name="new-status"]');
-      radioButtons.forEach(radio => {
-        radio.checked = false;
-      });
+      // Set form values
       adminNotesInput.value = order.admin_notes || '';
       if (assignedToSelect) assignedToSelect.value = order.assigned_to || '';
 
@@ -459,23 +616,14 @@ async function changeOrderStatus(orderId, currentStatus) {
  */
 async function confirmStatusChange() {
   const orderId = document.getElementById('status-order-id').value;
-  const selectedRadio = document.querySelector('input[name="new-status"]:checked');
-  const newStatus = selectedRadio ? selectedRadio.value : '';
   const assignedTo = document.getElementById('assigned-to').value;
   const adminNotes = document.getElementById('admin-notes').value;
   const appointmentDate = document.getElementById('appointment-date').value;
   const appointmentTime = document.getElementById('appointment-time').value;
 
-  if (!newStatus) {
-    alert('请选择新状态');
-    return;
-  }
-
   try {
-    // Build update data
-    const updateData = {
-      status: newStatus
-    };
+    // Build update data (no status change here, only other fields)
+    const updateData = {};
 
     if (assignedTo) {
       updateData.assigned_to = assignedTo;
@@ -492,6 +640,12 @@ async function confirmStatusChange() {
 
     if (appointmentTime) {
       updateData.appointment_time = appointmentTime;
+    }
+
+    // Only update if there's something to update
+    if (Object.keys(updateData).length === 0) {
+      alert('没有需要更新的内容');
+      return;
     }
 
     // Call update function
@@ -512,7 +666,7 @@ async function confirmStatusChange() {
     await loadWorkOrders();
     await loadCalendar(); // Reload calendar to reflect date/time changes
   } catch (error) {
-    console.error('Error updating status:', error);
+    console.error('Error updating order:', error);
     alert(`更新失败: ${error.message}`);
   }
 }
@@ -552,8 +706,9 @@ function closeModal() {
 
 /**
  * Update statistics
+ * @param {boolean} updateCharts - Whether to update charts (default: true)
  */
-function updateStatistics() {
+function updateStatistics(updateCharts = true) {
   const stats = {
     pending: 0,
     active: 0,
@@ -581,9 +736,12 @@ function updateStatistics() {
   if (statCompleted) statCompleted.textContent = stats.completed;
   if (statTotal) statTotal.textContent = stats.total;
 
-  // Initialize charts with current orders data
-  if (typeof window.initializeCharts === 'function') {
+  // Only update charts if requested
+  if (updateCharts && typeof window.initializeCharts === 'function') {
     window.initializeCharts(currentOrders);
+  } else if (!updateCharts && typeof window.updateStatusChart === 'function') {
+    // Only update status distribution chart, not trend chart
+    window.updateStatusChart(currentOrders);
   }
 }
 
@@ -1123,13 +1281,13 @@ function renderWorkOrdersTable(orders) {
         </span>
       </td>
       <td style="padding: 1rem;">
-        <span class="order-card__status order-card__status--${order.status}" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+        <span class="order-card__status order-card__status--${order.status}" onclick="window.quickChangeStatus('${order.id}', '${order.status}', this)" title="点击快速修改状态" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; cursor: pointer;">
           ${getStatusLabel(order.status)}
         </span>
       </td>
       <td style="padding: 1rem;">
         <button class="button button--small button--primary" onclick="window.viewOrderDetail('${order.id}')" style="margin-right: 0.5rem;">查看</button>
-        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改状态</button>
+        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改订单状态</button>
       </td>
     </tr>
   `).join('');
@@ -1137,6 +1295,7 @@ function renderWorkOrdersTable(orders) {
 
 // Expose functions to window for onclick handlers
 window.viewOrderDetail = viewOrderDetail;
+window.quickChangeStatus = quickChangeStatus;
 window.changeOrderStatus = changeOrderStatus;
 window.deleteOrder = deleteOrder;
 window.showTimeSlotDetail = showTimeSlotDetail;

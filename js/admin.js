@@ -126,7 +126,7 @@ function renderOrders(orders) {
     <div class="order-card" data-order-id="${order.id}">
       <div class="order-card__header">
         <h3 class="order-card__title">订单 #${order.id.substring(0, 8)}</h3>
-        <span class="order-card__status order-card__status--${order.status}">${getStatusLabel(order.status)}</span>
+        <span class="order-card__status order-card__status--${order.status}" onclick="window.changeOrderStatus('${order.id}', '${order.status}')" title="点击修改状态">${getStatusLabel(order.status)}</span>
       </div>
       <div class="order-card__body">
         <div class="order-card__info">
