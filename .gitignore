@@ -32,3 +32,4 @@ npm-debug.log*
 # Development documentation
 .CLAUDE.md
 .claude/
+docs/fix-hero-centering.md
