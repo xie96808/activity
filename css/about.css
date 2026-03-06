@@ -38,7 +38,7 @@
 }
 
 .about-hero__tagline {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.9375rem;
   font-weight: 400;
   letter-spacing: 0.25em;
@@ -48,7 +48,7 @@
 }
 
 .about-hero__title {
-  font-family: var(--font-handwriting);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -58,7 +58,7 @@
 }
 
 .about-hero__subtitle {
-  font-family: 'ZCOOL XiaoWei', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.25rem, 3vw, 1.75rem);
   color: var(--color-text-secondary);
   letter-spacing: 0.1em;
@@ -110,7 +110,7 @@
 }
 
 .about-story__label {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -120,7 +120,7 @@
 }
 
 .about-story__title {
-  font-family: 'Noto Serif SC', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -142,7 +142,7 @@
 }
 
 .about-story__signature-text {
-  font-family: var(--font-handwriting);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.25rem;
   color: var(--color-accent-primary);
 }
@@ -190,7 +190,7 @@
 
 .about-stats__number {
   display: block;
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 300;
   color: var(--color-accent-primary);
@@ -228,7 +228,7 @@
 }
 
 .about-founders__label {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -238,7 +238,7 @@
 }
 
 .about-founders__title {
-  font-family: 'ZCOOL XiaoWei', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 400;
   color: var(--color-text-primary);
@@ -297,7 +297,7 @@
 }
 
 .about-founder-card__name {
-  font-family: 'ZCOOL XiaoWei', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 2rem;
   font-weight: 400;
   color: var(--color-text-primary);
@@ -312,7 +312,7 @@
 }
 
 .about-founder-card__quote {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.0625rem;
   font-style: italic;
   color: var(--color-accent-warm);
@@ -368,7 +368,7 @@
 }
 
 .about-services__label {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -378,7 +378,7 @@
 }
 
 .about-services__title {
-  font-family: 'Noto Serif SC', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -426,7 +426,7 @@
 }
 
 .about-service-card__title {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.25rem;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -453,7 +453,7 @@
 }
 
 .about-gallery__label {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -463,7 +463,7 @@
 }
 
 .about-gallery__title {
-  font-family: 'Noto Serif SC', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 600;
   color: var(--color-text-primary);
@@ -525,7 +525,7 @@
   padding: var(--spacing-4xl) var(--spacing-2xl);
   background:
     linear-gradient(rgba(15, 13, 10, 0.92), rgba(15, 13, 10, 0.92)),
-    url('/images/background/post2.png') center/cover no-repeat;
+    url('/images/background/post2.jpg') center/cover no-repeat;
   background-attachment: fixed;
   text-align: center;
 }
@@ -536,7 +536,7 @@
 }
 
 .about-philosophy__label {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -546,7 +546,7 @@
 }
 
 .about-philosophy__quote {
-  font-family: 'ZCOOL XiaoWei', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 4vw, 2.75rem);
   font-weight: 400;
   color: var(--color-text-primary);
@@ -596,7 +596,7 @@
 }
 
 .about-cta__title {
-  font-family: 'ZCOOL XiaoWei', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 400;
   color: var(--color-text-primary);

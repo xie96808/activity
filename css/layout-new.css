@@ -4,8 +4,7 @@
  * Theme: Warm Craftsmanship, Heritage, Natural Wood Tones
  */
 
-/* Google Fonts Import - MUST be before all other rules */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Dancing+Script:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&family=Liu+Jian+Mao+Cao&family=Ma+Shan+Zheng&display=swap');
+/* Google Fonts — loaded via <link> in HTML for better performance */
 
 /* ========================================
    CSS Variables & Design Tokens
@@ -53,13 +52,9 @@
   --color-info: #5a8dc4;
   --color-info-light: rgba(90, 141, 196, 0.1);
 
-  /* Typography - Refined Serif + Handwriting */
-  --font-display: 'Cormorant Garamond', 'Playfair Display', 'Libre Baskerville', Georgia, serif;
+  /* Typography */
   --font-body: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-handwriting: 'Caveat', 'Kalam', 'Dancing Script', cursive;
-  --font-handwriting-cn: 'ZCOOL XiaoWei', 'Liu Jian Mao Cao', 'Ma Shan Zheng', cursive;
-  --font-logo: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  --font-navigation: 'Cormorant Garamond', Georgia, serif;
+  --font-handwriting: 'Caveat', cursive;
 
   /* Font Sizes */
   --font-size-xs: 0.75rem;
@@ -146,7 +141,7 @@ body {
 
 /* Display Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-weight: 500;
   line-height: 1.25;
   color: var(--color-text-primary);
@@ -207,13 +202,14 @@ a:hover {
 }
 
 .handwriting-cn {
-  font-family: var(--font-handwriting-cn);
+  font-family: 'LXGW WenKai TC', cursive;
 }
 
 /* ========================================
    Header & Navigation
    ======================================== */
 .header {
+  font-family: 'LXGW WenKai TC', cursive;
   background: linear-gradient(180deg, rgba(26, 23, 20, 0.98) 0%, rgba(15, 13, 10, 0.95) 100%);
   border-bottom: 1px solid rgba(201, 162, 39, 0.2);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
@@ -240,10 +236,10 @@ a:hover {
 }
 
 .header__logo a {
-  font-family: var(--font-logo);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.625rem;
   font-weight: 500;
-  font-style: italic;
+  font-style: normal;
   color: var(--color-accent-primary);
   text-decoration: none;
   letter-spacing: 0.03em;
@@ -272,7 +268,7 @@ a:hover {
 }
 
 .header__menu-item a {
-  font-family: var(--font-navigation);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.0625rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -351,7 +347,7 @@ a:hover {
       rgba(15, 13, 10, 0.7) 0%,
       rgba(15, 13, 10, 0.5) 40%,
       rgba(15, 13, 10, 0.75) 100%),
-    url('/images/background/door1.png') center/cover no-repeat;
+    url('/images/background/door1.jpg') center/cover no-repeat;
   background-attachment: fixed;
   overflow: hidden;
 }
@@ -410,7 +406,7 @@ a:hover {
 
 /* Chinese headline - artistic calligraphy style */
 .hero__title {
-  font-family: 'STXingkai', 'KaiTi', 'Kaiti SC', cursive;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(1.75rem, 5vw, 3rem);
   font-weight: 400;
   color: var(--color-text-primary);
@@ -605,7 +601,7 @@ a:hover {
 }
 
 .featured__title {
-  font-family: var(--font-handwriting);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 600;
   text-align: center;
@@ -618,7 +614,7 @@ a:hover {
 .featured__title::after {
   content: 'What We Do';
   display: block;
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 0.875rem;
   font-weight: 400;
   font-style: italic;
@@ -720,7 +716,7 @@ a.time-card {
 }
 
 .time-card__title {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.375rem;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -878,9 +874,10 @@ a.time-card {
    Footer
    ======================================== */
 .footer {
+  font-family: 'LXGW WenKai TC', cursive;
   background:
     linear-gradient(rgba(15, 13, 10, 0.94), rgba(15, 13, 10, 0.92)),
-    url('/images/background/post2.png') center/cover no-repeat;
+    url('/images/background/post2.jpg') center/cover no-repeat;
   border-top: 1px solid rgba(201, 162, 39, 0.2);
   padding: var(--spacing-4xl) 0 var(--spacing-2xl);
   margin-top: var(--spacing-4xl);
@@ -912,10 +909,10 @@ a.time-card {
 }
 
 .footer__title {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 1.375rem;
   font-weight: 500;
-  font-style: italic;
+  font-style: normal;
   color: var(--color-accent-primary);
   margin-bottom: var(--spacing-lg);
   letter-spacing: 0.03em;
@@ -1140,7 +1137,7 @@ a.time-card {
 }
 
 .modal__title {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: var(--font-size-xl);
   font-weight: 500;
   font-style: italic;
@@ -1218,7 +1215,7 @@ a.time-card {
 }
 
 .calendar-view__title {
-  font-family: var(--font-display);
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: var(--font-size-xl);
   font-weight: 500;
   color: var(--color-accent-secondary);

@@ -42,7 +42,7 @@ body:has(.booking) .footer {
 
 /* 页面标题区域 */
 .booking__title {
-  font-family: 'Playfair Display', 'Libre Baskerville', serif;
+  font-family: 'LXGW WenKai TC', cursive;
   font-size: 2.25rem;
   font-weight: 700;
   color: #3d2b1f;
