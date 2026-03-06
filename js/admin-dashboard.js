@@ -839,7 +839,9 @@ function renderCalendar() {
     const dateData = calendarData.get(dateString);
     const total = dateData ? dateData.total : 0;
     let statusClass = 'idle';
-    if (total > 6) {
+    if (total > 8) {
+      statusClass = 'packed';
+    } else if (total >= 6) {
       statusClass = 'busy';
     } else if (total >= 4) {
       statusClass = 'normal';

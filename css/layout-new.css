@@ -1255,6 +1255,10 @@ a.time-card {
   background-color: var(--color-error);
 }
 
+.calendar-view__legend-color--packed {
+  background-color: #7c3aed;
+}
+
 /* Calendar view button overrides */
 .calendar-view .button--secondary {
   border-color: #6b6560;

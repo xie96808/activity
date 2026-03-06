@@ -342,15 +342,23 @@ function initHomeCalendar() {
       const bookingCount = bookings[dateStr] || 0;
 
       let statusColor = '#10b981'; // Green - idle
+      let statusBg = 'rgba(16, 185, 129, 0.15)';
       let statusClass = 'calendar-cell--idle';
       let statusText = '空闲';
 
-      if (bookingCount > 6) {
+      if (bookingCount > 8) {
+        statusColor = '#7c3aed'; // Purple - packed
+        statusBg = 'rgba(124, 58, 237, 0.18)';
+        statusClass = 'calendar-cell--packed';
+        statusText = '爆满';
+      } else if (bookingCount >= 6) {
         statusColor = '#ef4444'; // Red - busy
+        statusBg = 'rgba(239, 68, 68, 0.15)';
         statusClass = 'calendar-cell--busy';
         statusText = '繁忙';
       } else if (bookingCount >= 4) {
         statusColor = '#f59e0b'; // Orange - normal
+        statusBg = 'rgba(245, 158, 11, 0.15)';
         statusClass = 'calendar-cell--normal';
         statusText = '一般';
       }
@@ -361,8 +369,8 @@ function initHomeCalendar() {
 
       html += `
         <div class="calendar-cell ${statusClass} ${isToday ? 'calendar-cell--today' : ''}"
-             style="padding: 16px; border-radius: 8px; background: #ffffff;
-                    border: 2px solid ${statusColor}; transition: all 0.2s;
+             style="padding: 16px; border-radius: 8px; background: ${statusBg};
+                    border: 1.5px solid ${statusColor}; transition: all 0.2s;
                     ${isToday ? 'box-shadow: 0 0 10px ' + statusColor + ';' : ''}">
           <div style="font-weight: 600; color: #333333; font-size: 1.125rem;">${day}</div>
         </div>
