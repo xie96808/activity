@@ -809,15 +809,15 @@ html {
    Form Validation Animations
    ======================================== */
 
-/* Invalid input - subtle shake */
-.form-group__input:invalid:not(:focus):not(:placeholder-shown) {
+/* Invalid input - subtle shake (only after form submission attempted) */
+.form--validated .form-group__input:invalid:not(:focus):not(:placeholder-shown) {
   animation: shake 0.4s ease-in-out;
   border-color: var(--color-error);
   box-shadow: 0 0 0 3px var(--color-error-light);
 }
 
-/* Valid input - elegant confirmation */
-.form-group__input:valid:not(:focus):not(:placeholder-shown) {
+/* Valid input - elegant confirmation (only after form submission attempted) */
+.form--validated .form-group__input:valid:not(:focus):not(:placeholder-shown) {
   border-color: var(--color-success);
   box-shadow: 0 0 0 3px var(--color-success-light);
 }

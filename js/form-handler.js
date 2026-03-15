@@ -23,6 +23,9 @@ async function initRepairForm() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Mark form as validated to enable CSS :invalid styles
+    form.classList.add('form--validated');
+
     // Validate form
     if (!validateForm(form)) {
       return;
@@ -95,6 +98,7 @@ async function initRepairForm() {
       if (result.success) {
         // Clear form first
         form.reset();
+        form.classList.remove('form--validated');
 
         // Clear image previews
         const previewContainer = document.getElementById('image-preview-container');
@@ -297,7 +301,10 @@ function addRealTimeValidation(form) {
 
   inputs.forEach((input) => {
     input.addEventListener('blur', () => {
-      validateField(input);
+      // Only validate on blur after the form has been submitted at least once
+      if (form.classList.contains('form--validated')) {
+        validateField(input);
+      }
     });
 
     input.addEventListener('input', () => {

@@ -1273,23 +1273,23 @@ function renderWorkOrdersTable(orders) {
           ${order.problem_description}
         </div>
       </td>
-      <td style="padding: 1rem;">
+      <td style="padding: 1rem; white-space: nowrap;">
         <div>${order.appointment_date}</div>
         <div style="font-size: 0.875rem; color: #6b7280;">${order.appointment_time}</div>
       </td>
       <td style="padding: 1rem;">
-        <span style="padding: 0.25rem 0.75rem; background: #f3f4f6; border-radius: 9999px; font-size: 0.875rem;">
+        <span style="padding: 0.25rem 0.75rem; background: #f3f4f6; border-radius: 9999px; font-size: 0.875rem; white-space: nowrap; display: inline-block;">
           ${order.assigned_to || '未分配'}
         </span>
       </td>
       <td style="padding: 1rem;">
-        <span class="order-card__status order-card__status--${order.status}" onclick="window.quickChangeStatus('${order.id}', '${order.status}', this)" title="点击快速修改状态" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; cursor: pointer;">
+        <span class="order-card__status order-card__status--${order.status}" onclick="window.quickChangeStatus('${order.id}', '${order.status}', this)" title="点击快速修改状态" style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; cursor: pointer; white-space: nowrap; display: inline-block;">
           ${getStatusLabel(order.status)}
         </span>
       </td>
-      <td style="padding: 1rem;">
-        <button class="button button--small button--primary" onclick="window.viewOrderDetail('${order.id}')" style="margin-right: 0.5rem;">查看</button>
-        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">更改订单状态</button>
+      <td style="padding: 1rem; white-space: nowrap;">
+        <button class="button button--small button--primary" onclick="window.viewOrderDetail('${order.id}')" style="margin-right: 0.25rem;">查看</button>
+        <button class="button button--small button--secondary" onclick="window.changeOrderStatus('${order.id}', '${order.status}')">改状态</button>
       </td>
     </tr>
   `).join('');
